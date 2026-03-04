@@ -32,3 +32,9 @@ export async function getSimilarTVShows(id: string, page: number = 1) {
 export async function getRecommendedTVShows(id: string, page: number = 1) {
   return tmdbFetch<TMDBResponse<TVShow>>(`/tv/${id}/recommendations?page=${page}`);
 }
+
+export async function getTVShowsByGenre(genreId: string, page: number = 1) {
+  return tmdbFetch<TMDBResponse<TVShow>>(
+    `/discover/tv?with_genres=${genreId}&sort_by=popularity.desc&page=${page}`
+  );
+}

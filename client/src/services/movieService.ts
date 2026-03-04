@@ -49,3 +49,8 @@ export async function getRecommendedMovies(id: string, page: number = 1) {
   return tmdbFetch<TMDBResponse<Movie>>(`/movie/${id}/recommendations?page=${page}`);
 }
 
+export async function getMoviesByGenre(genreId: string, page: number = 1) {
+  return tmdbFetch<TMDBResponse<Movie>>(
+    `/discover/movie?with_genres=${genreId}&sort_by=popularity.desc&page=${page}`
+  );
+}

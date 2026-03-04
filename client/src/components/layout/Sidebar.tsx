@@ -2,15 +2,17 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Film, Home, Search, Tv, Menu, X } from "lucide-react";
+import { Film, Home, Search, Tv, Menu, X, ChevronDown, ChevronUp, LayoutGrid, Clapperboard } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import {useDebounce} from "@/hooks/useDebounce";
+import { useDebounce } from "@/hooks/useDebounce";
+import { MOVIE_GENRES, TV_GENRES } from "@/lib/genres";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openGenre, setOpenGenre] = useState<"movie" | "tv" | null>(null);
   const isTypingRef = useRef(false);
 
   const debouncedSearch = useDebounce(searchTerm, 500);
@@ -45,6 +47,10 @@ export default function Sidebar() {
     { name: "TV Shows", href: "/explore?category=trending-tv", icon: Tv },
   ];
 
+  const toggleGenre = (type: "movie" | "tv") => {
+    setOpenGenre((prev) => (prev === type ? null : type));
+  };
+
   return (
     <>
       {/* Mobile Toggle Button (Top Right) */}
@@ -65,12 +71,12 @@ export default function Sidebar() {
 
       {/* Sidebar Container */}
       <nav
-        className={`fixed top-0 left-0 h-[100dvh] bg-black/95 md:bg-black/90 backdrop-blur-md border-r border-white/10 flex flex-col items-center py-8 z-[50] transition-transform duration-300 md:translate-x-0 w-[240px] md:w-[80px] hover:w-[240px] group ${
+        className={`fixed top-0 left-0 h-[100dvh] bg-black/95 md:bg-black/90 backdrop-blur-md border-r border-white/10 flex flex-col items-center pt-8 pb-4 z-[50] transition-transform duration-300 md:translate-x-0 w-[240px] md:w-[80px] hover:w-[240px] group ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 w-full mb-12 overflow-hidden">
+        <div className="flex items-center gap-3 px-6 w-full mb-8 overflow-hidden shrink-0">
           <div className="bg-emerald-500 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.5)]">
             <Film className="text-white w-6 h-6" />
           </div>
@@ -79,8 +85,11 @@ export default function Sidebar() {
           </span>
         </div>
 
-        {/* Navigation Links */}
-        <div className="flex flex-col gap-6 w-full px-4 flex-1">
+        {/* Navigation Links and Genres (Scrollable Area) */}
+        <div 
+          className="flex flex-col gap-2 w-full px-4 flex-1 overflow-y-auto pb-6"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href || (pathname === "/explore" && link.name !== "Home" && link.href.includes(pathname));
@@ -103,6 +112,72 @@ export default function Sidebar() {
               </Link>
             );
           })}
+
+          <div className="w-full h-px bg-white/10 my-2 shrink-0" />
+
+          {/* Movie Genres Accordion */}
+          <div className="flex flex-col flex-shrink-0">
+            <button
+               onClick={() => toggleGenre('movie')}
+               className={`flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-300 text-gray-400 hover:bg-white/5 hover:text-white w-full`}
+               title="Movie Genres"
+            >
+              <Clapperboard className="w-6 h-6 shrink-0" />
+              <div className="flex items-center justify-between w-full md:opacity-0 group-hover:opacity-100 transition-opacity">
+                 <span className="text-sm whitespace-nowrap">Movie Genres</span>
+                 {openGenre === 'movie' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </div>
+            </button>
+            
+            <div className={`flex flex-col gap-1 overflow-hidden transition-all duration-300 ${openGenre === 'movie' ? 'max-h-[800px] mt-2 mb-2' : 'max-h-0'}`}>
+              <div className="flex flex-col gap-1 px-11 md:hidden group-hover:flex">
+                {MOVIE_GENRES.map(g => {
+                  const isActive = pathname.startsWith(`/movie/genre/${g.id}`);
+                  return (
+                    <Link
+                      key={g.id}
+                      href={`/movie/genre/${g.id}?name=${encodeURIComponent(g.name)}`}
+                      className={`text-sm py-1.5 transition-colors ${isActive ? 'text-emerald-400 font-semibold' : 'text-gray-400 hover:text-emerald-400'}`}
+                    >
+                      {g.name}
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* TV Genres Accordion */}
+          <div className="flex flex-col flex-shrink-0">
+            <button
+               onClick={() => toggleGenre('tv')}
+               className={`flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-300 text-gray-400 hover:bg-white/5 hover:text-white w-full`}
+               title="TV Genres"
+            >
+              <Tv className="w-6 h-6 shrink-0" />
+              <div className="flex items-center justify-between w-full md:opacity-0 group-hover:opacity-100 transition-opacity">
+                 <span className="text-sm whitespace-nowrap">TV Genres</span>
+                 {openGenre === 'tv' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </div>
+            </button>
+            
+            <div className={`flex flex-col gap-1 overflow-hidden transition-all duration-300 ${openGenre === 'tv' ? 'max-h-[800px] mt-2 mb-2' : 'max-h-0'}`}>
+              <div className="flex flex-col gap-1 px-11 md:hidden group-hover:flex">
+                {TV_GENRES.map(g => {
+                  const isActive = pathname.startsWith(`/tv/genre/${g.id}`);
+                  return (
+                    <Link
+                      key={g.id}
+                      href={`/tv/genre/${g.id}?name=${encodeURIComponent(g.name)}`}
+                      className={`text-sm py-1.5 transition-colors ${isActive ? 'text-emerald-400 font-semibold' : 'text-gray-400 hover:text-emerald-400'}`}
+                    >
+                      {g.name}
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Search Input */}

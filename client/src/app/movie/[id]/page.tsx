@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { getMovieDetails, getMovieImages } from "@/services/movieService";
 import { tmdbImage } from "@/services/tmdb";
 import CastCarousel from "@/components/movie/CastCarousel";
@@ -96,12 +97,13 @@ export default async function MoviePage({ params }: MoviePageProps) {
               {/* Genres */}
               <div className="flex flex-wrap gap-2">
                 {movie.genres.map((genre) => (
-                  <span
+                  <Link
                     key={genre.id}
-                    className="px-3 py-1 text-xs font-semibold uppercase tracking-wide rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white"
+                    href={`/movie/genre/${genre.id}?name=${encodeURIComponent(genre.name)}`}
+                    className="px-3 py-1 text-xs font-semibold uppercase tracking-wide rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-emerald-500/20 hover:text-emerald-400 hover:border-emerald-500/50 transition-colors"
                   >
                     {genre.name}
-                  </span>
+                  </Link>
                 ))}
               </div>
 
