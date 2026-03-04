@@ -181,7 +181,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
       </section>
 
       {/* ─── CONTENT SECTIONS ─── */}
-      <div className="mx-auto px-4 space-y-12 py-12">
+      <div className="mx-auto px-4 space-y-12 pb-12">
         {/* Overview */}
         <section>
           <h2 className="text-xl md:text-2xl font-bold text-white mb-3">Overview</h2>

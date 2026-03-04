@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "../store/Provider";
 import Sidebar from "../components/layout/Sidebar";
 import Footer from "../components/layout/Footer";
+import BackToTop from "@/components/common/BackToTop";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
               <Footer />
             </div>
           </Providers>
+          <BackToTop />
         </div>
       </body>
     </html>
