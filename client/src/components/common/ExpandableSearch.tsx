@@ -81,8 +81,8 @@ export default function ExpandableSearch() {
     <form
       ref={containerRef}
       onSubmit={handleSubmit}
-      className={`absolute top-6 right-4 md:right-12 z-50 flex items-center bg-black/40 backdrop-blur-md border border-white/20 rounded-full transition-all duration-300 ease-in-out shadow-2xl ${
-        isExpanded ? "w-[240px] md:w-[320px] px-2 py-1" : "w-12 h-12 justify-center cursor-pointer hover:bg-black/60"
+      className={`absolute md:top-5 top-3 right-4 md:right-10 z-50 flex items-center md:bg-black/40 md:backdrop-blur-md md:border border-white/20 rounded-full transition-all duration-300 ease-in-out md:shadow-2xl ${
+        isExpanded ? "w-[240px] md:w-[320px] px-2 py-1" : "w-12 h-12 justify-center cursor-pointer bg-transparent hover:bg-black/60"
       }`}
       onClick={() => {
         if (!isExpanded) toggleExpand();

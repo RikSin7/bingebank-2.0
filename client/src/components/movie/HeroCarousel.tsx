@@ -1,160 +1,266 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { TrendingItem } from "@/types/movie";
 import { tmdbImage } from "@/services/tmdb";
 import Link from "next/link";
 import Image from "next/image";
-import { Film, Tv, Star, Play, Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import { Film, Tv, Star, Play, Plus, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence, type Variants } from "motion/react";
 
 interface HeroCarouselProps {
   items: TrendingItem[];
 }
 
+const SLIDE_DURATION = 7000; // Slightly longer for this grand cinematic feel
+
+function ProgressiveBackground({ 
+  item, 
+  priority = false 
+}: { 
+  item: TrendingItem; 
+  priority?: boolean;
+}) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const title = item.title || item.name || "Untitled";
+
+  // Low Quality source
+  const lowQualitySrc = isMobile
+    ? tmdbImage(item.poster_path || item.backdrop_path, "w92")
+    : tmdbImage(item.backdrop_path || item.poster_path, "w300");
+
+  // High Quality source
+  const highQualitySrc = isMobile
+    ? tmdbImage(item.poster_path || item.backdrop_path, "w500")
+    : tmdbImage(item.backdrop_path || item.poster_path, "original");
+
+  return (
+    <div className="absolute inset-0 w-full h-full bg-[#030303]">
+      {/* Low Quality Image placeholder */}
+      <img
+        src={lowQualitySrc}
+        alt={title}
+        className={`absolute inset-0 w-full h-full object-cover flex-shrink-0 blur-md transition-opacity duration-500 ${
+          imageLoaded ? "opacity-0" : "opacity-100"
+        }`}
+        style={{ userSelect: "none" }}
+        loading={priority ? "eager" : "lazy"}
+      />
+      {/* High Quality Image */}
+      <img
+        src={highQualitySrc}
+        alt={title}
+        className={`absolute inset-0 w-full h-full object-cover flex-shrink-0 transition-opacity duration-500 ${
+          imageLoaded ? "opacity-100" : "opacity-0"
+        }`}
+        style={{ userSelect: "none" }}
+        loading={priority ? "eager" : "lazy"}
+        onLoad={() => setImageLoaded(true)}
+      />
+    </div>
+  );
+}
+
 export default function HeroCarousel({ items }: HeroCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const goNext = useCallback(() => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % items.length);
   }, [items.length]);
 
-  const goPrev = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
-  }, [items.length]);
-
   useEffect(() => {
-    timerRef.current = setInterval(goNext, 6000);
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [goNext]);
+    const timer = setInterval(handleNext, SLIDE_DURATION);
+    return () => clearInterval(timer);
+  }, [currentIndex, handleNext]);
 
   if (!items || items.length === 0) return null;
 
+  const currentItem = items[currentIndex];
+  const nextItem = items[(currentIndex + 1) % items.length];
+  
+  const title = currentItem.title || currentItem.name || "Untitled";
+  const isMovie = currentItem.media_type === "movie";
+  const detailUrl = isMovie ? `/movie/${currentItem.id}` : `/tv/${currentItem.id}`;
+  const rating = typeof currentItem.vote_average === "number" ? currentItem.vote_average.toFixed(1) : "NR";
+
+  // Staggered Animation Variants for the Text
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 }
+    },
+    exit: { opacity: 0, transition: { duration: 0.4 } }
+  };
+
+  const childVariants: Variants = {
+    hidden: { opacity: 0, y: 40, rotateX: 15, filter: "blur(8px)" },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      rotateX: 0, 
+      filter: "blur(0px)",
+      transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } 
+    }
+  };
+
   return (
-    <section className="group relative w-full h-[100dvh] min-h-[500px] overflow-hidden select-none bg-black">
+    <section className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden bg-[#030303] select-none font-sans">
+      
+      {/* ─── 1. THE "PUSH-THROUGH" BACKGROUNDS ─── */}
+      <AnimatePresence mode="popLayout">
+        <motion.div
+          key={`bg-${currentIndex}`}
+          className="absolute inset-0 w-full h-full"
+          initial={{ opacity: 0, scale: 0.85, filter: "blur(20px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, scale: 1.15, filter: "blur(10px)" }}
+          transition={{ duration: 1.4, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <ProgressiveBackground item={currentItem} priority={currentIndex === 0} />
+        </motion.div>
+      </AnimatePresence>
 
-      {/* SLIDE TRACK */}
-      <div
-        className="flex flex-row w-full h-full transition-transform duration-700 ease-in-out"
-        style={{
-          transform: mounted
-            ? `translateX(-${currentIndex * 100}%)`
-            : "translateX(0%)",
-        }}
-      >
-        {items.map((item, index) => {
-          const title = item.title || item.name || "Untitled";
-          const date = item.release_date || item.first_air_date || "TBA";
-          const rating =
-            typeof item.vote_average === "number"
-              ? item.vote_average.toFixed(1)
-              : "NR";
-          const isMovie = item.media_type === "movie";
-          const detailUrl = isMovie ? `/movie/${item.id}` : `/tv/${item.id}`;
+      {/* ─── 2. THE EDITORIAL GRADIENT MESH ─── */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030303] via-[#030303]/40 md:via-transparent to-transparent" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#030303]/95 via-[#030303]/70 md:via-[#030303]/40 to-transparent" />
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(3,3,3,0.4)_100%)]" />
 
-          return (
-            <div
-              key={`${item.id}-${index}`}
-              className="relative min-w-full h-full shrink-0"
-            >
-              {/* Backdrop image */}
-              <Image
-                src={tmdbImage(item.backdrop_path, "original")}
-                alt={title}
-                fill
-                sizes="100vw"
-                priority={index === 0}
-                className="object-cover"
-                draggable={false}
-              />
-
-              {/* Gradients */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 md:via-black/30 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 md:via-black/40 to-transparent" />
-
-              {/* CONTENT WRAPPER */}
-              <div className="absolute bottom-0 left-4 right-4 md:left-12 lg:left-20 pb-20 md:pb-24 max-w-2xl flex flex-col gap-3 md:gap-4 z-10">
-
-                {/* Badge */}
-                <span className="inline-flex items-center gap-1.5 w-fit px-2.5 py-1 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg">
-                  {isMovie ? <><Film className="w-3 md:w-3.5" /> Movie</> : <><Tv className="w-3 md:w-3.5" /> TV Show</>}
+      {/* ─── 3. THE CASCADING CONTENT ─── */}
+      <div className="absolute inset-0 z-20 flex flex-col justify-end md:justify-center px-4 md:px-16 lg:px-24 pb-28 md:pb-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`content-${currentIndex}`}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="max-w-3xl flex flex-col gap-5 md:gap-6 perspective-[1000px]"
+          >
+            {/* Badge & Rating Row */}
+            <motion.div variants={childVariants} className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-sm bg-white text-black shadow-lg">
+                {isMovie ? <><Film className="w-3.5" /> Film</> : <><Tv className="w-3.5" /> Series</>}
+              </span>
+              <div className="flex items-center gap-1.5 text-yellow-500 font-bold text-sm tracking-wide">
+                <Star className="w-4 h-4 fill-yellow-500" /> {rating}
+                <span className="text-gray-400 font-medium ml-1">
+                  | {currentItem.release_date?.substring(0, 4) || currentItem.first_air_date?.substring(0, 4) || "TBA"}
                 </span>
-
-                {/* Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-white drop-shadow-2xl leading-tight tracking-tight">
-                  {title}
-                </h1>
-
-                {/* Meta */}
-                <div className="flex items-center gap-3 text-xs md:text-sm text-gray-300 font-medium">
-                  <span className="flex items-center gap-1 text-yellow-400 drop-shadow-md">
-                    <Star className="w-3.5 md:w-4 fill-yellow-400" /> {rating}
-                  </span>
-                  <span>•</span>
-                  <span>{date ? date.substring(0, 4) : "TBA"}</span>
-                </div>
-
-                {/* Overview */}
-                <p className="text-sm md:text-base text-gray-200 line-clamp-2 md:line-clamp-3 max-w-xl drop-shadow-md leading-relaxed">
-                  {item.overview || "No overview available."}
-                </p>
-
-                {/* Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-2 md:pt-4">
-                  <Link
-                    href={detailUrl}
-                    className="flex justify-center items-center gap-2 w-full sm:w-auto px-6 py-3 md:py-3.5 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl"
-                  >
-                    <Play className="w-4 fill-black" /> Play Now
-                  </Link>
-                  <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-6 py-3 md:py-3.5 bg-white/10 text-white font-semibold rounded-lg backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl">
-                    <Plus className="w-4" /> Watchlist
-                  </button>
-                </div>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Title */}
+            <motion.div variants={childVariants}>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[1.05] tracking-tighter drop-shadow-2xl">
+                {title}
+              </h1>
+            </motion.div>
+
+            {/* Overview */}
+            <motion.p variants={childVariants} className="text-base md:text-lg text-gray-300 line-clamp-2 md:line-clamp-3 max-w-2xl font-light leading-relaxed drop-shadow-lg border-l-2 border-white/20 pl-4 ml-1">
+              {currentItem.overview || "No overview available."}
+            </motion.p>
+
+            {/* Premium Buttons */}
+            <motion.div variants={childVariants} className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Link
+                href={detailUrl}
+                className="group relative overflow-hidden flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+              >
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                <Play className="w-4 h-4 fill-black" /> Watch Now
+              </Link>
+              <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white/5 text-white font-semibold rounded-full backdrop-blur-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95">
+                <Plus className="w-4 h-4" /> Add to List
+              </button>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* ─── 4. THE "UP NEXT" WIDGET (Desktop Only) ─── */}
+      <div className="absolute right-12 bottom-24 z-30 hidden lg:flex flex-col items-end gap-3 cursor-pointer group" onClick={handleNext}>
+        <span className="text-xs font-bold tracking-[0.2em] text-gray-400 uppercase mr-2 flex items-center gap-2">
+          Up Next <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+        </span>
+        <div className="relative w-64 aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10 transform transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-gray-900">
+          <Image
+            src={tmdbImage(nextItem.backdrop_path, "w500")}
+            alt="Next item"
+            fill
+            sizes="256px"
+            className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+          <div className="absolute bottom-3 left-4 pr-4">
+            <p className="text-white font-bold text-sm truncate">{nextItem.title || nextItem.name}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── 5. THE EDITORIAL PAGINATION ─── */}
+      <div className="absolute top-8 right-6 md:right-12 z-30 flex items-center gap-3 font-mono text-sm tracking-widest hidden md:flex">
+        <span className="text-white font-bold">
+          {String(currentIndex + 1).padStart(2, "0")}
+        </span>
+        <span className="text-gray-600">/</span>
+        <span className="text-gray-400">
+          {String(items.length).padStart(2, "0")}
+        </span>
+      </div>
+
+      {/* ─── 6. THE CAPSULE PROGRESS INDICATORS ─── */}
+      <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 px-4 py-2.5 rounded-full bg-black/20 backdrop-blur-2xl border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+        {items.map((_, i) => {
+          const isActive = i === currentIndex;
+          return (
+            <button
+              key={`nav-${i}`}
+              onClick={() => setCurrentIndex(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              // Apple's signature ease curve for incredibly buttery width expansion
+              className={`relative overflow-hidden rounded-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isActive
+                  ? "w-12 md:w-16 h-1.5 md:h-2 bg-white/10 shadow-inner"
+                  : "w-1.5 md:w-2 h-1.5 md:h-2 bg-white/30 hover:bg-white/60"
+              }`}
+            >
+              {isActive && mounted && (
+                <motion.div
+                  key={`progress-${currentIndex}`}
+                  // A much softer, more sophisticated glow
+                  className="absolute inset-y-0 left-0 bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.4)] rounded-full"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
+                />
+              )}
+            </button>
           );
         })}
       </div>
 
-      {/* ARROWS */}
-      <button
-        onClick={goPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-white hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300 hidden md:flex items-center justify-center hover:scale-110 active:scale-95"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft className="w-5 lg:w-6" />
-      </button>
-      <button
-        onClick={goNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-white hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300 hidden md:flex items-center justify-center hover:scale-110 active:scale-95"
-        aria-label="Next slide"
-      >
-        <ChevronRight className="w-5 lg:w-6" />
-      </button>
-
-      {/* DOT INDICATORS */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {items.map((_, i) => (
-          <button
-            key={`dot-${i}`}
-            onClick={() => setCurrentIndex(i)}
-            aria-label={`Go to slide ${i + 1}`}
-            className={`h-1.5 rounded-full transition-all duration-500 ease-out ${
-              i === currentIndex
-                ? "w-6 md:w-8 bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                : "w-2 md:w-3 bg-white/40 hover:bg-white/70"
-            }`}
-          />
-        ))}
-      </div>
+      {/* Tailwind Custom Animation Injection for the Shimmer Button */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes shimmer {
+          100% { transform: translateX(100%); }
+        }
+      `}} />
     </section>
   );
 }

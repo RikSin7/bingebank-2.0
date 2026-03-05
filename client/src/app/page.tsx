@@ -46,7 +46,6 @@ export default async function Home() {
   const trendingMovies = trending.results.filter(
     (item) => item.media_type === "movie"
   ) as any[]; // Type cast needed because TrendingItem is a union type
-  console.log(trendingMovies);
   const trendingTVShows = trending.results.filter(
     (item) => item.media_type === "tv"
   ) as any[];
@@ -57,7 +56,7 @@ export default async function Home() {
       <HeroCarousel items={heroItems} />
 
       {/* Rows Container */}
-      <div className="mx-auto px-4 md:px-12 space-y-10 md:space-y-12 py-8 relative z-10">
+      <div className="mx-auto px-4 md:px-12 relative z-10">
         <TrendingRow
           trendingMovies={trendingMovies}
           trendingTV={trendingTVShows}
