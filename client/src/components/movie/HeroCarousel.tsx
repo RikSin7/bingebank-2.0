@@ -233,7 +233,6 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
               key={`nav-${i}`}
               onClick={() => setCurrentIndex(i)}
               aria-label={`Go to slide ${i + 1}`}
-              // Apple's signature ease curve for incredibly buttery width expansion
               className={`relative overflow-hidden rounded-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isActive
                   ? "w-12 md:w-16 h-1.5 md:h-2 bg-white/10 shadow-inner"
@@ -243,7 +242,6 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
               {isActive && mounted && (
                 <motion.div
                   key={`progress-${currentIndex}`}
-                  // A much softer, more sophisticated glow
                   className="absolute inset-y-0 left-0 bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.4)] rounded-full"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}

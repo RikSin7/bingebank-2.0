@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchExploreData } from "@/actions/explore";
 import { tmdbImage } from "@/services/tmdb";
-import { Star, Loader2 } from "lucide-react";
+import { Star, Loader2, ArrowDown } from "lucide-react";
+import { motion, AnimatePresence, type Variants } from "motion/react";
 
 interface ExploreGridProps {
   initialData: any;
@@ -21,6 +22,20 @@ function filterValidItems(results: any[]): any[] {
   });
 }
 
+// Staggered animation variants for the grid
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05 },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
+
 export default function ExploreGrid({ initialData, category }: ExploreGridProps) {
   const [items, setItems] = useState<any[]>(filterValidItems(initialData?.results));
   const [page, setPage] = useState(initialData?.page || 1);
@@ -32,7 +47,6 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
 
   useEffect(() => {
     const currentFetchId = ++fetchIdRef.current;
-
     const fetchFresh = async () => {
       setLoading(true);
       try {
@@ -42,14 +56,11 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
         setPage(res.page || 1);
         setTotalPages(res.total_pages || 1);
       } catch (e) {
-        console.error("Explore fetch error:", e);
-        if (currentFetchId !== fetchIdRef.current) return;
-        setItems([]);
+        if (currentFetchId === fetchIdRef.current) setItems([]);
       } finally {
         if (currentFetchId === fetchIdRef.current) setLoading(false);
       }
     };
-
     fetchFresh();
   }, [category]);
 
@@ -58,12 +69,10 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
     if (category.startsWith("recommended-movie-")) return "Recommended Movies";
     if (category.startsWith("similar-tv-")) return "Similar TV Shows";
     if (category.startsWith("recommended-tv-")) return "Recommended TV Shows";
-
     switch (category) {
       case "trending-movies": return "Trending Movies";
       case "popular-movies": return "Popular Movies";
       case "top-rated-movies": return "Top Rated Movies";
-      case "now-playing-movies": return "Now Playing";
       case "bollywood-movies": return "Bollywood Hits";
       case "hollywood-movies": return "Hollywood Blockbusters";
       case "upcoming-movies": return "Upcoming Movies";
@@ -71,7 +80,6 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
       case "popular-tv": return "Popular TV Shows";
       case "top-rated-tv": return "Top Rated TV Shows";
       case "on-the-air-tv": return "Upcoming TV Shows";
-      case "trending-all": return "Trending Now";
       default: return "Explore";
     }
   };
@@ -84,13 +92,8 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
       const nextPage = page + 1;
       const res = await fetchExploreData(category, nextPage);
       if (currentFetchId !== fetchIdRef.current) return;
-      setItems((prev) => {
-        const existingIds = new Set(prev.map((i) => i.id));
-        const newItems = filterValidItems(res.results).filter((i: any) => !existingIds.has(i.id));
-        return [...prev, ...newItems];
-      });
+      setItems((prev) => [...prev, ...filterValidItems(res.results)]);
       setPage(nextPage);
-      setTotalPages(res.total_pages || 1);
     } catch (e) {
       console.error(e);
     } finally {
@@ -99,82 +102,84 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
   };
 
   return (
-    <div className="w-full">
-      <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-8 border-l-4 border-emerald-400 pl-4">
-        {getTitle()}
-      </h1>
+    <div className="w-full relative pt-12 md:pt-0">
+      {/* ─── HEADER SECTION ─── */}
+      <div className="flex items-center gap-4 mb-10">
+        <div className="h-10 w-1.5 bg-emerald-500 rounded-full" />
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+          {getTitle()}
+        </h1>
+      </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-        {items.map((item, index) => {
-              const inferredType = item.media_type || (category.includes("tv") ? "tv" : "movie");
-              const isMovie = inferredType === "movie";
-              const href = isMovie ? `/movie/${item.id}` : `/tv/${item.id}`;
-              const displayTitle = item.title || item.name;
-              const date = item.release_date || item.first_air_date;
+      {/* ─── GRID SECTION ─── */}
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+      >
+        <AnimatePresence mode="popLayout">
+          {items.map((item, index) => {
+            const inferredType = item.media_type || (category.includes("tv") ? "tv" : "movie");
+            const href = inferredType === "movie" ? `/movie/${item.id}` : `/tv/${item.id}`;
+            const displayTitle = item.title || item.name;
+            const date = item.release_date || item.first_air_date;
 
-              if (!displayTitle) return null;
-
-              return (
-                <Link
-                  key={`${inferredType}-${item.id}-${index}`}
-                  href={href}
-                  className="flex flex-col gap-2 group cursor-pointer"
-                >
-                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-gray-800 shadow-lg">
-                    {item.poster_path ? (
-                      <Image
-                        src={tmdbImage(item.poster_path, "w500")}
-                        alt={displayTitle}
-                        fill
-                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                        className="object-cover group-hover:scale-110 group-hover:opacity-80 transition-all duration-300"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex flex-col justify-center items-center p-4 bg-black text-gray-400">
-                        <span className="text-sm font-semibold">No Image</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-950 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <p className="text-white font-bold text-sm line-clamp-2">{displayTitle}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="flex items-center text-yellow-400 text-xs font-bold">
-                          <Star className="w-3 h-3 fill-yellow-400 mr-1" />
-                          {item.vote_average?.toFixed(1) || "NR"}
-                        </span>
-                        <span className="text-gray-300 text-[10px]">{date?.substring(0, 4)}</span>
-                      </div>
+            return (
+              <motion.div key={`${item.id}-${index}`} variants={itemVariants} className="group">
+                <Link href={href} className="block w-full aspect-[2/3] relative rounded-2xl overflow-hidden bg-[#0a0514] border border-white/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
+                  {item.poster_path ? (
+                    <Image
+                      src={tmdbImage(item.poster_path, "w500")}
+                      alt={displayTitle}
+                      fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-white/5 text-white/20 font-bold">N/A</div>
+                  )}
+                  
+                  {/* Glass Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-5 flex flex-col justify-end">
+                    <p className="text-white font-bold text-lg leading-snug">{displayTitle}</p>
+                    <div className="flex items-center gap-3 mt-2 text-xs">
+                      <span className="flex items-center text-yellow-500 font-bold bg-yellow-500/10 px-2 py-1 rounded-md border border-yellow-500/20">
+                        <Star className="w-3 h-3 fill-yellow-500 mr-1" />
+                        {item.vote_average?.toFixed(1) || "NR"}
+                      </span>
+                      {date && <span className="text-gray-400 font-medium">{date.substring(0, 4)}</span>}
                     </div>
                   </div>
                 </Link>
-              );
-            })}
-      </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </motion.div>
 
+      {/* ─── ACTIONS ─── */}
       {loading && (
-        <div className="flex justify-center mt-8 mb-4">
-          <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+        <div className="flex justify-center mt-12">
+          <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
         </div>
       )}
 
-      {hasMore && items.length > 0 && !loading && (
-        <div className="flex justify-center mt-12 mb-8">
+      {hasMore && !loading && items.length > 0 && (
+        <div className="flex justify-center mt-16">
           <button
             onClick={loadMore}
-            className="flex items-center gap-2 px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-lg transition-colors shadow-lg"
+            className="group flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-emerald-500/10 border border-white/10 hover:border-emerald-500/50 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md"
           >
             Load More
+            <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
           </button>
         </div>
       )}
 
       {!hasMore && items.length > 0 && !loading && (
-        <p className="text-center text-gray-500 mt-12 mb-8">You've reached the end.</p>
-      )}
-
-      {!loading && items.length === 0 && (
-        <div className="flex justify-center items-center h-64 text-gray-400 text-lg">No results found.</div>
+        <p className="text-center text-gray-500 mt-16 font-medium">You've reached the end of the collection.</p>
       )}
     </div>
   );
 }
-

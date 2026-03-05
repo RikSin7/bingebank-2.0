@@ -59,7 +59,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full pt-12 xl:pt-0">
       <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-8 border-l-4 border-emerald-400 pl-4">
         Search Results for "{query}"
       </h1>

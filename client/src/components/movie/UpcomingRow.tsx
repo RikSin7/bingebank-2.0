@@ -77,13 +77,13 @@ export default function UpcomingRow({ upcomingMovies, upcomingTV }: UpcomingRowP
 
       <div className="flex items-center justify-between mb-4 px-4 md:px-8 relative z-20">
         <div className="flex items-center gap-3 relative" ref={dropdownRef}>
-          <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight drop-shadow-md">
+          <h2 className="text-xl md:text-3xl font-black text-white tracking-tight drop-shadow-md">
             Upcoming
           </h2>
           
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl backdrop-blur-md border transition-all duration-300 shadow-lg ${activeTheme.bgLight} ${activeTheme.border} ${activeTheme.primary} hover:bg-white/10`}
+            className={`flex items-center gap-1.5 px-2 py-1 md:px-4 md:py-2 rounded-xl backdrop-blur-md border transition-all duration-300 shadow-lg ${activeTheme.bgLight} ${activeTheme.border} ${activeTheme.primary} hover:bg-white/10`}
           >
             <span className="font-bold text-sm md:text-base tracking-wide">
               {activeTheme.label}
@@ -122,7 +122,7 @@ export default function UpcomingRow({ upcomingMovies, upcomingTV }: UpcomingRowP
           href={exploreLink}
           className={`group flex items-center gap-2 text-sm md:text-base font-bold transition-all duration-300 ${activeTheme.primary} ${activeTheme.hover}`}
         >
-          Explore All 
+          More 
           <span className={`flex items-center justify-center w-6 h-6 rounded-full bg-white/5 border border-white/10 group-hover:bg-white/10 transition-colors`}>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </span>

@@ -79,14 +79,13 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full pt-12 md:pt-0">
       <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-8 border-l-4 border-emerald-400 pl-4 capitalize flex items-center gap-4">
         {genreName} {type === "movie" ? "Movies" : "TV Shows"}
       </h1>
-
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
         {items.map((item, index) => {
-              const itemType = type; // We know it's strict to movie or tv based on the parent route
+              const itemType = type;
               const href = itemType === "movie" ? `/movie/${item.id}` : `/tv/${item.id}`;
               const displayTitle = item.title || item.name;
               const date = item.release_date || item.first_air_date;
