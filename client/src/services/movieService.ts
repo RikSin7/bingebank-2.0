@@ -1,5 +1,12 @@
 import { tmdbFetch } from "./tmdb";
-import { MovieDetailResponse, ImageResponse, TMDBResponse, Movie } from "@/types/movie";
+import { 
+  MovieDetailResponse, 
+  ImageResponse, 
+  TMDBResponse, 
+  Movie,
+  WatchProvidersResponse,
+  ReviewsResponse
+} from "@/types/movie";
 
 export async function getTrendingMovies(page: number = 1) {
   return tmdbFetch<TMDBResponse<Movie>>(`/trending/movie/week?page=${page}`);
@@ -17,6 +24,9 @@ export async function getNowPlayingMovies(page: number = 1) {
   return tmdbFetch<TMDBResponse<Movie>>(`/movie/now_playing?page=${page}`);
 }
 
+export async function getUpcomingMovies(page: number = 1) {
+  return tmdbFetch<TMDBResponse<Movie>>(`/movie/upcoming?page=${page}`);
+}
 
 export async function getBollywoodMovies(page: number = 1) {
   return tmdbFetch<TMDBResponse<Movie>>(
@@ -53,4 +63,12 @@ export async function getMoviesByGenre(genreId: string, page: number = 1) {
   return tmdbFetch<TMDBResponse<Movie>>(
     `/discover/movie?with_genres=${genreId}&sort_by=popularity.desc&page=${page}`
   );
+}
+
+export async function getMovieWatchProviders(id: string) {
+  return tmdbFetch<WatchProvidersResponse>(`/movie/${id}/watch/providers`);
+}
+
+export async function getMovieReviews(id: string, page: number = 1) {
+  return tmdbFetch<ReviewsResponse>(`/movie/${id}/reviews?page=${page}`);
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Film, Home, Search, Tv, Menu, X, ChevronDown, ChevronUp, LayoutGrid, Clapperboard } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -9,6 +9,7 @@ import { MOVIE_GENRES, TV_GENRES } from "@/lib/genres";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -92,7 +93,17 @@ export default function Sidebar() {
         >
           {navLinks.map((link) => {
             const Icon = link.icon;
-            const isActive = pathname === link.href || (pathname === "/explore" && link.name !== "Home" && link.href.includes(pathname));
+            let isActive = false;
+
+            if (link.name === "Home") {
+              isActive = pathname === "/";
+            } else if (link.name === "Movies") {
+              const currentCategory = searchParams.get("category");
+              isActive = pathname === "/explore" && !!currentCategory && currentCategory.includes("movie");
+            } else if (link.name === "TV Shows") {
+              const currentCategory = searchParams.get("category");
+              isActive = pathname === "/explore" && !!currentCategory && currentCategory.includes("tv");
+            }
 
             return (
               <Link

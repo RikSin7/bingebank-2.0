@@ -1,5 +1,12 @@
 import { tmdbFetch } from "./tmdb";
-import { TVShowDetailResponse, ImageResponse, TMDBResponse, TVShow } from "@/types/movie";
+import { 
+  TVShowDetailResponse, 
+  ImageResponse, 
+  TMDBResponse, 
+  TVShow,
+  WatchProvidersResponse,
+  ReviewsResponse
+} from "@/types/movie";
 
 export async function getTrendingTVShows(page: number = 1) {
   return tmdbFetch<TMDBResponse<TVShow>>(`/trending/tv/week?page=${page}`);
@@ -13,6 +20,9 @@ export async function getTopRatedTVShows(page: number = 1) {
   return tmdbFetch<TMDBResponse<TVShow>>(`/tv/top_rated?page=${page}`);
 }
 
+export async function getOnTheAirTVShows(page: number = 1) {
+  return tmdbFetch<TMDBResponse<TVShow>>(`/tv/on_the_air?page=${page}`);
+}
 
 export async function getTVShowDetails(id: string) {
   return tmdbFetch<TVShowDetailResponse>(
@@ -37,4 +47,12 @@ export async function getTVShowsByGenre(genreId: string, page: number = 1) {
   return tmdbFetch<TMDBResponse<TVShow>>(
     `/discover/tv?with_genres=${genreId}&sort_by=popularity.desc&page=${page}`
   );
+}
+
+export async function getTVShowWatchProviders(id: string) {
+  return tmdbFetch<WatchProvidersResponse>(`/tv/${id}/watch/providers`);
+}
+
+export async function getTVShowReviews(id: string, page: number = 1) {
+  return tmdbFetch<ReviewsResponse>(`/tv/${id}/reviews?page=${page}`);
 }

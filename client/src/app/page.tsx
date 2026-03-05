@@ -4,8 +4,9 @@ import {
   getNowPlayingMovies,
   getBollywoodMovies,
   getHollywoodMovies,
+  getUpcomingMovies,
 } from "@/services/movieService";
-import { getPopularTVShows } from "@/services/tvService";
+import { getPopularTVShows, getOnTheAirTVShows } from "@/services/tvService";
 
 import HeroCarousel from "@/components/movie/HeroCarousel";
 import MovieRow from "@/components/movie/MovieRow";
@@ -19,6 +20,8 @@ export default async function Home() {
     popularTVShows,
     bollywoodMovies,
     hollywoodMovies,
+    upcomingMovies,
+    onTheAirTVShows,
   ] = await Promise.all([
     getTrendingAll(),
     getTopRatedMovies(),
@@ -26,6 +29,8 @@ export default async function Home() {
     getPopularTVShows(),
     getBollywoodMovies(),
     getHollywoodMovies(),
+    getUpcomingMovies(),
+    getOnTheAirTVShows(),
   ]);
 
   const heroItems = trending.results
@@ -45,7 +50,7 @@ export default async function Home() {
       <HeroCarousel items={heroItems} />
 
       {/* Rows Container */}
-      <div className="mx-auto px-4 space-y-10 md:space-y-12 py-8 relative z-10">
+      <div className="mx-auto px-4 md:px-12 space-y-10 md:space-y-12 py-8 relative z-10">
         <MovieRow
           title="Trending Movies"
           movies={trendingMovies}
@@ -80,6 +85,16 @@ export default async function Home() {
           title="Hollywood Blockbusters"
           movies={hollywoodMovies.results}
           exploreLink="/explore?category=hollywood-movies"
+        />
+        <MovieRow
+          title="Upcoming Movies"
+          movies={upcomingMovies.results}
+          exploreLink="/explore?category=upcoming-movies"
+        />
+        <TVShowRow
+          title="Upcoming TV Shows"
+          shows={onTheAirTVShows.results}
+          exploreLink="/explore?category=on-the-air-tv"
         />
       </div>  
     </main>

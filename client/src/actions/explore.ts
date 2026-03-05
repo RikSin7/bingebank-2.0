@@ -9,6 +9,7 @@ import {
   getHollywoodMovies,
   getSimilarMovies,
   getRecommendedMovies,
+  getUpcomingMovies,
 } from "@/services/movieService";
 import {
   getTrendingTVShows,
@@ -16,6 +17,7 @@ import {
   getTopRatedTVShows,
   getSimilarTVShows,
   getRecommendedTVShows,
+  getOnTheAirTVShows,
 } from "@/services/tvService";
 import { getTrendingAll } from "@/services/trendingService";
 
@@ -50,12 +52,16 @@ export async function fetchExploreData(category: string, page: number) {
       return getBollywoodMovies(page);
     case "hollywood-movies":
       return getHollywoodMovies(page);
+    case "upcoming-movies":
+      return getUpcomingMovies(page);
     case "trending-tv":
       return getTrendingTVShows(page);
     case "popular-tv":
       return getPopularTVShows(page);
     case "top-rated-tv":
       return getTopRatedTVShows(page);
+    case "on-the-air-tv":
+      return getOnTheAirTVShows(page);
     case "trending-all":
       return getTrendingAll(page);
     default:

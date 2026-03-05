@@ -133,7 +133,7 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
             className="relative flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative w-[250px] md:w-[350px] aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black">
+            <div className="relative w-[250px] md:w-[350px] aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/20 bg-black">
               {cast[selectedIndex].profile_path ? (
                 <Image
                   src={tmdbImage(cast[selectedIndex].profile_path, "h632")}

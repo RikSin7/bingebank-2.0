@@ -27,7 +27,7 @@ export default function TrailerSection({ videos }: TrailerSectionProps) {
 
   return (
     <section className="w-full">
-      <h2 className="text-xl md:text-2xl font-bold text-white mb-4">
+      <h2 className="text-xl text-center md:text-2xl font-bold text-white mb-4">
         Videos & Trailers
       </h2>
 
@@ -46,7 +46,7 @@ export default function TrailerSection({ videos }: TrailerSectionProps) {
 
       {/* Thumbnails list */}
       {youtubeVideos.length > 1 && (
-        <div className="flex gap-4 overflow-x-auto pb-4 mx-auto" style={{ scrollbarWidth: "none" }}>
+        <div className="flex gap-4 overflow-x-auto mx-auto rounded-xl" style={{ scrollbarWidth: "none" }}>
           {youtubeVideos.map((video) => (
             <button
               key={video.id}

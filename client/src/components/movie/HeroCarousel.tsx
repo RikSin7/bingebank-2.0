@@ -80,8 +80,6 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
               <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 md:via-black/40 to-transparent" />
 
               {/* CONTENT WRAPPER */}
-              {/* Anchored to bottom-0, but padded upward. 
-                  pb-20 (80px) on mobile, pb-24 (96px) on desktop. */}
               <div className="absolute bottom-0 left-4 right-4 md:left-12 lg:left-20 pb-20 md:pb-24 max-w-2xl flex flex-col gap-3 md:gap-4 z-10">
 
                 {/* Badge */}

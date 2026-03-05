@@ -7,7 +7,10 @@ import CastCarousel from "@/components/movie/CastCarousel";
 import TrailerSection from "@/components/movie/TrailerSection";
 import MovieRow from "@/components/movie/MovieRow";
 import ScreenshotsSection from "@/components/movie/ScreenshotsSection";
+import WhereToWatch from "@/components/movie/WhereToWatch";
+import ReviewsSection from "@/components/movie/ReviewsSection";
 import { Star, Clock, Calendar, Globe, DollarSign } from "lucide-react";
+import { getMovieWatchProviders, getMovieReviews } from "@/services/movieService";
 
 interface MoviePageProps {
   params: Promise<{ id: string }>;
@@ -40,6 +43,20 @@ export default async function MoviePage({ params }: MoviePageProps) {
     images = await getMovieImages(id);
   } catch {
     images = { backdrops: [] };
+  }
+
+  let providers = null;
+  let reviews: any[] = [];
+
+  try {
+    const [providersRes, reviewsRes] = await Promise.all([
+      getMovieWatchProviders(id),
+      getMovieReviews(id)
+    ]);
+    providers = providersRes;
+    reviews = reviewsRes.results || [];
+  } catch (error) {
+    console.error("Default providers and reviews empty", error);
   }
 
   const cast = movie.credits?.cast || [];
@@ -77,7 +94,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
 
         {/* Hero content */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 pb-12 z-10">
+        <div className="absolute bottom-0 left-0 right-0 px-4 md:px-12 pb-12 z-10">
           <div className="flex flex-col md:flex-row gap-8 items-end md:items-end mx-auto">
             {/* Poster */}
             {movie.poster_path && (
@@ -181,7 +198,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
       </section>
 
       {/* ─── CONTENT SECTIONS ─── */}
-      <div className="mx-auto px-4 space-y-12 pb-12">
+      <div className="mx-auto px-4 md:px-12 space-y-12 pb-12">
         {/* Overview */}
         <section>
           <h2 className="text-xl md:text-2xl font-bold text-white mb-3">Overview</h2>
@@ -222,6 +239,9 @@ export default async function MoviePage({ params }: MoviePageProps) {
           </section>
         )}
 
+        {/* Where to Watch */}
+        {providers && <WhereToWatch providersData={providers} />}
+
         {/* Screenshots */}
         <ScreenshotsSection backdrops={backdrops} />
 
@@ -230,6 +250,9 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
         {/* Trailers */}
         <TrailerSection videos={videos} />
+
+        {/* Reviews */}
+        <ReviewsSection reviews={reviews} />
 
         {/* Recommendations */}
         {recommendations.length > 0 && (

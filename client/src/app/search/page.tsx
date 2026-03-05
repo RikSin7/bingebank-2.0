@@ -14,7 +14,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="min-h-screen bg-black pb-12 pt-8">
-      <div className="mx-auto px-4">
+      <div className="mx-auto px-4 md:px-12">
         <SearchGrid key={query} initialData={initialData} query={query} />
       </div>
     </div>

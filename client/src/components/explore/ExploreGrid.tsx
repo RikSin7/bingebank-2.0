@@ -66,9 +66,11 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
       case "now-playing-movies": return "Now Playing";
       case "bollywood-movies": return "Bollywood Hits";
       case "hollywood-movies": return "Hollywood Blockbusters";
+      case "upcoming-movies": return "Upcoming Movies";
       case "trending-tv": return "Trending TV Shows";
       case "popular-tv": return "Popular TV Shows";
       case "top-rated-tv": return "Top Rated TV Shows";
+      case "on-the-air-tv": return "Upcoming TV Shows";
       case "trending-all": return "Trending Now";
       default: return "Explore";
     }

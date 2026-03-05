@@ -47,14 +47,14 @@ export default function TVShowRow({ title, shows, exploreLink }: TVShowRowProps)
         {/* Scroll buttons */}
         <button
           onClick={() => scroll("left")}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/60 backdrop-blur-sm text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:bg-black/80 hover:scale-110"
+          className="absolute left-0 top-[120px] -translate-y-1/2 z-10 p-2 rounded-full bg-black/60 backdrop-blur-sm text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:bg-black/80 hover:scale-110"
           aria-label="Scroll left"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={() => scroll("right")}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/60 backdrop-blur-sm text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:bg-black/80 hover:scale-110"
+          className="absolute right-0 top-[120px] -translate-y-1/2 z-10 p-2 rounded-full bg-black/60 backdrop-blur-sm text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:bg-black/80 hover:scale-110"
           aria-label="Scroll right"
         >
           <ChevronRight className="w-5 h-5" />
@@ -63,7 +63,7 @@ export default function TVShowRow({ title, shows, exploreLink }: TVShowRowProps)
         {/* Scrollable row */}
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto pb-2 rounded-2xl"
+          className="flex gap-4 overflow-x-auto pb-2 rounded-xl"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {shows

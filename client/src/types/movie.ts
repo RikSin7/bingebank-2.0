@@ -85,6 +85,49 @@ export interface Video {
   official: boolean;
 }
 
+export interface WatchProvider {
+  logo_path: string;
+  provider_id: number;
+  provider_name: string;
+  display_priority: number;
+}
+
+export interface WatchProvidersData {
+  link: string;
+  flatrate?: WatchProvider[];
+  free?: WatchProvider[];
+  buy?: WatchProvider[];
+  rent?: WatchProvider[];
+}
+
+export interface WatchProvidersResponse {
+  id: number;
+  results: Record<string, WatchProvidersData>;
+}
+
+export interface Review {
+  author: string;
+  author_details: {
+    name: string;
+    username: string;
+    avatar_path: string | null;
+    rating: number | null;
+  };
+  content: string;
+  created_at: string;
+  id: string;
+  updated_at: string;
+  url: string;
+}
+
+export interface ReviewsResponse {
+  id: number;
+  page: number;
+  results: Review[];
+  total_pages: number;
+  total_results: number;
+}
+
 export interface MovieCredits {
   cast: CastMember[];
   crew: CrewMember[];
