@@ -5,6 +5,7 @@ import { Providers } from "../store/Provider";
 import Sidebar from "../components/layout/Sidebar";
 import Footer from "../components/layout/Footer";
 import BackToTop from "@/components/common/BackToTop";
+import ExpandableSearch from "@/components/common/ExpandableSearch";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,6 +30,8 @@ export default function RootLayout({
           <Providers>
             <Sidebar />
             <div className="flex-1 md:ml-[80px] flex flex-col min-h-screen w-full overflow-x-hidden">
+      <ExpandableSearch />
+
               <main className="flex-1">
                 {children}
               </main>

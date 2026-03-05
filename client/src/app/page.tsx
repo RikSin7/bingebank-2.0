@@ -1,36 +1,42 @@
 import { getTrendingAll } from "@/services/trendingService";
 import {
   getTopRatedMovies,
-  getNowPlayingMovies,
+  getPopularMovies,
   getBollywoodMovies,
   getHollywoodMovies,
   getUpcomingMovies,
 } from "@/services/movieService";
-import { getPopularTVShows, getOnTheAirTVShows } from "@/services/tvService";
+import { getPopularTVShows, getOnTheAirTVShows, getTopRatedTVShows } from "@/services/tvService";
 
 import HeroCarousel from "@/components/movie/HeroCarousel";
-import MovieRow from "@/components/movie/MovieRow";
-import TVShowRow from "@/components/movie/TVShowRow";
+import UpcomingRow from "@/components/movie/UpcomingRow";
+import RegionalRow from "@/components/movie/RegionalRow";
+import TopRatedRow from "@/components/movie/TopRatedRow";
+import PopularRow from "@/components/movie/PopularRow";
+import TrendingRow from "@/components/movie/TrendingRow";
+import ExpandableSearch from "@/components/common/ExpandableSearch";
 
 export default async function Home() {
   const [
     trending,
     topRatedMovies,
-    nowPlayingMovies,
+    popularMovies,
     popularTVShows,
     bollywoodMovies,
     hollywoodMovies,
     upcomingMovies,
     onTheAirTVShows,
+    topRatedTVShows,
   ] = await Promise.all([
     getTrendingAll(),
     getTopRatedMovies(),
-    getNowPlayingMovies(),
+    getPopularMovies(),
     getPopularTVShows(),
     getBollywoodMovies(),
     getHollywoodMovies(),
     getUpcomingMovies(),
     getOnTheAirTVShows(),
+    getTopRatedTVShows(),
   ]);
 
   const heroItems = trending.results
@@ -46,55 +52,31 @@ export default async function Home() {
   ) as any[];
 
   return (
-    <main className="min-h-screen bg-black pb-20">
+    <main className="min-h-screen bg-black pb-20 relative">
+      {/* <ExpandableSearch /> */}
       <HeroCarousel items={heroItems} />
 
       {/* Rows Container */}
       <div className="mx-auto px-4 md:px-12 space-y-10 md:space-y-12 py-8 relative z-10">
-        <MovieRow
-          title="Trending Movies"
-          movies={trendingMovies}
-          exploreLink="/explore?category=trending-movies"
+        <TrendingRow
+          trendingMovies={trendingMovies}
+          trendingTV={trendingTVShows}
         />
-        <TVShowRow
-          title="Trending TV Shows"
-          shows={trendingTVShows}
-          exploreLink="/explore?category=trending-tv"
+        <PopularRow
+          popularMovies={popularMovies.results}
+          popularTV={popularTVShows.results}
         />
-        <MovieRow
-          title="Now Playing"
-          movies={nowPlayingMovies.results}
-          exploreLink="/explore?category=now-playing-movies"
+        <TopRatedRow
+          topRatedMovies={topRatedMovies.results}
+          topRatedTV={topRatedTVShows.results}
         />
-        <TVShowRow
-          title="Popular TV Shows"
-          shows={popularTVShows.results}
-          exploreLink="/explore?category=popular-tv"
+        <RegionalRow
+          bollywood={bollywoodMovies.results}
+          hollywood={hollywoodMovies.results}
         />
-        <MovieRow
-          title="Top Rated Movies"
-          movies={topRatedMovies.results}
-          exploreLink="/explore?category=top-rated-movies"
-        />
-        <MovieRow
-          title="Bollywood Hits"
-          movies={bollywoodMovies.results}
-          exploreLink="/explore?category=bollywood-movies"
-        />
-        <MovieRow
-          title="Hollywood Blockbusters"
-          movies={hollywoodMovies.results}
-          exploreLink="/explore?category=hollywood-movies"
-        />
-        <MovieRow
-          title="Upcoming Movies"
-          movies={upcomingMovies.results}
-          exploreLink="/explore?category=upcoming-movies"
-        />
-        <TVShowRow
-          title="Upcoming TV Shows"
-          shows={onTheAirTVShows.results}
-          exploreLink="/explore?category=on-the-air-tv"
+        <UpcomingRow
+          upcomingMovies={upcomingMovies.results}
+          upcomingTV={onTheAirTVShows.results}
         />
       </div>  
     </main>
