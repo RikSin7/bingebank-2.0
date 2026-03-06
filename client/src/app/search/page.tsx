@@ -13,7 +13,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const initialData = query ? await searchMulti(query, 1) : null;
 
   return (
-    <div className="min-h-screen bg-black pb-12 pt-8">
+    <div className="min-h-screen bg-purple-900/5 pb-12 pt-8">
       <div className="mx-auto px-4 md:px-12">
         <SearchGrid key={query} initialData={initialData} query={query} />
       </div>

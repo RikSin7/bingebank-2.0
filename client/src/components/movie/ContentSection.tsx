@@ -42,7 +42,8 @@ export default function ContentSection({
         <motion.section 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          // FIX: Replaced amount: "some" with a generous margin so it triggers predictably on mobile
+          viewport={{ once: true, margin: "200px" }}
           transition={{ duration: 0.6 }}
           className="lg:col-span-2"
         >
@@ -62,10 +63,23 @@ export default function ContentSection({
         <motion.section 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          // FIX: Applied the same predictable margin trigger here
+          viewport={{ once: true, margin: "200px" }}
+          transition={{ duration: 0.6, delay: 0.1 }}
           className="flex flex-col gap-4 lg:mt-[68px]"
         >
+          {item.popularity > 0 && (
+            <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-full border border-white/5 shadow-md group hover:border-blue-500/30 transition-colors">
+              <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20 group-hover:scale-110 transition-transform">
+                <Activity className="w-5 h-5 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-0.5">Popularity</p>
+                <p className="text-white font-bold text-lg">{Math.round(item.popularity).toLocaleString()}</p>
+              </div>
+            </div>
+          )}
+
           {isMovie ? (
             <>
               {item.budget > 0 && (
@@ -120,7 +134,7 @@ export default function ContentSection({
         </motion.section>
       </div>
 
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="space-y-16">
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "100px" }} className="space-y-16">
         {providers && <WhereToWatch providersData={providers} />}
         <ScreenshotsSection backdrops={backdrops} />
         <CastCarousel cast={cast} />

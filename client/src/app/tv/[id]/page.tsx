@@ -47,7 +47,7 @@ export default async function TVShowPage({ params }: TVShowPageProps) {
   const backdrops = images?.backdrops || [];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-purple-900/5 text-white">
       <HeroSection item={show} type="tv" />
       <ContentSection 
         item={show} 

@@ -24,8 +24,8 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${poppins.variable} font-sans antialiased bg-purple-900/5`}>
-        <div className="max-w-[1920px] mx-auto bg-black relative min-h-screen  flex">
+      <body className={`${poppins.variable} font-sans antialiased`}>
+        <div className="max-w-[1920px] mx-auto bg-black relative min-h-screen flex">
           <Providers>
             <MainLayout>
               {children}

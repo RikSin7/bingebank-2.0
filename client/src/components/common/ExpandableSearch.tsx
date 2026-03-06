@@ -105,7 +105,7 @@ export default function ExpandableSearch() {
         ref={containerRef as any}
         onSubmit={handleSubmit}
         className={`fixed top-6 right-6 z-[60] flex items-center md:bg-black/40 md:backdrop-blur-md md:border border-white/20 rounded-full md:shadow-2xl ${
-          isExpanded ? "w-[240px] md:w-[320px] px-2 py-1 transition-all duration-300" : "w-12 h-12 justify-center cursor-pointer bg-transparent hover:bg-black/60 transition-colors duration-300"
+          isExpanded ? "w-[240px] bg-black/40 md:w-[320px] px-2 py-1 transition-all duration-300" : "w-12 h-12 justify-center cursor-pointer bg-transparent hover:bg-black/60 transition-colors duration-300"
         } ${!showFloatingBtn ? "pointer-events-none" : ""}`}
         onClick={() => {
           if (!isExpanded) toggleExpand();

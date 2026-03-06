@@ -43,6 +43,24 @@ export default function Sidebar() {
   }, [pathname, searchParams]);
 
   useEffect(() => {
+    const handleBodyScroll = () => {
+      // Only lock scroll on mobile devices where sidebar acts as a full-screen overlay
+      if (isSidebarOpen && window.innerWidth < 768) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+    };
+
+    handleBodyScroll();
+    window.addEventListener("resize", handleBodyScroll);
+    return () => {
+      window.removeEventListener("resize", handleBodyScroll);
+      document.body.style.overflow = "auto";
+    };
+  }, [isSidebarOpen]);
+
+  useEffect(() => {
     if (!isTypingRef.current) return;
     if (debouncedSearch.trim()) {
       router.push(`/search?query=${encodeURIComponent(debouncedSearch)}`);

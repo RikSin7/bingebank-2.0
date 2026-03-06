@@ -15,7 +15,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <Sidebar />
       <div className={`flex-1 ${isSidebarOpen ? "md:ml-[80px]" : ""} flex flex-col min-h-screen w-full overflow-x-hidden transition-all duration-300`}>
         <ExpandableSearch />
-        <main className="flex-1">
+        <main className="flex-1 bg-black">
           {children}
         </main>
         <Footer />
