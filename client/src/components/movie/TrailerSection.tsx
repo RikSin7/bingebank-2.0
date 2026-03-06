@@ -31,7 +31,7 @@ export default function TrailerSection({ videos }: TrailerSectionProps) {
 
       {/* Main player with premium glow */}
       {activeVideo && (
-        <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-[2rem] overflow-hidden bg-black mb-8 shadow-[0_20px_50px_rgba(168,85,247,0.15)] border border-white/10 group">
+        <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-[2rem] overflow-hidden bg-black mb-8 shadow-[0_5px_100px_rgba(168,85,247,0.15)] border border-white/10 group">
           <iframe
             src={`https://www.youtube.com/embed/${activeVideo.key}?rel=0&modestbranding=1&autoplay=0`}
             title={activeVideo.name}
