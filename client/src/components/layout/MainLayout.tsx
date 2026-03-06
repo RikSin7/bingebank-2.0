@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Sidebar from "./Sidebar";
@@ -12,9 +12,13 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <>
-      <Sidebar />
+      <Suspense fallback={null}>
+        <Sidebar />
+      </Suspense>
       <div className={`flex-1 ${isSidebarOpen ? "md:ml-[80px]" : ""} flex flex-col min-h-screen w-full overflow-x-hidden transition-all duration-300`}>
-        <ExpandableSearch />
+        <Suspense fallback={null}>
+          <ExpandableSearch />
+        </Suspense>
         <main className="flex-1">
           {children}
         </main>
