@@ -63,7 +63,7 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
                 sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, 480px"
                 className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-purple-900/0 group-hover:bg-purple-900/10 transition-colors duration-500 flex items-center justify-center">
+              <div className="absolute inset-0 bg-purple-900/0 group-hover:bg-black transition-colors duration-500 flex items-center justify-center">
                 <div className="bg-black/50 p-4 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100">
                   <ZoomIn className="w-8 h-8 text-white" />
                 </div>

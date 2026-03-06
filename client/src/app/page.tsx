@@ -51,11 +51,8 @@ export default async function Home() {
   ) as any[];
 
   return (
-    <main className="min-h-screen bg-black pb-20 relative">
-      {/* <ExpandableSearch /> */}
+    <main className="min-h-screen bg-purple-900/5 pb-20 relative">
       <HeroCarousel items={heroItems} />
-
-      {/* Rows Container */}
       <div className="mx-auto px-4 md:px-12 relative z-10">
         <TrendingRow
           trendingMovies={trendingMovies}

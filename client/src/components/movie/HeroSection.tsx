@@ -104,7 +104,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
                 <Link
                   key={genre.id}
                   href={`/${type}/genre/${genre.id}?name=${encodeURIComponent(genre.name)}`}
-                  className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-gray-200 hover:bg-purple-900/10 hover:text-white hover:border-purple-500/40 transition-all duration-300 shadow-lg"
+                  className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-gray-200 hover:bg-black hover:text-white hover:border-purple-500/40 transition-all duration-300 shadow-lg"
                 >
                   {genre.name}
                 </Link>

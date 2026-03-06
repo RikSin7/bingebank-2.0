@@ -102,7 +102,7 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
   };
 
   return (
-    <div className="w-full relative pt-12 md:pt-0">
+    <div className="w-full bg-purple-900/5 relative pt-12 md:pt-0">
       {/* ─── HEADER SECTION ─── */}
       <div className="flex items-center gap-4 mb-10">
         <div className="h-10 w-1.5 bg-emerald-500 rounded-full" />

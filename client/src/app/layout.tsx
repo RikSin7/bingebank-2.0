@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "../store/Provider";
-import Sidebar from "../components/layout/Sidebar";
-import Footer from "../components/layout/Footer";
 import BackToTop from "@/components/common/BackToTop";
-import ExpandableSearch from "@/components/common/ExpandableSearch";
+import MainLayout from "@/components/layout/MainLayout";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,20 +21,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
-      <body className={`${poppins.variable} font-sans antialiased bg-black`}>
-        <div className="max-w-[1920px] mx-auto bg-black relative min-h-screen shadow-[0_0_50px_rgba(0,0,0,0.5)] flex">
+      <body className={`${poppins.variable} font-sans antialiased bg-purple-900/5`}>
+        <div className="max-w-[1920px] mx-auto bg-black relative min-h-screen  flex">
           <Providers>
-            <Sidebar />
-            <div className="flex-1 md:ml-[80px] flex flex-col min-h-screen w-full overflow-x-hidden">
-      <ExpandableSearch />
-
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer />
-            </div>
+            <MainLayout>
+              {children}
+            </MainLayout>
           </Providers>
           <BackToTop />
         </div>

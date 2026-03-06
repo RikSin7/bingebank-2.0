@@ -141,7 +141,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(3,3,3,0.4)_100%)]" />
 
       {/* ─── 3. THE CASCADING CONTENT ─── */}
-      <div className="absolute inset-0 z-20 flex flex-col justify-end md:justify-center px-4 md:px-16 lg:px-24 pb-28 md:pb-0">
+      <div className="absolute inset-0 z-20 flex flex-col justify-end md:justify-center px-4 md:px-12 pb-28 md:pb-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={`content-${currentIndex}`}
@@ -193,7 +193,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
         </AnimatePresence>
       </div>
 
-      {/* ─── 4. THE "UP NEXT" WIDGET (Desktop Only) ─── */}
+      {/* ─── 4. THE "UP NEXT" WIDGET & PAGINATION (Desktop Only) ─── */}
       <div className="absolute right-12 bottom-24 z-30 hidden lg:flex flex-col items-end gap-3 cursor-pointer group" onClick={handleNext}>
         <span className="text-xs font-bold tracking-[0.2em] text-gray-400 uppercase mr-2 flex items-center gap-2">
           Up Next <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -211,17 +211,17 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
             <p className="text-white font-bold text-sm truncate">{nextItem.title || nextItem.name}</p>
           </div>
         </div>
-      </div>
-
-      {/* ─── 5. THE EDITORIAL PAGINATION ─── */}
-      <div className="absolute top-8 right-6 md:right-12 z-30 flex items-center gap-3 font-mono text-sm tracking-widest hidden md:flex">
-        <span className="text-white font-bold">
-          {String(currentIndex + 1).padStart(2, "0")}
-        </span>
-        <span className="text-gray-600">/</span>
-        <span className="text-gray-400">
-          {String(items.length).padStart(2, "0")}
-        </span>
+        
+        {/* ─── 5. THE EDITORIAL PAGINATION ─── */}
+        <div className="flex items-center gap-3 font-mono text-sm tracking-widest mt-2 mr-2">
+          <span className="text-white font-bold">
+            {String(currentIndex + 1).padStart(2, "0")}
+          </span>
+          <span className="text-gray-600">/</span>
+          <span className="text-gray-400">
+            {String(items.length).padStart(2, "0")}
+          </span>
+        </div>
       </div>
 
       {/* ─── 6. THE CAPSULE PROGRESS INDICATORS ─── */}

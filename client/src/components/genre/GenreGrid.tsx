@@ -79,7 +79,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
   };
 
   return (
-    <div className="w-full pt-12 md:pt-0">
+    <div className="w-full bg-purple-900/5 pt-12 md:pt-0">
       <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-8 border-l-4 border-emerald-400 pl-4 capitalize flex items-center gap-4">
         {genreName} {type === "movie" ? "Movies" : "TV Shows"}
       </h1>

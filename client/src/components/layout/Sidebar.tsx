@@ -2,40 +2,68 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Film, Home, Search, Tv, Menu, X, ChevronDown, ChevronUp, LayoutGrid, Clapperboard } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { 
+  Film, Home, Search, Tv, Menu, X, 
+  ChevronDown, LayoutGrid, Bookmark
+} from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
 import { MOVIE_GENRES, TV_GENRES } from "@/lib/genres";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { setIsSidebarOpen } from "@/store/slices/stateSlice";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { isSidebarOpen } = useSelector((state: RootState) => state.state);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openGenre, setOpenGenre] = useState<"movie" | "tv" | null>(null);
+  const [showFloatingBtn, setShowFloatingBtn] = useState(true);
+  const [isGenresExpanded, setIsGenresExpanded] = useState(false);
+  const [genreTab, setGenreTab] = useState<"movie" | "tv">("movie");
+  
   const isTypingRef = useRef(false);
-
+  const lastScrollY = useRef(0);
   const debouncedSearch = useDebounce(searchTerm, 500);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (window.innerWidth >= 768) dispatch(setIsSidebarOpen(true));
+  }, []);
 
   useEffect(() => {
     if (!pathname.startsWith("/search")) {
       setSearchTerm("");
       isTypingRef.current = false;
     }
-    // Close mobile menu on route change
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
+    if (window.innerWidth < 768) dispatch(setIsSidebarOpen(false));
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     if (!isTypingRef.current) return;
-
     if (debouncedSearch.trim()) {
       router.push(`/search?query=${encodeURIComponent(debouncedSearch)}`);
     } else {
       router.push("/search");
     }
   }, [debouncedSearch, router]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 150) {
+        setShowFloatingBtn(false);
+      } else {
+        setShowFloatingBtn(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     isTypingRef.current = true;
@@ -46,167 +74,200 @@ export default function Sidebar() {
     { name: "Home", href: "/", icon: Home },
     { name: "Movies", href: "/explore?category=trending-movies", icon: Film },
     { name: "TV Shows", href: "/explore?category=trending-tv", icon: Tv },
+    { name: "Watchlist", href: "/watchlist", icon: Bookmark },
   ];
-
-  const toggleGenre = (type: "movie" | "tv") => {
-    setOpenGenre((prev) => (prev === type ? null : type));
-  };
 
   return (
     <>
-      {/* Mobile Toggle Button (Top Right) */}
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 left-4 z-[60] p-2 bg-black rounded-full md:hidden text-white"
-      >
-        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
+      {/* ─── MINIMAL FLOATING BUTTON ─── */}
+      <AnimatePresence>
+        {(!isSidebarOpen || (typeof window !== "undefined" && window.innerWidth < 768)) && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ 
+              opacity: showFloatingBtn ? 1 : 0, 
+              y: showFloatingBtn ? 0 : -40,
+              scale: showFloatingBtn ? 1 : 0.8
+            }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            onClick={() => dispatch(setIsSidebarOpen(true))}
+            className="fixed top-6 left-6 z-[60] p-3.5 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors outline-none focus:outline-none"
+            style={{ WebkitTapHighlightColor: "transparent" }}
+          >
+            <Menu className="w-5 h-5" strokeWidth={2} />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* Sidebar Overlay for Mobile */}
-      {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black/80 z-[40] md:hidden backdrop-blur-sm"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
+      {/* ─── MOBILE OVERLAY ─── */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-md z-[70] md:hidden"
+            onClick={() => dispatch(setIsSidebarOpen(false))}
+          />
+        )}
+      </AnimatePresence>
 
-      {/* Sidebar Container */}
-      <nav
-        className={`fixed top-0 left-0 h-[100dvh] bg-black/95 md:bg-black/90 backdrop-blur-md border-r border-white/10 flex flex-col items-center pt-8 pb-4 z-[50] transition-transform duration-300 md:translate-x-0 w-[240px] md:w-[80px] hover:w-[240px] group ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+      {/* ─── ELEGANT SIDEBAR CONTAINER ─── */}
+      <motion.nav
+        initial={{ x: "-100%" }}
+        animate={{ x: isSidebarOpen ? 0 : "-100%" }}
+        transition={{ type: "spring", damping: 28, stiffness: 200 }}
+        className={`
+          fixed top-0 left-0 h-[100dvh] z-[80] 
+          bg-[#030105]/80 backdrop-blur-3xl border-r border-white/[0.03]
+          flex flex-col pt-8 pb-6 overflow-hidden
+          transition-[width] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]
+          w-[280px] md:w-[88px] hover:w-[280px] focus-within:w-[280px] group
+        `}
       >
-        {/* Logo */}
-        <div className="flex items-center gap-3 px-6 w-full mb-8 overflow-hidden shrink-0">
-          <div className="bg-emerald-500 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.5)]">
-            <Film className="text-white w-6 h-6" />
-          </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent md:opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            Bingebank
-          </span>
+        {/* Header: Logo & Immersive Close */}
+        <div className="flex items-center justify-between px-7 mb-12 shrink-0">
+          <Link href="/" className="flex items-center gap-4 outline-none">
+            <Film className="text-white w-6 h-6 shrink-0" strokeWidth={1.5} />
+            <span className="text-[17px] font-medium tracking-widest uppercase text-white md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              Bingebank
+            </span>
+          </Link>
+          <button 
+            onClick={() => dispatch(setIsSidebarOpen(false))}
+            className="md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity p-2 -mr-2 rounded-full text-white/40 hover:text-white hover:bg-white/5"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Navigation Links and Genres (Scrollable Area) */}
-        <div 
-          className="flex flex-col gap-2 w-full px-4 flex-1 overflow-y-auto pb-6"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
+        {/* Scrollable Navigation Area */}
+        <div className="flex flex-col gap-1 w-full px-4 flex-1 overflow-y-auto custom-scrollbar">
+          
+          {/* Main Links */}
           {navLinks.map((link) => {
             const Icon = link.icon;
             let isActive = false;
 
-            if (link.name === "Home") {
-              isActive = pathname === "/";
-            } else if (link.name === "Movies") {
-              const currentCategory = searchParams.get("category");
-              isActive = pathname === "/explore" && !!currentCategory && currentCategory.includes("movie");
-            } else if (link.name === "TV Shows") {
-              const currentCategory = searchParams.get("category");
-              isActive = pathname === "/explore" && !!currentCategory && currentCategory.includes("tv");
-            }
+            if (link.name === "Home") isActive = pathname === "/";
+            else if (link.name === "Movies") isActive = pathname === "/explore" && !!searchParams.get("category")?.includes("movie");
+            else if (link.name === "TV Shows") isActive = pathname === "/explore" && !!searchParams.get("category")?.includes("tv");
+            else if (link.name === "Watchlist") isActive = pathname === "/watchlist";
 
             return (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-300 ${
+                className={`flex items-center gap-5 px-3 py-3.5 rounded-xl transition-colors duration-300 outline-none relative ${
                   isActive
-                    ? "bg-emerald-500/10 text-emerald-400 font-semibold"
-                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                    ? "text-purple-400"
+                    : "text-white/50 hover:text-white hover:bg-white/[0.03]"
                 }`}
-                title={link.name}
               >
-                <Icon className={`w-6 h-6 shrink-0 ${isActive ? "text-emerald-400" : ""}`} />
-                <span className={`text-sm md:opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap ${isActive ? "text-emerald-400" : ""}`}>
+                {isActive && (
+                  <motion.div layoutId="activeDot" className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-purple-500 rounded-r-full" />
+                )}
+                <Icon className="w-5 h-5 shrink-0 ml-1" strokeWidth={isActive ? 2 : 1.5} />
+                <span className={`text-[15px] whitespace-nowrap md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 ${isActive ? "font-medium" : "font-normal"}`}>
                   {link.name}
                 </span>
               </Link>
             );
           })}
 
-          <div className="w-full h-px bg-white/10 my-2 shrink-0" />
+          <div className="w-full h-px bg-white/[0.04] my-5 shrink-0" />
 
-          {/* Movie Genres Accordion */}
+          {/* ─── BIFURCATED GENRES SECTION ─── */}
           <div className="flex flex-col flex-shrink-0">
             <button
-               onClick={() => toggleGenre('movie')}
-               className={`flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-300 text-gray-400 hover:bg-white/5 hover:text-white w-full`}
-               title="Movie Genres"
+               onClick={() => setIsGenresExpanded(!isGenresExpanded)}
+               className={`flex items-center justify-between px-3 py-3.5 rounded-xl transition-colors duration-300 outline-none ${
+                 isGenresExpanded ? "text-white" : "text-white/50 hover:text-white hover:bg-white/[0.03]"
+               } w-full`}
             >
-              <Clapperboard className="w-6 h-6 shrink-0" />
-              <div className="flex items-center justify-between w-full md:opacity-0 group-hover:opacity-100 transition-opacity">
-                 <span className="text-sm whitespace-nowrap">Movie Genres</span>
-                 {openGenre === 'movie' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              <div className="flex items-center gap-5">
+                <LayoutGrid className="w-5 h-5 shrink-0 ml-1" strokeWidth={1.5} />
+                <span className="text-[15px] whitespace-nowrap md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
+                  Genres
+                </span>
               </div>
+              <ChevronDown className={`w-4 h-4 text-white/40 md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-transform duration-300 ${isGenresExpanded ? "rotate-180" : ""}`} />
             </button>
             
-            <div className={`flex flex-col gap-1 overflow-hidden transition-all duration-300 ${openGenre === 'movie' ? 'max-h-[800px] mt-2 mb-2' : 'max-h-0'}`}>
-              <div className="flex flex-col gap-1 px-11 md:hidden group-hover:flex">
-                {MOVIE_GENRES.map(g => {
-                  const isActive = pathname.startsWith(`/movie/genre/${g.id}`);
-                  return (
-                    <Link
-                      key={g.id}
-                      href={`/movie/genre/${g.id}?name=${encodeURIComponent(g.name)}`}
-                      className={`text-sm py-1.5 transition-colors ${isActive ? 'text-emerald-400 font-semibold' : 'text-gray-400 hover:text-emerald-400'}`}
-                    >
-                      {g.name}
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
+            {/* Expanded Genres Area */}
+            <AnimatePresence>
+              {isGenresExpanded && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden md:hidden group-hover:block group-focus-within:block"
+                >
+                  <div className="pt-2 pb-4 px-2 flex flex-col gap-4">
+                    
+                    {/* Clean Pill Toggle Tabs */}
+                    <div className="flex p-1 bg-white/[0.03] rounded-full mx-2 mt-2">
+                      <button 
+                        onClick={() => setGenreTab("movie")}
+                        className={`flex-1 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 ${genreTab === "movie" ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white/70"}`}
+                      >
+                        Movies
+                      </button>
+                      <button 
+                        onClick={() => setGenreTab("tv")}
+                        className={`flex-1 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 ${genreTab === "tv" ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white/70"}`}
+                      >
+                        TV
+                      </button>
+                    </div>
 
-          {/* TV Genres Accordion */}
-          <div className="flex flex-col flex-shrink-0">
-            <button
-               onClick={() => toggleGenre('tv')}
-               className={`flex items-center gap-4 px-3 py-3 rounded-xl transition-all duration-300 text-gray-400 hover:bg-white/5 hover:text-white w-full`}
-               title="TV Genres"
-            >
-              <Tv className="w-6 h-6 shrink-0" />
-              <div className="flex items-center justify-between w-full md:opacity-0 group-hover:opacity-100 transition-opacity">
-                 <span className="text-sm whitespace-nowrap">TV Genres</span>
-                 {openGenre === 'tv' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </div>
-            </button>
-            
-            <div className={`flex flex-col gap-1 overflow-hidden transition-all duration-300 ${openGenre === 'tv' ? 'max-h-[800px] mt-2 mb-2' : 'max-h-0'}`}>
-              <div className="flex flex-col gap-1 px-11 md:hidden group-hover:flex">
-                {TV_GENRES.map(g => {
-                  const isActive = pathname.startsWith(`/tv/genre/${g.id}`);
-                  return (
-                    <Link
-                      key={g.id}
-                      href={`/tv/genre/${g.id}?name=${encodeURIComponent(g.name)}`}
-                      className={`text-sm py-1.5 transition-colors ${isActive ? 'text-emerald-400 font-semibold' : 'text-gray-400 hover:text-emerald-400'}`}
-                    >
-                      {g.name}
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
+                    {/* Genre List */}
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 px-3 max-h-[35vh] overflow-y-auto custom-scrollbar">
+                      {(genreTab === "movie" ? MOVIE_GENRES : TV_GENRES).map(g => {
+                        const isActive = pathname.startsWith(`/${genreTab}/genre/${g.id}`);
+                        return (
+                          <Link
+                            key={g.id}
+                            href={`/${genreTab}/genre/${g.id}?name=${encodeURIComponent(g.name)}`}
+                            className={`text-[13px] py-2 px-3 rounded-lg transition-colors truncate ${isActive ? 'text-purple-400 font-medium' : 'text-white/50 hover:text-white hover:bg-white/[0.03]'}`}
+                          >
+                            {g.name}
+                          </Link>
+                        )
+                      })}
+                    </div>
+
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
-        {/* Search Input */}
-        <div className="mt-auto w-full px-4 pt-6 border-t border-white/10 relative">
-          <div className="relative group/search flex items-center justify-center w-12 h-12 md:w-12 md:h-12 group-hover:w-full group-hover:justify-start transition-all duration-300 bg-white/5 rounded-xl">
-             <Search className="w-5 h-5 text-gray-400 shrink-0 group-hover/search:text-white transition-colors absolute left-3.5" />
-             <input
+        {/* ─── MINIMAL SEARCH INPUT ─── */}
+        <div className="mt-auto w-full px-5 pt-6 pb-2 shrink-0 bg-gradient-to-t from-[#030105] to-transparent">
+          <div className="relative flex items-center w-full h-11 transition-all duration-300 bg-white/[0.03] border border-transparent focus-within:border-white/10 focus-within:bg-white/[0.05] rounded-full overflow-hidden">
+            <Search className="w-[18px] h-[18px] text-white/40 shrink-0 absolute left-3.5 transition-colors focus-within:text-white" strokeWidth={1.5} />
+            <input
               type="text"
               placeholder="Search..."
               value={searchTerm}
               onChange={onSearchChange}
-              className="bg-transparent border-none outline-none text-sm text-white w-full pl-11 pr-4 py-3 placeholder:text-gray-500 
-                hidden group-hover:block
-                md:hidden md:group-hover:block"
+              className="bg-transparent border-none outline-none text-[14px] text-white w-full h-full pl-11 pr-4 placeholder:text-white/30
+                opacity-100 md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300"
             />
           </div>
         </div>
-      </nav>
+      </motion.nav>
+
+      {/* Elegant scrollbar override */}
+      <style dangerouslySetInnerHTML={{__html: `
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+      `}} />
     </>
   );
 }

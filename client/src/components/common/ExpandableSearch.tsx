@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { useDebounce } from "@/hooks/useDebounce";
 
 export default function ExpandableSearch() {
@@ -12,9 +13,12 @@ export default function ExpandableSearch() {
   
   const [isExpanded, setIsExpanded] = useState(false);
   const [query, setQuery] = useState(currentQuery);
+  const [showFloatingBtn, setShowFloatingBtn] = useState(true);
+  
   const isTypingRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLFormElement>(null);
+  const lastScrollY = useRef(0);
   
   const debouncedQuery = useDebounce(query, 500);
 
@@ -41,19 +45,29 @@ export default function ExpandableSearch() {
   }, [isExpanded]);
 
   useEffect(() => {
-    // Only trigger search if user is actively typing
     if (!isTypingRef.current) return;
     
-    // We only want this effect to run when debouncedQuery specifically changes
-    // to prevent premature redirects when other state/props change mid-typing
     if (debouncedQuery.trim() !== "") {
       router.push(`/search?query=${encodeURIComponent(debouncedQuery.trim())}`);
     } else if (isExpanded && query === "") { 
-      // Only push /search if both debounced AND actual query are empty
       router.push("/search");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      // If we are scrolling down, past 150px, AND search is not expanded, hide it
+      if (currentScrollY > lastScrollY.current && currentScrollY > 150 && !isExpanded) {
+        setShowFloatingBtn(false);
+      } else {
+        setShowFloatingBtn(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isExpanded]); // Need to depend on isExpanded so it stays open even if scrolling
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,60 +92,70 @@ export default function ExpandableSearch() {
   };
 
   return (
-    <form
-      ref={containerRef}
-      onSubmit={handleSubmit}
-      className={`absolute md:top-5 top-3 right-4 md:right-10 z-50 flex items-center md:bg-black/40 md:backdrop-blur-md md:border border-white/20 rounded-full transition-all duration-300 ease-in-out md:shadow-2xl ${
-        isExpanded ? "w-[240px] md:w-[320px] px-2 py-1" : "w-12 h-12 justify-center cursor-pointer bg-transparent hover:bg-black/60"
-      }`}
-      onClick={() => {
-        if (!isExpanded) toggleExpand();
-      }}
-    >
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          toggleExpand();
+    <AnimatePresence>
+      <motion.form
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ 
+          opacity: showFloatingBtn ? 1 : 0, 
+          y: showFloatingBtn ? 0 : -40,
+          scale: showFloatingBtn ? 1 : 0.8
         }}
-        className={`p-2 rounded-full text-white hover:text-emerald-400 transition-colors ${
-          isExpanded ? "mr-1" : ""
-        }`}
-        aria-label="Search"
+        exit={{ opacity: 0, scale: 0.8 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        ref={containerRef as any}
+        onSubmit={handleSubmit}
+        className={`fixed top-6 right-6 z-[60] flex items-center md:bg-black/40 md:backdrop-blur-md md:border border-white/20 rounded-full md:shadow-2xl ${
+          isExpanded ? "w-[240px] md:w-[320px] px-2 py-1 transition-all duration-300" : "w-12 h-12 justify-center cursor-pointer bg-transparent hover:bg-black/60 transition-colors duration-300"
+        } ${!showFloatingBtn ? "pointer-events-none" : ""}`}
+        onClick={() => {
+          if (!isExpanded) toggleExpand();
+        }}
       >
-        <Search className="w-5 h-5" />
-      </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleExpand();
+          }}
+          className={`p-2 rounded-full text-white hover:text-emerald-400 transition-colors ${
+            isExpanded ? "mr-1" : ""
+          }`}
+          aria-label="Search"
+        >
+          <Search className="w-5 h-5" />
+        </button>
 
-      {isExpanded && (
-        <>
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => {
-              isTypingRef.current = true;
-              setQuery(e.target.value);
-            }}
-            placeholder="Search movies, tv..."
-            className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-gray-400 min-w-0"
-          />
-          {query && (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                isTypingRef.current = true; // Trigger effect to clear search
-                setQuery("");
-                inputRef.current?.focus();
+        {isExpanded && (
+          <>
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              onChange={(e) => {
+                isTypingRef.current = true;
+                setQuery(e.target.value);
               }}
-              className="p-1.5 rounded-full text-gray-400 hover:text-white transition-colors"
-              aria-label="Clear search"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </>
-      )}
-    </form>
+              placeholder="Search movies, tv..."
+              className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-gray-400 min-w-0"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  isTypingRef.current = true; // Trigger effect to clear search
+                  setQuery("");
+                  inputRef.current?.focus();
+                }}
+                className="p-1.5 rounded-full text-gray-400 hover:text-white transition-colors"
+                aria-label="Clear search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </>
+        )}
+      </motion.form>
+    </AnimatePresence>
   );
 }
