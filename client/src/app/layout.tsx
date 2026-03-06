@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import { Providers } from "../store/Provider";
 import BackToTop from "@/components/common/BackToTop";
@@ -27,9 +28,11 @@ export default function RootLayout({
       <body className={`${poppins.variable} font-sans antialiased bg-purple-900/5`}>
         <div className="max-w-[1920px] mx-auto bg-black relative min-h-screen  flex">
           <Providers>
-            <MainLayout>
-              {children}
-            </MainLayout>
+            <Suspense fallback={null}>
+              <MainLayout>
+                {children}
+              </MainLayout>
+            </Suspense>
           </Providers>
           <BackToTop />
         </div>
