@@ -136,7 +136,7 @@ export default function ExpandableSearch() {
                 setQuery(e.target.value);
               }}
               placeholder="Search movies, tv..."
-              className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-gray-400 min-w-0"
+              className="flex-1 bg-transparent border-none outline-none text-white text-[16px] placeholder:text-gray-400 min-w-0"
             />
             {query && (
               <button

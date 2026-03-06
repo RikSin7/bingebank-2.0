@@ -254,7 +254,7 @@ export default function Sidebar() {
               placeholder="Search..."
               value={searchTerm}
               onChange={onSearchChange}
-              className="bg-transparent border-none outline-none text-[14px] text-white w-full h-full pl-11 pr-4 placeholder:text-white/30
+              className="bg-transparent border-none outline-none text-[16px] text-white w-full h-full pl-11 pr-4 placeholder:text-white/30
                 opacity-100 md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300"
             />
           </div>
