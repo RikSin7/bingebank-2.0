@@ -12,7 +12,7 @@ interface HeroCarouselProps {
   items: TrendingItem[];
 }
 
-const SLIDE_DURATION = 7000; // Slightly longer for this grand cinematic feel
+const SLIDE_DURATION = 5000; 
 
 function ProgressiveBackground({ 
   item, 
