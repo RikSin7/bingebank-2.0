@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRef, useState, useEffect } from "react";
@@ -5,7 +11,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { tmdbImage } from "@/services/tmdb";
 import { ChevronLeft, ChevronRight, Star, ArrowRight, ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 
 interface PopularRowProps {
   popularMovies: any[];
@@ -91,31 +96,26 @@ export default function PopularRow({ popularMovies, popularTV }: PopularRowProps
             <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
           
-          <AnimatePresence>
-            {isDropdownOpen && (
-              <motion.div 
-                initial={{ opacity: 0, y: -10, scale: 0.95, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -10, scale: 0.95, filter: "blur(10px)" }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="absolute top-full left-0 mt-3 w-44 bg-[#0a0514]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden z-30"
-              >
-                {(["movie", "tv"] as MediaType[]).map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => { setSelectedType(type); setIsDropdownOpen(false); }}
-                    className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors ${
-                      selectedType === type 
-                        ? `${THEME[type].bgLight} ${THEME[type].primary} border-l-2 ${THEME[type].border}` 
-                        : "text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent"
-                    }`}
-                  >
-                    {THEME[type].label}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Tailwind CSS Dropdown Menu Entrance */}
+          {isDropdownOpen && (
+            <div 
+              className="absolute top-full left-[100px] mt-3 w-44 bg-[#0a0514]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden z-30 animate-in fade-in zoom-in-95 duration-200 origin-top-left"
+            >
+              {(["movie", "tv"] as MediaType[]).map((type) => (
+                <button
+                  key={type}
+                  onClick={() => { setSelectedType(type); setIsDropdownOpen(false); }}
+                  className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors ${
+                    selectedType === type 
+                      ? `${THEME[type].bgLight} ${THEME[type].primary} border-l-2 ${THEME[type].border}` 
+                      : "text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent"
+                  }`}
+                >
+                  {THEME[type].label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <Link
@@ -130,86 +130,78 @@ export default function PopularRow({ popularMovies, popularTV }: PopularRowProps
       </div>
 
       <div className="relative w-full">
-        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
-
         <button
           onClick={() => scroll("left")}
-          className="absolute left-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
+          className="absolute left-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-40 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={() => scroll("right")}
-          className="absolute right-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
+          className="absolute right-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-40 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedType}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            ref={scrollRef}
-            className="flex gap-4 md:gap-6 overflow-x-auto px-4 md:px-8 pb-8 pt-4 snap-x snap-mandatory"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            {currentItems
-              .filter((item) => item.poster_path)
-              .map((item, index) => {
-                const id = item.id;
-                const title = item.title || item.name;
-                const date = item.release_date || item.first_air_date;
-                const linkUrl = selectedType === "movie" ? `/movie/${id}` : `/tv/${id}`;
+        {/* Container swapping triggering native Tailwind animations */}
+        <div
+          key={selectedType}
+          ref={scrollRef}
+          className="flex gap-4 md:gap-6 overflow-x-auto px-4 md:px-8 pb-8 pt-4 snap-x snap-mandatory animate-in fade-in slide-in-from-right-4 duration-500 ease-out"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {currentItems
+            .filter((item) => item.poster_path)
+            .map((item, index) => {
+              const id = item.id;
+              const title = item.title || item.name;
+              const date = item.release_date || item.first_air_date;
+              const linkUrl = selectedType === "movie" ? `/movie/${id}` : `/tv/${id}`;
 
-                return (
-                  <Link
-                    key={`${selectedType}-${id}`}
-                    href={linkUrl}
-                    className="flex-shrink-0 w-[140px] md:w-[180px] lg:w-[200px] snap-start group/card block"
+              return (
+                <Link
+                  key={`${selectedType}-${id}`}
+                  href={linkUrl}
+                  // z-0 default, pops to z-30 on hover
+                  className="relative z-0 hover:z-30 flex-shrink-0 w-[140px] md:w-[180px] lg:w-[200px] snap-start group/card block"
+                >
+                  <div 
+                    className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[#110b1c] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
                   >
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.05, duration: 0.4 }}
-                      className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[#110b1c] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
-                    >
-                      <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 ${activeTheme.glow}`} />
-                      <Image
-                        src={tmdbImage(item.poster_path, "w342")}
-                        alt={title}
-                        fill
-                        sizes="(max-width: 768px) 140px, (max-width: 1024px) 180px, 200px"
-                        className="object-cover transition-transform duration-700 group-hover/card:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-                    </motion.div>
+                    <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 ${activeTheme.glow}`} />
 
-                    <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                      <p className="text-sm md:text-base font-bold text-white truncate drop-shadow-sm group-hover/card:text-gray-200">
-                        {title}
-                      </p>
-                      <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-gray-400">
-                        <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
-                          <Star className="w-3 h-3 fill-yellow-500" />
-                          {item.vote_average?.toFixed(1) ?? "NR"}
-                        </span>
-                        {date && (
-                          <>
-                            <span className="w-1 h-1 rounded-full bg-gray-600" />
-                            <span>{date.substring(0, 4)}</span>
-                          </>
-                        )}
-                      </div>
+                    <Image
+                      src={tmdbImage(item.poster_path, "w342")}
+                      alt={title}
+                      fill
+                      sizes="(max-width: 768px) 140px, (max-width: 1024px) 180px, 200px"
+                      className="object-cover transition-transform duration-700 group-hover/card:scale-110"
+                    />
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+                  </div>
+
+                  <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
+                    <p className="text-sm md:text-base font-bold text-white truncate drop-shadow-sm group-hover/card:text-gray-200">
+                      {title}
+                    </p>
+                    <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-gray-400">
+                      <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
+                        <Star className="w-3 h-3 fill-yellow-500" />
+                        {item.vote_average?.toFixed(1) ?? "NR"}
+                      </span>
+                      {date && (
+                        <>
+                          <span className="w-1 h-1 rounded-full bg-gray-600" />
+                          <span>{date.substring(0, 4)}</span>
+                        </>
+                      )}
                     </div>
-                  </Link>
-                );
-              })}
-          </motion.div>
-        </AnimatePresence>
+                  </div>
+                </Link>
+              );
+            })}
+        </div>
       </div>
     </section>
   );

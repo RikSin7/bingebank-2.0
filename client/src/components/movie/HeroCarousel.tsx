@@ -6,7 +6,6 @@ import { tmdbImage } from "@/services/tmdb";
 import Link from "next/link";
 import Image from "next/image";
 import { Film, Tv, Star, Play, Plus, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
 
 interface HeroCarouselProps {
   items: TrendingItem[];
@@ -45,7 +44,7 @@ function ProgressiveBackground({
 
   return (
     <div className="absolute inset-0 w-full h-full bg-[#030303]">
-      {/* Low Quality Image placeholder */}
+      {/* Low Quality Placeholder */}
       <img
         src={lowQualitySrc}
         alt={title}
@@ -56,10 +55,14 @@ function ProgressiveBackground({
         loading={priority ? "eager" : "lazy"}
       />
       {/* High Quality Image */}
-      <img
+      <Image
         src={highQualitySrc}
         alt={title}
-        className={`absolute inset-0 w-full h-full object-cover flex-shrink-0 transition-opacity duration-500 ${
+        fill
+        sizes="100vw"
+        priority={priority}
+        unoptimized={true}
+        className={`object-cover transition-opacity duration-700 ${
           imageLoaded ? "opacity-100" : "opacity-0"
         }`}
         style={{ userSelect: "none" }}
@@ -97,103 +100,80 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
   const detailUrl = isMovie ? `/movie/${currentItem.id}` : `/tv/${currentItem.id}`;
   const rating = typeof currentItem.vote_average === "number" ? currentItem.vote_average.toFixed(1) : "NR";
 
-  // Staggered Animation Variants for the Text
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.3 }
-    },
-    exit: { opacity: 0, transition: { duration: 0.4 } }
-  };
-
-  const childVariants: Variants = {
-    hidden: { opacity: 0, y: 40, rotateX: 15, filter: "blur(8px)" },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      rotateX: 0, 
-      filter: "blur(0px)",
-      transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } 
-    }
-  };
-
   return (
     <section className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden bg-[#030303] select-none font-sans">
       
-      {/* ─── 1. THE "PUSH-THROUGH" BACKGROUNDS ─── */}
-      <AnimatePresence mode="popLayout">
-        <motion.div
-          key={`bg-${currentIndex}`}
-          className="absolute inset-0 w-full h-full"
-          initial={{ opacity: 0, scale: 0.85, filter: "blur(20px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          exit={{ opacity: 0, scale: 1.15, filter: "blur(10px)" }}
-          transition={{ duration: 1.4, ease: [0.4, 0, 0.2, 1] }}
-        >
-          <ProgressiveBackground item={currentItem} priority={currentIndex === 0} />
-        </motion.div>
-      </AnimatePresence>
+      {/* ─── 0. SILENT PREFETCHER ─── */}
+      <div className="hidden">
+        <Image
+          src={tmdbImage(nextItem.backdrop_path || nextItem.poster_path, "w1280")}
+          alt="prefetch"
+          width={1}
+          height={1}
+          unoptimized={true}
+        />
+      </div>
+
+      {/* ─── 1. THE "SETTLE-IN" BACKGROUNDS (PURE CSS) ─── */}
+      <div 
+        key={`bg-${currentIndex}`} 
+        className="absolute inset-0 w-full h-full"
+        style={{ animation: 'fade-scale 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards' }}
+      >
+        <ProgressiveBackground item={currentItem} priority={currentIndex === 0} />
+      </div>
 
       {/* ─── 2. THE EDITORIAL GRADIENT MESH ─── */}
       <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030303] via-[#030303]/40 md:via-transparent to-transparent" />
       <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#030303]/95 via-[#030303]/70 md:via-[#030303]/40 to-transparent" />
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(3,3,3,0.4)_100%)]" />
 
-      {/* ─── 3. THE CASCADING CONTENT ─── */}
+      {/* ─── 3. THE CASCADING CONTENT (PURE CSS STAGGER) ─── */}
       <div className="absolute inset-0 z-20 flex flex-col justify-end md:justify-center px-4 md:px-12 pb-28 md:pb-0">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`content-${currentIndex}`}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="max-w-3xl flex flex-col gap-5 md:gap-6 perspective-[1000px]"
-          >
-            {/* Badge & Rating Row */}
-            <motion.div variants={childVariants} className="flex items-center gap-4">
-              <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-sm bg-white text-black shadow-lg">
-                {isMovie ? <><Film className="w-3.5" /> Film</> : <><Tv className="w-3.5" /> Series</>}
+        <div key={`content-${currentIndex}`} className="max-w-3xl flex flex-col gap-5 md:gap-6 perspective-[1000px]">
+          
+          {/* Badge & Rating Row */}
+          <div className="flex items-center gap-4" style={{ animation: 'fade-slide-up 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s both' }}>
+            <span className="flex items-center gap-1.5 px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-sm bg-white text-black shadow-lg">
+              {isMovie ? <><Film className="w-3.5" /> Film</> : <><Tv className="w-3.5" /> Series</>}
+            </span>
+            <div className="flex items-center gap-1.5 text-yellow-500 font-bold text-sm tracking-wide">
+              <Star className="w-4 h-4 fill-yellow-500" /> {rating}
+              <span className="text-gray-400 font-medium ml-1">
+                | {currentItem.release_date?.substring(0, 4) || currentItem.first_air_date?.substring(0, 4) || "TBA"}
               </span>
-              <div className="flex items-center gap-1.5 text-yellow-500 font-bold text-sm tracking-wide">
-                <Star className="w-4 h-4 fill-yellow-500" /> {rating}
-                <span className="text-gray-400 font-medium ml-1">
-                  | {currentItem.release_date?.substring(0, 4) || currentItem.first_air_date?.substring(0, 4) || "TBA"}
-                </span>
-              </div>
-            </motion.div>
+            </div>
+          </div>
 
-            {/* Title */}
-            <motion.div variants={childVariants}>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[1.05] tracking-tighter drop-shadow-2xl">
-                {title}
-              </h1>
-            </motion.div>
+          {/* Title */}
+          <div style={{ animation: 'fade-slide-up 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s both' }}>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[1.05] tracking-tighter drop-shadow-2xl">
+              {title}
+            </h1>
+          </div>
 
-            {/* Overview */}
-            <motion.p variants={childVariants} className="text-base md:text-lg text-gray-300 line-clamp-2 md:line-clamp-3 max-w-2xl font-light leading-relaxed drop-shadow-lg border-l-2 border-white/20 pl-4 ml-1">
-              {currentItem.overview || "No overview available."}
-            </motion.p>
+          {/* Overview */}
+          <p className="text-base md:text-lg text-gray-300 line-clamp-2 md:line-clamp-3 max-w-2xl font-light leading-relaxed drop-shadow-lg border-l-2 border-white/20 pl-4 ml-1" style={{ animation: 'fade-slide-up 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s both' }}>
+            {currentItem.overview || "No overview available."}
+          </p>
 
-            {/* Premium Buttons */}
-            <motion.div variants={childVariants} className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link
-                href={detailUrl}
-                className="group relative overflow-hidden flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.15)]"
-              >
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-                <Play className="w-4 h-4 fill-black" /> Watch Now
-              </Link>
-              <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white/5 text-white font-semibold rounded-full backdrop-blur-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95">
-                <Plus className="w-4 h-4" /> Add to List
-              </button>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
+          {/* Premium Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 pt-4" style={{ animation: 'fade-slide-up 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.4s both' }}>
+            <Link
+              href={detailUrl}
+              className="group relative overflow-hidden flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+            >
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+              <Play className="w-4 h-4 fill-black" /> Watch Now
+            </Link>
+            {/* <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white/5 text-white font-semibold rounded-full backdrop-blur-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95">
+              <Plus className="w-4 h-4" /> Watchlist
+            </button> */}
+          </div>
+        </div>
       </div>
 
-      {/* ─── 4. THE "UP NEXT" WIDGET & PAGINATION (Desktop Only) ─── */}
+      {/* ─── 4. THE "UP NEXT" WIDGET (Desktop Only) ─── */}
       <div className="absolute right-12 bottom-24 z-30 hidden lg:flex flex-col items-end gap-3 cursor-pointer group" onClick={handleNext}>
         <span className="text-xs font-bold tracking-[0.2em] text-gray-400 uppercase mr-2 flex items-center gap-2">
           Up Next <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -204,6 +184,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
             alt="Next item"
             fill
             sizes="256px"
+            unoptimized={true}
             className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
@@ -212,7 +193,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
           </div>
         </div>
         
-        {/* ─── 5. THE EDITORIAL PAGINATION ─── */}
+        {/* Pagination */}
         <div className="flex items-center gap-3 font-mono text-sm tracking-widest mt-2 mr-2">
           <span className="text-white font-bold">
             {String(currentIndex + 1).padStart(2, "0")}
@@ -224,7 +205,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
         </div>
       </div>
 
-      {/* ─── 6. THE CAPSULE PROGRESS INDICATORS ─── */}
+      {/* ─── 5. THE CAPSULE PROGRESS INDICATORS ─── */}
       <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 px-4 py-2.5 rounded-full bg-black/20 backdrop-blur-2xl border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
         {items.map((_, i) => {
           const isActive = i === currentIndex;
@@ -240,12 +221,10 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
               }`}
             >
               {isActive && mounted && (
-                <motion.div
+                <div
                   key={`progress-${currentIndex}`}
                   className="absolute inset-y-0 left-0 bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.4)] rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
+                  style={{ animation: `progress-fill ${SLIDE_DURATION}ms linear forwards` }}
                 />
               )}
             </button>
@@ -253,8 +232,20 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
         })}
       </div>
 
-      {/* Tailwind Custom Animation Injection for the Shimmer Button */}
+      {/* ─── 6. CUSTOM CSS KEYFRAMES ─── */}
       <style dangerouslySetInnerHTML={{__html: `
+        @keyframes fade-scale {
+          0% { opacity: 0; transform: scale(1.05); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fade-slide-up {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes progress-fill {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
         @keyframes shimmer {
           100% { transform: translateX(100%); }
         }
