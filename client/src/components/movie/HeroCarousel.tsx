@@ -22,50 +22,31 @@ function ProgressiveBackground({
   priority?: boolean;
 }) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize(); // Initial check
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   const title = item.title || item.name || "Untitled";
 
-  // Low Quality source
-  const lowQualitySrc = isMobile
-    ? tmdbImage(item.poster_path || item.backdrop_path, "w92")
-    : tmdbImage(item.backdrop_path || item.poster_path, "w300");
-
-  // High Quality source
-  const highQualitySrc = isMobile
-    ? tmdbImage(item.poster_path || item.backdrop_path, "w500")
-    : tmdbImage(item.backdrop_path || item.poster_path, "original");
+  const highQualitySrc = tmdbImage(item.backdrop_path || item.poster_path, "w1280");
+  const lowQualitySrc = tmdbImage(item.backdrop_path || item.poster_path, "w92");
 
   return (
     <div className="absolute inset-0 w-full h-full bg-[#030303]">
-      {/* Low Quality Image placeholder */}
-      <Image
+      {/* Low Quality Placeholder (Loads instantly) */}
+      <img
         src={lowQualitySrc}
         alt={title}
-        fill
-        className={`object-cover flex-shrink-0 blur-md transition-opacity duration-500 ${
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
           imageLoaded ? "opacity-0" : "opacity-100"
         }`}
-        style={{ userSelect: "none" }}
-        priority={priority}
       />
-      {/* High Quality Image */}
+      {/* High Quality Image (Fades in once loaded) */}
       <Image
         src={highQualitySrc}
         alt={title}
         fill
-        className={`object-cover flex-shrink-0 transition-opacity duration-500 ${
+        sizes="100vw"
+        priority={priority}
+        className={`object-cover transition-opacity duration-700 ${
           imageLoaded ? "opacity-100" : "opacity-0"
         }`}
-        style={{ userSelect: "none" }}
-        priority={priority}
         onLoad={() => setImageLoaded(true)}
       />
     </div>
@@ -87,7 +68,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
   useEffect(() => {
     const timer = setInterval(handleNext, SLIDE_DURATION);
     return () => clearInterval(timer);
-  }, [currentIndex, handleNext]);
+  }, [handleNext]);
 
   if (!items || items.length === 0) return null;
 
@@ -99,7 +80,6 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
   const detailUrl = isMovie ? `/movie/${currentItem.id}` : `/tv/${currentItem.id}`;
   const rating = typeof currentItem.vote_average === "number" ? currentItem.vote_average.toFixed(1) : "NR";
 
-  // Staggered Animation Variants for the Text
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -110,29 +90,41 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
   };
 
   const childVariants: Variants = {
-    hidden: { opacity: 0, y: 40, rotateX: 15, filter: "blur(8px)" },
+    hidden: { opacity: 0, y: 40, rotateX: 15 },
     visible: { 
       opacity: 1, 
       y: 0, 
       rotateX: 0, 
-      filter: "blur(0px)",
       transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } 
     }
   };
 
   return (
-    <section className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden bg-[#030303] select-none font-sans">
+    <section className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden bg-transparent select-none font-sans">
       
+      {/* ─── 0. SILENT PREFETCHER FOR THE NEXT SLIDE ─── */}
+      {/* This invisible image forces the browser to download the next high-res backdrop in the background */}
+      <div className="hidden">
+        <Image
+          src={tmdbImage(nextItem.backdrop_path || nextItem.poster_path, "w1280")}
+          alt="prefetch"
+          width={10}
+          height={10}
+          priority={true}
+        />
+      </div>
+
       {/* ─── 1. THE "PUSH-THROUGH" BACKGROUNDS ─── */}
       <AnimatePresence mode="popLayout">
         <motion.div
           key={`bg-${currentIndex}`}
           className="absolute inset-0 w-full h-full"
-          initial={{ opacity: 0, scale: 0.85, filter: "blur(20px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          exit={{ opacity: 0, scale: 1.15, filter: "blur(10px)" }}
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.1 }}
           transition={{ duration: 1.4, ease: [0.4, 0, 0.2, 1] }}
         >
+          {/* Priority is true ONLY for the very first slide on initial page load */}
           <ProgressiveBackground item={currentItem} priority={currentIndex === 0} />
         </motion.div>
       </AnimatePresence>
