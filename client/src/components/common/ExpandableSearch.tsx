@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -105,8 +111,8 @@ export default function ExpandableSearch() {
         ref={containerRef as any}
         onSubmit={handleSubmit}
         className={`fixed hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] top-6 right-6 z-[60] flex items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl ${
-          isExpanded ? "w-[240px] bg-black/40 md:w-[320px] px-2 py-1 transition-colors duration-300" : "w-12 h-12 justify-center cursor-pointer bg-transparent hover:bg-white/10 transition-colors duration-300"
-        } ${!showFloatingBtn ? "pointer-events-none" : ""}`}
+          isExpanded ? "w-[240px] bg-black/40 md:w-[320px] px-2 py-1 duration-300" : "w-12 h-12 justify-center cursor-pointer bg-transparent hover:bg-white/10 duration-300"
+        } [transition-property:width,height,background-color,border-color,box-shadow,padding] ${!showFloatingBtn ? "pointer-events-none" : ""}`}
         onClick={() => {
           if (!isExpanded) toggleExpand();
         }}

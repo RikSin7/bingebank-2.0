@@ -1,0 +1,189 @@
+﻿
+> client@0.1.0 lint
+> eslint
+
+
+C:\Personal Projects\bingebank\client\src\components\common\ExpandableSearch.tsx
+   55:6   warning  React Hook useEffect has missing dependencies: 'isExpanded', 'query', and 'router'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  105:30  error    Unexpected any. Specify a different type                                                                                                @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\explore\ExploreGrid.tsx
+   14:16  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   18:36  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   18:44  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   42:38  error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   48:9   warning  'isSidebarOpen' is assigned a value but never used               @typescript-eslint/no-unused-vars
+   62:16  warning  'e' is defined but never used                                    @typescript-eslint/no-unused-vars
+  185:71  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Personal Projects\bingebank\client\src\components\genre\GenreGrid.tsx
+   10:16  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   14:54  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   17:36  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   17:44  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   27:38  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   69:67  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  152:64  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Personal Projects\bingebank\client\src\components\layout\Sidebar.tsx
+   8:28  warning  'Bookmark' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  36:6   warning  React Hook useEffect has a missing dependency: 'dispatch'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-hooks/exhaustive-deps
+  40:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Personal Projects\bingebank\client\src\components\layout\Sidebar.tsx:40:7
+  38 |   useEffect(() => {
+  39 |     if (!pathname.startsWith("/search")) {
+> 40 |       setSearchTerm("");
+     |       ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  41 |       isTypingRef.current = false;
+  42 |     }
+  43 |     if (window.innerWidth < 768) dispatch(setIsSidebarOpen(false));  react-hooks/set-state-in-effect
+  44:6   warning  React Hook useEffect has a missing dependency: 'dispatch'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-hooks/exhaustive-deps
+
+C:\Personal Projects\bingebank\client\src\components\movie\CastCarousel.tsx
+  22:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Personal Projects\bingebank\client\src\components\movie\CastCarousel.tsx:22:5
+  20 |
+  21 |   useEffect(() => {
+> 22 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  23 |   }, []);
+  24 |
+  25 |   useEffect(() => {  react-hooks/set-state-in-effect
+
+C:\Personal Projects\bingebank\client\src\components\movie\ContentSection.tsx
+   4:30  warning  'Activity' is defined but never used      @typescript-eslint/no-unused-vars
+   4:44  warning  'Building2' is defined but never used     @typescript-eslint/no-unused-vars
+  14:9   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:14  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:14  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:9   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:11  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:12  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:20  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:12  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\movie\HeroCarousel.tsx
+   8:32  warning  'Plus' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+  33:7   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @next/next/no-img-element
+  61:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Personal Projects\bingebank\client\src\components\movie\HeroCarousel.tsx:61:5
+  59 |
+  60 |   useEffect(() => {
+> 61 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  62 |   }, []);
+  63 |
+  64 |   const handleNext = useCallback(() => {  react-hooks/set-state-in-effect
+
+C:\Personal Projects\bingebank\client\src\components\movie\HeroSection.tsx
+   10:9    error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   41:34   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   42:35   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  103:40   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  128:15   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  128:30   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  187:104  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  197:94   error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\movie\MovieRow.tsx
+  12:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\movie\PopularRow.tsx
+  11:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\movie\RegionalRow.tsx
+  11:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\movie\ScreenshotsSection.tsx
+  21:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Personal Projects\bingebank\client\src\components\movie\ScreenshotsSection.tsx:21:5
+  19 |
+  20 |   useEffect(() => {
+> 21 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  22 |   }, []);
+  23 |
+  24 |   useEffect(() => {  react-hooks/set-state-in-effect
+
+C:\Personal Projects\bingebank\client\src\components\movie\TVShowRow.tsx
+  12:10  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\movie\TopRatedRow.tsx
+  11:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\movie\TrendingRow.tsx
+  11:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\movie\UpcomingRow.tsx
+  11:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\search\SearchGrid.tsx
+   11:16  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   15:36  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   15:44  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   25:38  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   41:67  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+   66:30  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   66:38  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  134:64  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Personal Projects\bingebank\client\src\components\wrappers\ContentSectionWrapper.tsx
+  4:89  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\wrappers\HeroCarouselWrapper.tsx
+  7:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\wrappers\TVContentSectionWrapper.tsx
+  4:89  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\components\wrappers\TrendingRowWrapper.tsx
+   9:57  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   9:97  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  10:58  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  10:95  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\services\api.ts
+  1:10  warning  'ENV' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Personal Projects\bingebank\client\src\services\tmdb.ts
+  9:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Personal Projects\bingebank\client\src\store\slices\movieSlice.ts
+   4:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 74 problems (63 errors, 11 warnings)
+
