@@ -15,6 +15,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Bingebank - Movie & TV Shows",
   description: "Track and discover your favorite TV shows and movies.",
+  icons: {
+    icon: "/bingebank.svg",
+  },
 };
 
 export default function RootLayout({

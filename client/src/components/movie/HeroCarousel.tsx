@@ -179,9 +179,9 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
                 <Play className="w-4 h-4 fill-black" /> Watch Now
               </Link>
-              <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white/5 text-white font-semibold rounded-full backdrop-blur-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95">
+              {/* <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white/5 text-white font-semibold rounded-full backdrop-blur-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95">
                 <Plus className="w-4 h-4" /> Watchlist
-              </button>
+              </button> */}
             </motion.div>
           </motion.div>
         </AnimatePresence>
