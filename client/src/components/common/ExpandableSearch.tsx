@@ -118,7 +118,7 @@ export default function ExpandableSearch() {
         }}
       >
         <button
-          type="button"
+          type="button" 
           onClick={(e) => {
             e.stopPropagation();
             toggleExpand();

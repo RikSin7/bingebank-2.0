@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import PopularRowWrapper from "@/components/wrappers/PopularRowWrapper";
 import TopRatedRowWrapper from "@/components/wrappers/TopRatedRowWrapper";
 import RegionalRowWrapper from "@/components/wrappers/RegionalRowWrapper";
