@@ -103,7 +103,7 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
                   className="relative w-full aspect-video rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_0_10px_rgba(168,85,247,0.15)]"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <Image src={tmdbImage(images[selectedIndex].file_path, "original")} alt="Full Screenshot" fill sizes="100vw" className="object-contain bg-black/50" priority />
+                  <Image src={tmdbImage(images[selectedIndex].file_path, "w1280")} alt="Full Screenshot" fill sizes="100vw" className="object-contain bg-black/50" priority />
                 </motion.div>
 
                 {/* Desktop Next Button */}

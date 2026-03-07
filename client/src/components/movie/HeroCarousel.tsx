@@ -68,7 +68,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
   useEffect(() => {
     const timer = setInterval(handleNext, SLIDE_DURATION);
     return () => clearInterval(timer);
-  }, [handleNext]);
+  }, [currentIndex, handleNext]);
 
   if (!items || items.length === 0) return null;
 
@@ -108,9 +108,9 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
         <Image
           src={tmdbImage(nextItem.backdrop_path || nextItem.poster_path, "w1280")}
           alt="prefetch"
-          width={10}
-          height={10}
-          priority={true}
+          width={1}
+          height={1}
+          style={{ display: "none" }}
         />
       </div>
 
@@ -180,7 +180,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
                 <Play className="w-4 h-4 fill-black" /> Watch Now
               </Link>
               <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white/5 text-white font-semibold rounded-full backdrop-blur-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95">
-                <Plus className="w-4 h-4" /> Add to List
+                <Plus className="w-4 h-4" /> Watchlist
               </button>
             </motion.div>
           </motion.div>

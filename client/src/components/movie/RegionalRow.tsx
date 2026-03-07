@@ -94,9 +94,9 @@ export default function RegionalRow({ bollywood, hollywood }: RegionalRowProps) 
           <AnimatePresence>
             {isDropdownOpen && (
               <motion.div 
-                initial={{ opacity: 0, y: -10, scale: 0.95, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -10, scale: 0.95, filter: "blur(10px)" }}
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 className="absolute top-full left-0 mt-3 w-44 bg-[#0a0514]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden z-30"
               >

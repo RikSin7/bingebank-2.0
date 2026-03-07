@@ -53,7 +53,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
           className="absolute inset-0 w-full h-full z-0"
         >
           <Image
-            src={tmdbImage(item.backdrop_path, "original")}
+            src={tmdbImage(item.backdrop_path, "w1280")}
             alt={title}
             fill
             priority
