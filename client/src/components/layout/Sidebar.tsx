@@ -13,6 +13,7 @@ import { MOVIE_GENRES, TV_GENRES } from "@/lib/genres";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { setIsSidebarOpen } from "@/store/slices/stateSlice";
+import Image from "next/image";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -128,10 +129,10 @@ export default function Sidebar() {
       >
         {/* Header: Logo & Immersive Close */}
         <div className="flex items-center justify-between px-7 mb-12 shrink-0">
-          <Link href="/" className="flex items-center gap-4 outline-none">
-            <Film className="text-white w-6 h-6 shrink-0" strokeWidth={1.5} />
-            <span className="text-[17px] font-medium tracking-widest uppercase text-white md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-              Bingebank
+          <Link href="/" className="flex items-center gap-2 outline-none">
+          <Image src="/bingebank.svg" alt="Logo" width={32} height={32} />
+            <span className="text-lg font-thin tracking-widest text-white md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+              BingeBank
             </span>
           </Link>
           <button 

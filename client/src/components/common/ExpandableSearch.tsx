@@ -117,7 +117,7 @@ export default function ExpandableSearch() {
             e.stopPropagation();
             toggleExpand();
           }}
-          className={`p-2 rounded-full text-white hover:text-emerald-400 transition-colors ${
+          className={`p-2 rounded-full text-white hover:text-purple-400 transition-colors ${
             isExpanded ? "mr-1" : ""
           }`}
           aria-label="Search"

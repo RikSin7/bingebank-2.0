@@ -73,7 +73,7 @@ export default function UpcomingRow({ upcomingMovies, upcomingTV }: UpcomingRowP
   return (
     <section className="relative group/row py-6 overflow-hidden">
       {/* ─── AMBIENT BACKGROUND GLOW ─── */}
-      <div className="absolute top-0 right-10 w-96 h-96 bg-emerald-600/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-10 w-96 h-96 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="flex items-center justify-between mb-4 px-4 md:px-8 relative z-20">
         <div className="flex items-center gap-3 relative" ref={dropdownRef}>

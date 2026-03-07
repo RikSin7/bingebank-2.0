@@ -43,7 +43,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
   const creators = item.created_by || [];
 
   return (
-    <section className="relative w-full min-h-[85vh] md:min-h-[95vh] flex flex-col items-center justify-center md:justify-end overflow-hidden">
+    <section className="relative w-full min-h-[65vh] md:min-h-[95vh] flex flex-col items-center justify-center md:justify-end overflow-hidden">
       {/* Cinematic Backdrop Image */}
       {item.backdrop_path && (
         <motion.div 
@@ -69,7 +69,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
       <div className="absolute top-[10%] right-[10%] w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-purple-900/0 blur-[120px] rounded-full pointer-events-none mix-blend-screen z-0" />
 
       {/* Hero Content Wrapper */}
-      <div className="relative z-10 w-full mx-auto px-4 md:px-12 mt-20 md:mt-0 flex flex-col md:flex-row items-center md:items-end gap-8 lg:gap-12">
+      <div className="relative z-10 w-full mx-auto px-4 md:px-12 mt-44 md:mt-0 flex flex-col md:flex-row items-center md:items-end gap-8 lg:gap-12">
         
         {/* Poster - Hidden on mobile, elegant glass frame on desktop */}
         {item.poster_path && (

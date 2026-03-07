@@ -7,6 +7,8 @@ import { fetchExploreData } from "@/actions/explore";
 import { tmdbImage } from "@/services/tmdb";
 import { Star, Loader2, ArrowDown } from "lucide-react";
 import { motion, AnimatePresence, type Variants } from "motion/react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 interface ExploreGridProps {
   initialData: any;
@@ -42,6 +44,8 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
   const [totalPages, setTotalPages] = useState(initialData?.total_pages || 1);
   const [loading, setLoading] = useState(false);
   const fetchIdRef = useRef(0);
+
+  const isSidebarOpen = useSelector((state: RootState) => state.state.isSidebarOpen);
 
   const hasMore = page < totalPages;
 
@@ -102,11 +106,11 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
   };
 
   return (
-    <div className="w-full bg-purple-900/5 relative pt-12 md:pt-0">
+    <div className="w-full bg-purple-900/5 relative pt-12">
       {/* ─── HEADER SECTION ─── */}
-      <div className="flex items-center gap-4 mb-10">
-        <div className="h-10 w-1.5 bg-emerald-500 rounded-full" />
-        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+      <div className="flex items-center gap-4 mb-10 px-4 md:px-8">
+        <div className="h-10 w-1.5 bg-purple-400 rounded-full" />
+        <h1 className="text-4xl md:text-5xl text-white tracking-tight">
           {getTitle()}
         </h1>
       </div>
