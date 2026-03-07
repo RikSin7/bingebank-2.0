@@ -28,7 +28,7 @@ export async function tmdbFetch<T>(
   return res.json();
 }
 
-export function tmdbImage(path: string | null | undefined, size = "original") {
+export function tmdbImage(path: string | null | undefined, size = "w1280") {
   if (!path) return "/placeholder.png";
   return `${ENV.TMDB_IMAGE}/${size}${path}`;
 }

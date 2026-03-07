@@ -123,7 +123,7 @@ export default function Sidebar() {
           bg-[#030105]/80 backdrop-blur-3xl border-r border-white/[0.03]
           flex flex-col pt-8 pb-6 overflow-hidden
           transition-[width] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]
-          w-[280px] md:w-[88px] hover:w-[280px] focus-within:w-[280px] group
+          w-[250px] md:w-[80px] hover:w-[250px] focus-within:w-[250px] group
         `}
       >
         {/* Header: Logo & Immersive Close */}

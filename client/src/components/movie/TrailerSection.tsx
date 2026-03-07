@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Video } from "@/types/movie";
 import { Play, Youtube } from "lucide-react";
+import Image from "next/image";
 
 interface TrailerSectionProps {
   videos: Video[];
@@ -55,7 +56,13 @@ export default function TrailerSection({ videos }: TrailerSectionProps) {
                   : "border-purple-500/10 hover:border-purple-500/30 hover:scale-[1.01] hover:shadow-[0_4px_12px_rgba(168,85,247,0.08)]"
               }`}
             >
-              <img src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`} alt={video.name} className="w-full h-full object-cover" />
+              <Image 
+                src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`} 
+                alt={video.name} 
+                fill 
+                className="object-cover" 
+                sizes="(max-width: 768px) 240px, 280px"
+              />
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center group-hover:bg-black/30 transition-colors backdrop-blur-[2px] group-hover:backdrop-blur-0">
                 <div className="bg-purple-600/80 p-3 rounded-full shadow-[0_2px_8px_rgba(168,85,247,0.4)] scale-90 group-hover:scale-105 transition-transform">
                    <Play className="w-5 h-5 text-white fill-white" />

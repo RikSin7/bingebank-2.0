@@ -46,24 +46,26 @@ function ProgressiveBackground({
   return (
     <div className="absolute inset-0 w-full h-full bg-[#030303]">
       {/* Low Quality Image placeholder */}
-      <img
+      <Image
         src={lowQualitySrc}
         alt={title}
-        className={`absolute inset-0 w-full h-full object-cover flex-shrink-0 blur-md transition-opacity duration-500 ${
+        fill
+        className={`object-cover flex-shrink-0 blur-md transition-opacity duration-500 ${
           imageLoaded ? "opacity-0" : "opacity-100"
         }`}
         style={{ userSelect: "none" }}
-        loading={priority ? "eager" : "lazy"}
+        priority={priority}
       />
       {/* High Quality Image */}
-      <img
+      <Image
         src={highQualitySrc}
         alt={title}
-        className={`absolute inset-0 w-full h-full object-cover flex-shrink-0 transition-opacity duration-500 ${
+        fill
+        className={`object-cover flex-shrink-0 transition-opacity duration-500 ${
           imageLoaded ? "opacity-100" : "opacity-0"
         }`}
         style={{ userSelect: "none" }}
-        loading={priority ? "eager" : "lazy"}
+        priority={priority}
         onLoad={() => setImageLoaded(true)}
       />
     </div>
