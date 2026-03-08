@@ -7,7 +7,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { DollarSign, Layers, Activity, Tv, Building2 } from "lucide-react";
+import { DollarSign, Layers, Tv } from "lucide-react";
 import CastCarousel from "@/components/movie/CastCarousel";
 import TrailerSection from "@/components/movie/TrailerSection";
 import MovieRow from "@/components/movie/MovieRow";

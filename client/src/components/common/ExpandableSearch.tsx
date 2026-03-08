@@ -110,8 +110,8 @@ export default function ExpandableSearch() {
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         ref={containerRef as any}
         onSubmit={handleSubmit}
-        className={`fixed hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] top-6 right-6 z-[60] flex items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl ${
-          isExpanded ? "w-[240px] bg-black/40 md:w-[320px] px-2 py-1 duration-300" : "w-12 h-12 justify-center cursor-pointer bg-transparent hover:bg-white/10 duration-300"
+        className={`fixed hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] bg-black/40 top-6 right-6 z-[60] flex items-center backdrop-blur-xl border border-white/10 rounded-full shadow-2xl ${
+          isExpanded ? "w-[240px] bg-black/40 md:w-[320px] px-2 py-1 duration-300" : "w-12 h-12 justify-center cursor-pointer duration-300"
         } [transition-property:width,height,background-color,border-color,box-shadow,padding] ${!showFloatingBtn ? "pointer-events-none" : ""}`}
         onClick={() => {
           if (!isExpanded) toggleExpand();
