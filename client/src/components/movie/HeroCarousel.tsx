@@ -142,7 +142,9 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
       </AnimatePresence>
 
       {/* ─── 2. THE EDITORIAL GRADIENT MESH ─── */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030303] via-[#030303]/90 md:via-transparent to-transparent" />
+         <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030303] via-[#030303]/90 md:via-transparent to-transparent" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r md:from-[#030303]/95 md:via-[#030303]/40 to-transparent" />
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(3,3,3,0.4)_100%)]" />
 
       {/* ─── 3. THE CASCADING CONTENT ─── */}
       <div className="absolute inset-0 z-20 flex flex-col justify-end md:justify-center px-4 md:px-12 pb-28 md:pb-0">
