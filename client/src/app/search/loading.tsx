@@ -1,20 +1,11 @@
-import { Search } from "lucide-react";
-
 export default function SearchLoading() {
   return (
     <div className="min-h-screen bg-black pb-12 pt-12">
       <div className="mx-auto px-4 md:px-12">
-        {/* Search header placeholder */}
-        <div className="mb-8">
-          <div className="flex items-center justify-end gap-3 mb-6">
-            <Search className="h-4 w-4 md:h-6 md:w-6 text-zinc-600 animate-pulse" />
-            <div className="h-10 w-64 bg-zinc-800/50 animate-pulse rounded-md" />
-          </div>
-          <div className="flex gap-4">
+        {/* header placeholder */}
+          <div className="flex gap-4 mb-8">
             <div className="h-8 w-44 bg-zinc-800/50 animate-pulse rounded-full" />
           </div>
-        </div>
-
         {/* Grid placeholder */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 lg:gap-6">
           {Array.from({ length: 18 }).map((_, i) => (
