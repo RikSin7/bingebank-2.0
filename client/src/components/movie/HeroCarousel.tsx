@@ -13,6 +13,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Film, Tv, Star, Play, Plus, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence, type Variants } from "motion/react";
+import useMediaQuery from "@/hooks/useMediaQuery";
 
 interface HeroCarouselProps {
   items: TrendingItem[];
@@ -28,14 +29,17 @@ function ProgressiveBackground({
   priority?: boolean;
 }) {
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  const isMobile = useMediaQuery("(max-width: 768px)")
+
   const title = item.title || item.name || "Untitled";
 
-  const highQualitySrc = tmdbImage(item.backdrop_path || item.poster_path, "w1280");
-  const lowQualitySrc = tmdbImage(item.backdrop_path || item.poster_path, "w92");
+  const highQualitySrc = tmdbImage(isMobile ? item.poster_path || item.backdrop_path : item.backdrop_path || item.poster_path, "w1280");
+  const lowQualitySrc = tmdbImage(isMobile ? item.poster_path || item.backdrop_path : item.backdrop_path || item.poster_path, "w92");
 
   return (
     <div className="absolute inset-0 w-full h-full bg-[#030303]">
-      {/* Low Quality Placeholder (Loads instantly) */}
+      {/* Low Quality Placeholder (img => Loads instantly) */}
       <img
         src={lowQualitySrc}
         alt={title}
