@@ -43,7 +43,7 @@ function ProgressiveBackground({
       <img
         src={lowQualitySrc}
         alt={title}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+        className={`absolute blur-md inset-0 w-full h-full object-cover transition-opacity duration-700 ${
           imageLoaded ? "opacity-0" : "opacity-100"
         }`}
       />
@@ -66,6 +66,8 @@ function ProgressiveBackground({
 export default function HeroCarousel({ items }: HeroCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)")
+
 
   useEffect(() => {
     setMounted(true);
@@ -116,7 +118,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
       {/* This invisible image forces the browser to download the next high-res backdrop in the background */}
       <div className="hidden">
         <Image
-          src={tmdbImage(nextItem.backdrop_path || nextItem.poster_path, "w1280")}
+          src={tmdbImage(isMobile ? nextItem.poster_path || nextItem.backdrop_path : nextItem.backdrop_path || nextItem.poster_path, "w1280")}
           alt="prefetch"
           width={1}
           height={1}
@@ -140,9 +142,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
       </AnimatePresence>
 
       {/* ─── 2. THE EDITORIAL GRADIENT MESH ─── */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030303] via-[#030303]/40 md:via-transparent to-transparent" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#030303]/95 via-[#030303]/70 md:via-[#030303]/40 to-transparent" />
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(3,3,3,0.4)_100%)]" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030303] via-[#030303]/90 md:via-transparent to-transparent" />
 
       {/* ─── 3. THE CASCADING CONTENT ─── */}
       <div className="absolute inset-0 z-20 flex flex-col justify-end md:justify-center px-4 md:px-12 pb-28 md:pb-0">
