@@ -6,14 +6,12 @@ export default function SearchLoading() {
       <div className="mx-auto px-4 md:px-12">
         {/* Search header placeholder */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center justify-end gap-3 mb-6">
             <Search className="h-8 w-8 text-zinc-600 animate-pulse" />
             <div className="h-10 w-64 bg-zinc-800/50 animate-pulse rounded-md" />
           </div>
           <div className="flex gap-4">
-            <div className="h-8 w-24 bg-zinc-800/50 animate-pulse rounded-full" />
-            <div className="h-8 w-24 bg-zinc-800/50 animate-pulse rounded-full" />
-            <div className="h-8 w-24 bg-zinc-800/50 animate-pulse rounded-full" />
+            <div className="h-8 w-44 bg-zinc-800/50 animate-pulse rounded-full" />
           </div>
         </div>
 

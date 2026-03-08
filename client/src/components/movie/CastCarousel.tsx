@@ -69,7 +69,7 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
         <div ref={scrollRef} className="flex py-2 gap-4 md:gap-8 overflow-x-auto px-4 md:px-8 pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
           {cast.map((member, index) => (
             <button key={`${member.id}-${index}`} onClick={() => setSelectedIndex(index)} className="flex-shrink-0 w-[100px] md:w-[130px] group/card flex flex-col items-center text-center cursor-pointer snap-start">
-              <div className="relative w-[100px] h-[100px] md:w-[130px] md:h-[130px] rounded-full overflow-hidden bg-[#0a0514] mb-4 shadow-lg border-2 border-white/5 group-hover/card:border-purple-400 group-hover/card:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-500">
+              <div className="relative w-[100px] h-[100px] md:w-[130px] md:h-[130px] rounded-full overflow-hidden bg-[#0a0514] mb-4 shadow-lg border-2 border-white/5 group-hover/card:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-500">
                 {member.profile_path ? (
                   <Image src={tmdbImage(member.profile_path, "w185")} alt={member.name} fill sizes="130px" className="object-cover group-hover/card:scale-110 transition-transform duration-700" />
                 ) : (
@@ -112,7 +112,7 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
                   )}
 
                   <div 
-                    className="relative h-[55vh] md:h-[65vh] lg:h-[70vh] aspect-[2/3] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_20px_60px_rgba(168,85,247,0.2)] border border-white/10 bg-[#c3bcd0] pointer-events-auto cursor-default"
+                    className="relative h-[55vh] md:h-[65vh] lg:h-[70vh] aspect-[2/3] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_20px_60px_rgba(168,85,247,0.2)] border border-black bg-[#c3bcd0] pointer-events-auto cursor-default"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {cast[selectedIndex].profile_path ? (

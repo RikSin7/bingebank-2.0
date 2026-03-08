@@ -11,14 +11,9 @@ interface MoviePageProps {
 
 export default async function MoviePage({ params }: MoviePageProps) {
   const { id } = await params;
-
   let movie;
-
-  try {
-    movie = await getMovieDetails(id);
-  } catch {
-    notFound();
-  }
+  movie = await getMovieDetails(id);
+  if (!movie) notFound();
 
   return (
     <div className="min-h-screen bg-purple-900/5 text-white">

@@ -99,7 +99,7 @@ export default function Sidebar() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={() => dispatch(setIsSidebarOpen(true))}
-            className="fixed top-6 left-4 md:left-6 z-[60] p-3.5 md:bg-black/40 backdrop-blur-xl border border-white/10 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors outline-none focus:outline-none"
+            className="fixed cursor-pointer hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] top-6 left-4 md:left-6 z-[60] p-3.5 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full text-white/70 hover:text-white [transition-property:width,height,background-color,border-color,box-shadow,padding] outline-none focus:outline-none duration-300"
             style={{ WebkitTapHighlightColor: "transparent" }}
           >
             <Menu className="w-5 h-5" strokeWidth={2} />

@@ -27,6 +27,10 @@ export async function tmdbFetch<T>(
 
   const res = await fetch(url, options);
 
+  if (res.status === 404) {
+    return null as T; //here T means the type of the response (it can be any type)
+  }
+
   if (!res.ok) {
     throw new Error(`TMDB API error: ${res.status} for ${endpoint}`);
   }

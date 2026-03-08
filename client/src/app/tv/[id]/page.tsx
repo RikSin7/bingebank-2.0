@@ -14,14 +14,11 @@ export default async function TVShowPage({ params }: TVShowPageProps) {
 
   let show;
 
-  try {
-    show = await getTVShowDetails(id);
-  } catch {
-    notFound();
-  }
+  show = await getTVShowDetails(id);
+  if (!show) notFound();
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-purple-900/5 text-white">
       <div className="absolute md:block hidden top-6 md:left-24 z-50">
         <BackButton />
       </div>

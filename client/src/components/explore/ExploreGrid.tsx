@@ -137,7 +137,7 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
 
             return (
               <motion.div key={`${item.id}-${index}`} variants={itemVariants} className="group">
-                <Link href={href} className="block w-full aspect-[2/3] relative rounded-2xl overflow-hidden bg-[#0a0514] border border-white/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
+                <Link href={href} className="block w-full aspect-[2/3] relative rounded-2xl overflow-hidden bg-purple-900/10 border border-white/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
                   {item.poster_path ? (
                     <Image
                       src={tmdbImage(item.poster_path, "w500")}
@@ -147,7 +147,9 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-white/5 text-white/20 font-bold">N/A</div>
+                    <div className="w-full h-full flex flex-col justify-center items-center p-4 text-gray-400">
+                      <span className="text-sm font-semibold">No Image</span>
+                    </div>
                   )}
                   
                   {/* Glass Gradient Overlay */}

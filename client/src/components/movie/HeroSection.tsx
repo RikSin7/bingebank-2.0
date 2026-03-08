@@ -85,6 +85,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
 
       {/* ─── Dynamic Gradient Overlays ─── */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#06020a] via-[#06020a]/90 to-transparent z-0" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r md:from-[#030303]/95 md:via-transparent md:to-transparent" />
 
       {/* ─── Hero Content Wrapper ─── */}
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 pb-8 md:pb-16 pt-[15vh] md:pt-[35vh]">

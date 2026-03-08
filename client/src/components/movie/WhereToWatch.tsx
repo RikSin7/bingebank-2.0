@@ -51,7 +51,7 @@ export default function WhereToWatch({ providersData }: WhereToWatchProps) {
   if (providersList.length === 0) return null;
 
   return (
-    <section>
+    <>
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
           <Play className="w-5 h-5 text-purple-400 fill-purple-400/20" /> Where to Watch
@@ -90,6 +90,6 @@ export default function WhereToWatch({ providersData }: WhereToWatchProps) {
           </div>
         ))}
       </div>
-    </section>
+    </>
   );
 }

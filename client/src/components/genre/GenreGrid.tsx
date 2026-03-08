@@ -107,7 +107,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
                   href={href}
                   className="flex flex-col gap-2 group cursor-pointer"
                 >
-                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-gray-800 shadow-lg">
+                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-purple-900/10 shadow-lg">
                     {item.poster_path ? (
                       <Image
                         src={tmdbImage(item.poster_path, "w500")}
@@ -117,7 +117,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
                         className="object-cover group-hover:scale-110 group-hover:opacity-80 transition-all duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col justify-center items-center p-4 bg-black text-gray-400">
+                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-gray-400">
                         <span className="text-sm font-semibold">No Image</span>
                       </div>
                     )}
