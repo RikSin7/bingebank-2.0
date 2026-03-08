@@ -112,7 +112,7 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
                   )}
 
                   <div 
-                    className="relative h-[55vh] md:h-[65vh] lg:h-[70vh] aspect-[2/3] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_20px_60px_rgba(168,85,247,0.2)] border border-black bg-[#c3bcd0] pointer-events-auto cursor-default"
+                    className="relative h-[55vh] md:h-[65vh] lg:h-[70vh] aspect-[2/3] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_20px_60px_rgba(168,85,247,0.2)] pointer-events-auto cursor-default"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {cast[selectedIndex].profile_path ? (

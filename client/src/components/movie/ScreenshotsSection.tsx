@@ -120,11 +120,16 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
                 )}
               </div>
 
-              {/* Mobile Navigation (Under the image: Counter on top, Arrows side-by-side) */}
-              <div className="flex flex-col items-center gap-4 mt-6 xl:hidden w-full" onClick={(e) => e.stopPropagation()}>
-                <div className="text-white/60 font-bold tracking-widest text-sm bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
+              {/* Mobile Navigation */}
+              <div className="flex flex-col items-center gap-4 mt-6 xl:hidden w-full">
+                
+                <div 
+                  className="text-white/60 font-bold tracking-widest text-sm bg-white/5 px-4 py-1.5 rounded-full border border-white/5 cursor-default"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {selectedIndex + 1} / {images.length}
                 </div>
+
                 <div className="flex items-center gap-6">
                   <button 
                     disabled={selectedIndex === 0}
