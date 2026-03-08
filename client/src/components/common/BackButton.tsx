@@ -33,7 +33,7 @@ export default function BackButton({
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleBack}
-      className={`group cursor-pointer flex items-center justify-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl transition-all duration-300 hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:text-white text-zinc-400 outline-none ${
+      className={`group cursor-pointer flex items-center justify-center transition-all duration-300 hover:text-white hover:-translate-x-1 text-zinc-400 outline-none ${
         label ? "px-5 py-2.5 gap-2.5 w-fit flex-row" : "w-12 h-12"
       } ${className}`}
     >

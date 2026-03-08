@@ -72,7 +72,7 @@ export default function WhereToWatch({ providersData }: WhereToWatchProps) {
         {providersList.map(provider => (
           <div 
             key={provider.provider_id} 
-            className="flex items-center gap-3 pr-4 pl-1.5 py-1.5 bg-white/5 backdrop-blur-md rounded-full border border-white/10 hover:bg-white/10 hover:border-purple-500/30 transition-all shadow-md group cursor-pointer"
+            className="flex items-center gap-3 pr-4 pl-1.5 py-1.5 bg-white/5 backdrop-blur-md rounded-full border border-white/10 hover:bg-white/10 hover:border-purple-500/30 transition-all shadow-md group"
             title={provider.provider_name}
           >
             {provider.logo_path && (

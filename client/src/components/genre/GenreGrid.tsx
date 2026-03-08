@@ -85,7 +85,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
   };
 
   return (
-    <div className="w-full bg-purple-900/5 pt-12">
+    <div className="w-full bg-purple-900/0 pt-12">
       <div className="flex items-center gap-4 mb-10 px-4 md:px-8">
         <div className="h-10 w-1.5 bg-purple-400 rounded-full" />
         <h1 className="text-4xl md:text-5xl text-white tracking-tight">
