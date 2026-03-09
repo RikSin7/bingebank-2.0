@@ -1,16 +1,14 @@
 export default function ExploreLoading() {
   return (
-    <div className="min-h-screen bg-purple-900/5 pb-12 pt-8">
+    <div className="min-h-screen bg-purple-900/5 pb-12 pt-24">
       <div className="mx-auto px-4 md:px-12">
-        {/* Filter bar placeholder */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-          <div className="h-8 w-48 bg-zinc-800/50 animate-pulse rounded-md" />
-          <div className="flex gap-2">
-            <div className="h-10 w-32 bg-zinc-800/50 animate-pulse rounded-full" />
-            <div className="h-10 w-32 bg-zinc-800/50 animate-pulse rounded-full" />
-            <div className="h-10 w-32 bg-zinc-800/50 animate-pulse rounded-full" />
-          </div>
-        </div>
+        {/* Title Placeholder */}
+            <div className="flex items-center gap-3 md:gap-4 mb-8 ml-4">
+              {/* Purple Accent Line */}
+              <div className="w-1.5 h-8 md:h-10 bg-purple-500/50 animate-pulse rounded-full" />
+              {/* Title Text */}
+              <div className="h-8 md:h-10 w-48 md:w-72 bg-zinc-800/50 animate-pulse rounded-lg" />
+            </div>
 
         {/* Grid placeholder */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
@@ -20,7 +18,7 @@ export default function ExploreLoading() {
               <div className="h-4 bg-zinc-800/50 animate-pulse rounded w-3/4 mt-1" />
               <div className="h-3 bg-zinc-800/50 animate-pulse rounded w-1/4" />
             </div>
-          ))}
+          ))} 
         </div>
       </div>
     </div>

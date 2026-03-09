@@ -1,9 +1,9 @@
 export default function SearchLoading() {
   return (
-    <div className="min-h-screen bg-black pb-12 pt-12">
+    <div className="min-h-screen bg-black pb-12 pt-24">
       <div className="mx-auto px-4 md:px-12">
         {/* header placeholder */}
-          <div className="flex gap-4 mb-8">
+          <div className="flex gap-4 mb-8 ml-4">
             <div className="h-8 w-44 bg-zinc-800/50 animate-pulse rounded-full" />
           </div>
         {/* Grid placeholder */}
