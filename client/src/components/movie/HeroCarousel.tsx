@@ -210,7 +210,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
             alt="Next item"
             fill
             sizes="256px"
-            className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
           <div className="absolute bottom-3 left-4 pr-4">
