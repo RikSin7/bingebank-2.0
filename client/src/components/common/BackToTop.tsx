@@ -39,7 +39,7 @@ export default function BackToTop() {
       aria-label="Scroll to top"
       style={{ WebkitTapHighlightColor: "transparent" }}
       className={`
-        fixed z-[90] bottom-8 right-4 md:bottom-12 md:right-6 p-3
+        fixed cursor-pointer z-[90] bottom-8 right-4 md:bottom-12 md:right-6 p-3
         rounded-full bg-white/5 backdrop-blur-xl border border-white/10 
         shadow-[0_10px_30px_rgba(0,0,0,0.5)] 
         outline-none focus:outline-none

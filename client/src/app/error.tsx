@@ -52,7 +52,7 @@ export default function Error({
           
           <Link 
             href="/"
-            className="group flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/10 bg-transparent px-8 py-3 text-sm font-medium text-zinc-300 transition-all hover:bg-white/5 hover:text-white active:scale-95"
+            className="group cursor-pointer flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/10 bg-transparent px-8 py-3 text-sm font-medium text-zinc-300 transition-all hover:bg-white/5 hover:text-white active:scale-95"
           >
             <Home className="h-4 w-4" strokeWidth={1.5} />
              Home

@@ -31,7 +31,7 @@ export default function GlobalError({
 
           <button
             onClick={() => reset()}
-            className="flex items-center gap-2 mx-auto rounded-full bg-white px-6 py-3 text-black"
+            className="cursor-pointer flex items-center gap-2 mx-auto rounded-full bg-white px-6 py-3 text-black"
           >
             <RotateCcw className="h-4 w-4" />
             Reload App

@@ -153,7 +153,7 @@ export default function ExpandableSearch() {
                   setQuery("");
                   inputRef.current?.focus();
                 }}
-                className="p-1.5 rounded-full text-gray-400 hover:text-white transition-colors"
+                className="p-1.5 cursor-pointer rounded-full text-gray-400 hover:text-white transition-colors"
                 aria-label="Clear search"
               >
                 <X className="w-4 h-4" />

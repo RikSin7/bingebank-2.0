@@ -143,7 +143,7 @@ export default function Sidebar() {
           </Link>
           <button 
             onClick={() => dispatch(setIsSidebarOpen(false))}
-            className="md:opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity p-2 -mr-2 rounded-full text-white/40 hover:text-white hover:bg-white/5"
+            className="md:opacity-0 cursor-pointer group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity p-2 -mr-2 rounded-full text-white/40 hover:text-white hover:bg-white/5"
           >
             <X className="w-4 h-4" />
           </button>
@@ -189,7 +189,7 @@ export default function Sidebar() {
           <div className="flex flex-col flex-shrink-0">
             <button
                onClick={() => setIsGenresExpanded(!isGenresExpanded)}
-               className={`flex items-center justify-between px-3 py-3.5 rounded-xl transition-colors duration-300 outline-none ${
+               className={`flex cursor-pointer items-center justify-between px-3 py-3.5 rounded-xl transition-colors duration-300 outline-none ${
                  isGenresExpanded ? "text-white" : "text-white/50 hover:text-white hover:bg-white/[0.03]"
                } w-full`}
             >
@@ -217,13 +217,13 @@ export default function Sidebar() {
                     <div className="flex p-1 bg-white/[0.03] rounded-full mx-2 mt-2">
                       <button 
                         onClick={() => setGenreTab("movie")}
-                        className={`flex-1 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 ${genreTab === "movie" ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white/70"}`}
+                        className={`flex-1 cursor-pointer py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 ${genreTab === "movie" ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white/70"}`}
                       >
                         Movies
                       </button>
                       <button 
                         onClick={() => setGenreTab("tv")}
-                        className={`flex-1 py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 ${genreTab === "tv" ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white/70"}`}
+                        className={`flex-1 cursor-pointer py-1.5 text-[13px] font-medium rounded-full transition-all duration-300 ${genreTab === "tv" ? "bg-white/10 text-white shadow-sm" : "text-white/40 hover:text-white/70"}`}
                       >
                         TV
                       </button>
@@ -237,7 +237,7 @@ export default function Sidebar() {
                           <Link
                             key={g.id}
                             href={`/${genreTab}/genre/${g.id}?name=${encodeURIComponent(g.name)}`}
-                            className={`text-[13px] py-2 px-3 rounded-lg transition-colors truncate ${isActive ? 'text-purple-400 font-medium' : 'text-white/50 hover:text-white hover:bg-white/[0.03]'}`}
+                            className={`cursor-pointer text-[13px] py-2 px-3 rounded-lg transition-colors truncate ${isActive ? 'text-purple-400 font-medium' : 'text-white/50 hover:text-white hover:bg-white/[0.03]'}`}
                           >
                             {g.name}
                           </Link>

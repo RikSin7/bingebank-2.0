@@ -58,10 +58,10 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
         <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#06020a] to-transparent z-10 pointer-events-none" />
 
         <div className="absolute top-2 left-0 right-0 h-[100px] md:h-[130px] pointer-events-none z-20 hidden md:flex items-center justify-between px-4">
-          <button onClick={() => scroll("left")} className="pointer-events-auto p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/cast:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg">
+          <button onClick={() => scroll("left")} className="cursor-pointer pointer-events-auto p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/cast:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg">
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <button onClick={() => scroll("right")} className="pointer-events-auto p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/cast:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg">
+          <button onClick={() => scroll("right")} className="cursor-pointer pointer-events-auto p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/cast:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg">
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>
@@ -91,7 +91,7 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
               className="fixed inset-0 z-[9999] bg-[#06020a]/95 backdrop-blur-2xl flex items-center justify-center p-4"
               onClick={() => setSelectedIndex(null)}
             >
-              <button className="absolute top-6 right-6 z-[110] p-3 rounded-full bg-white/5 hover:bg-white/10 hover:scale-110 transition border border-white/10" onClick={() => setSelectedIndex(null)}>
+              <button className="absolute cursor-pointer top-6 right-6 z-[110] p-3 rounded-full bg-white/5 hover:bg-white/10 hover:scale-110 transition border border-white/10" onClick={() => setSelectedIndex(null)}>
                 <X className="w-4 h-4 md:w-6 md:h-6 text-white" />
               </button>
 
@@ -106,7 +106,7 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
                   
                   {/* Desktop Prev Button */}
                   {selectedIndex > 0 && (
-                    <button className="hidden md:block absolute left-4 md:left-28 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:scale-110 transition z-[110] pointer-events-auto" onClick={(e) => { e.stopPropagation(); setSelectedIndex(selectedIndex - 1); }}>
+                    <button className="hidden md:block absolute cursor-pointer left-4 md:left-28 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:scale-110 transition z-[110] pointer-events-auto" onClick={(e) => { e.stopPropagation(); setSelectedIndex(selectedIndex - 1); }}>
                       <ChevronLeft className="w-4 h-4 md:w-8 md:h-8 text-white" />
                     </button>
                   )}
@@ -124,7 +124,7 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
 
                   {/* Desktop Next Button */}
                   {selectedIndex < cast.length - 1 && (
-                    <button className="hidden md:block absolute right-4 md:right-28 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:scale-110 transition z-[110] pointer-events-auto" onClick={(e) => { e.stopPropagation(); setSelectedIndex(selectedIndex + 1); }}>
+                    <button className="hidden md:block absolute cursor-pointer right-4 md:right-28 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:scale-110 transition z-[110] pointer-events-auto" onClick={(e) => { e.stopPropagation(); setSelectedIndex(selectedIndex + 1); }}>
                       <ChevronRight className="w-4 h-4 md:w-8 md:h-8 text-white" />
                     </button>
                   )}

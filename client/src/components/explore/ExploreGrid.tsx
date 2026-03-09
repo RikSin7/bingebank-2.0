@@ -181,7 +181,7 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
         <div className="flex justify-center mt-16">
           <button
             onClick={loadMore}
-            className="group flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-emerald-500/10 border border-white/10 hover:border-emerald-500/50 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md"
+            className="group cursor-pointer flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-emerald-500/10 border border-white/10 hover:border-emerald-500/50 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md"
           >
             Load More
             <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />

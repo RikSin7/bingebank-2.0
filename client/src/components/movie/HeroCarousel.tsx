@@ -186,7 +186,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
             <motion.div variants={childVariants} className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link
                 href={detailUrl}
-                className="group relative overflow-hidden flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+                className="group relative cursor-pointer overflow-hidden flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.15)]"
               >
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
                 <Play className="w-4 h-4 fill-black" /> Watch Now

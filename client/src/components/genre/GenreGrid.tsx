@@ -147,7 +147,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
         <div className="flex justify-center mt-12 mb-8">
           <button
             onClick={loadMore}
-            className="flex items-center gap-2 px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-lg transition-colors shadow-lg"
+            className="cursor-pointer flex items-center gap-2 px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-lg transition-colors shadow-lg"
           >
             Load More
           </button>

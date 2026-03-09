@@ -57,10 +57,10 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
         <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[#06020a] to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#06020a] to-transparent z-10 pointer-events-none" />
 
-        <button onClick={() => scroll("left")} className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/shots:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg hidden md:block">
+        <button onClick={() => scroll("left")} className="absolute cursor-pointer left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/shots:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg hidden md:block">
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <button onClick={() => scroll("right")} className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/shots:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg hidden md:block">
+        <button onClick={() => scroll("right")} className="absolute cursor-pointer right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/shots:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg hidden md:block">
           <ChevronRight className="w-6 h-6" />
         </button>
 
@@ -88,7 +88,7 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
               className="fixed inset-0 z-[9999] bg-[#06020a]/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4"
               onClick={() => setSelectedIndex(null)}
             >
-              <button className="absolute top-6 right-6 z-[110] p-3 rounded-full bg-white/10 hover:bg-white/20 hover:scale-110 transition border border-white/10" onClick={() => setSelectedIndex(null)}>
+              <button className="absolute cursor-pointer top-6 right-6 z-[110] p-3 rounded-full bg-white/10 hover:bg-white/20 hover:scale-110 transition border border-white/10" onClick={() => setSelectedIndex(null)}>
                 <X className="w-4 h-4 md:w-6 md:h-6 text-white" />
               </button>
 
@@ -96,7 +96,7 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
                 
                 {/* Desktop Prev Button */}
                 {selectedIndex > 0 && (
-                  <button className="hidden xl:block absolute left-4 md:-left-14 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:scale-110 transition z-[110]" onClick={(e) => { e.stopPropagation(); setSelectedIndex(selectedIndex - 1); }}>
+                  <button className="hidden xl:block cursor-pointer absolute left-4 md:-left-14 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:scale-110 transition z-[110]" onClick={(e) => { e.stopPropagation(); setSelectedIndex(selectedIndex - 1); }}>
                     <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 text-white" />
                   </button>
                 )}
@@ -114,7 +114,7 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
 
                 {/* Desktop Next Button */}
                 {selectedIndex < images.length - 1 && (
-                  <button className="hidden xl:block absolute right-4 md:-right-14 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:scale-110 transition z-[110]" onClick={(e) => { e.stopPropagation(); setSelectedIndex(selectedIndex + 1); }}>
+                  <button className="hidden xl:block cursor-pointer absolute right-4 md:-right-14 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:scale-110 transition z-[110]" onClick={(e) => { e.stopPropagation(); setSelectedIndex(selectedIndex + 1); }}>
                     <ChevronRight className="w-4 h-4 md:w-6 md:h-6 text-white" />
                   </button>
                 )}

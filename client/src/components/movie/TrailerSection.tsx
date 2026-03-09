@@ -50,7 +50,7 @@ export default function TrailerSection({ videos }: TrailerSectionProps) {
             <button
               key={video.id}
               onClick={() => setActiveVideo(video)}
-              className={`flex-shrink-0 relative w-[240px] md:w-[280px] aspect-video rounded-2xl overflow-hidden group transition-all duration-300 snap-start outline-none focus:outline-none focus-visible:outline-none focus:ring-0 border [-webkit-tap-highlight-color:transparent] ${
+              className={`flex cursor-pointer shrink-0 relative w-[240px] md:w-[280px] aspect-video rounded-2xl overflow-hidden group transition-all duration-300 snap-start outline-none focus:outline-none focus-visible:outline-none focus:ring-0 border [-webkit-tap-highlight-color:transparent] ${
                 activeVideo?.id === video.id
                   ? "border-purple-500/60 scale-[1.02] shadow-[0_4px_12px_rgba(168,85,247,0.15)]"
                   : "border-purple-500/10 hover:border-purple-500/30 hover:scale-[1.01] hover:shadow-[0_4px_12px_rgba(168,85,247,0.08)]"

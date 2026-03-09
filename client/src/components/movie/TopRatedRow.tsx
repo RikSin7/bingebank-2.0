@@ -89,7 +89,7 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
           
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className={`flex items-center gap-1.5 px-2 py-1 md:px-4 md:py-2 rounded-xl backdrop-blur-md border transition-all duration-300 shadow-lg ${activeTheme.bgLight} ${activeTheme.border} ${activeTheme.primary} hover:bg-white/10`}
+            className={`flex cursor-pointer items-center gap-1.5 px-2 py-1 md:px-4 md:py-2 rounded-xl backdrop-blur-md border transition-all duration-300 shadow-lg ${activeTheme.bgLight} ${activeTheme.border} ${activeTheme.primary} hover:bg-white/10`}
           >
             <span className="font-bold text-sm md:text-base tracking-wide">
               {activeTheme.label}
@@ -110,7 +110,7 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
                   <button
                     key={type}
                     onClick={() => { setSelectedType(type); setIsDropdownOpen(false); }}
-                    className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors ${
+                    className={`w-full cursor-pointer text-left px-5 py-3 text-sm font-medium transition-colors ${
                       selectedType === type 
                         ? `${THEME[type].bgLight} ${THEME[type].primary} border-l-2 ${THEME[type].border}` 
                         : "text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent"
@@ -126,7 +126,7 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
 
         <Link
           href={exploreLink}
-          className={`group flex items-center gap-2 text-sm md:text-base font-bold transition-all duration-300 ${activeTheme.primary} ${activeTheme.hover}`}
+          className={`group cursor-pointer flex items-center gap-2 text-sm md:text-base font-bold transition-all duration-300 ${activeTheme.primary} ${activeTheme.hover}`}
         >
           More 
           <span className={`flex items-center justify-center w-6 h-6 rounded-full bg-white/5 border border-white/10 group-hover:bg-white/10 transition-colors`}>
@@ -141,13 +141,13 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
 
         <button
           onClick={() => scroll("left")}
-          className="absolute left-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
+          className="absolute cursor-pointer left-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={() => scroll("right")}
-          className="absolute right-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
+          className="absolute cursor-pointer right-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
