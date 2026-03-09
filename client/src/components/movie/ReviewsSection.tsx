@@ -23,7 +23,7 @@ export default function ReviewsSection({ reviews }: ReviewsSectionProps) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
           <MessageSquareQuote className="w-5 h-5 text-purple-400" /> 
-          Member Reviews 
+            Reviews 
           <span className="text-zinc-500 text-lg font-medium ml-1">({reviews.length})</span>
         </h2>
         
@@ -47,11 +47,11 @@ export default function ReviewsSection({ reviews }: ReviewsSectionProps) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} // Smooth Apple-like spring easing
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
             {/* Custom Scrollbar for premium feel */}
-            <div className="max-h-[600px] overflow-y-auto pr-2 md:pr-4 space-y-6 pt-2 pb-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-purple-500/50 [&::-webkit-scrollbar-thumb]:rounded-full">
+            <div className="max-h-[600px] mt-6 overflow-y-auto pr-2 md:pr-4 space-y-6 pt-2 pb-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-purple-500/50 [&::-webkit-scrollbar-thumb]:rounded-full">
               {reviews.map((review) => {
                 const author = review.author_details;
                 let avatarUrl = author.avatar_path;
