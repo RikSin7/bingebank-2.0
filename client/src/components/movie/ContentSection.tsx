@@ -34,10 +34,28 @@ function formatCurrency(amount: number): string {
   return `$${(amount / 1_000_000).toFixed(1)}M`;
 }
 
+// Runtime Formatter for Stats Column
+function formatRuntime(minutes: number, isTVShow: boolean = false): string {
+  if (!minutes) return "";
+  if (isTVShow) return `${minutes}m`;
+  
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (h === 0) return `${m}m`;
+  return m === 0 ? `${h}h` : `${h}h ${m}m`;
+}
+
 export default function ContentSection({
   item, type, providers, backdrops, cast, videos, reviews, recommendations, similar,
 }: ContentSectionProps) {
   const isMovie = type === "movie";
+
+  // Extract TV calculations
+  const runtime = isMovie ? item.runtime : item.episode_run_time?.[0] || 0;
+  let totalTVRuntime = 0;
+  if (!isMovie && item.number_of_episodes && runtime) {
+    totalTVRuntime = item.number_of_episodes * runtime;
+  }
 
   return (
     <div className="mx-auto px-4 md:px-12 relative z-20 space-y-16 pb-20 pt-8 md:pt-16">
@@ -75,9 +93,10 @@ export default function ContentSection({
         >
           {isMovie ? (
             <>
+              {/* MOVIE STATS: Budget & Revenue */}
               {item.budget > 0 && (
-                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-full border border-white/5 shadow-md group hover:border-emerald-500/30 transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-[2rem] border border-white/5 shadow-md group hover:border-emerald-500/30 transition-colors">
+                  <div className="w-12 h-12 shrink-0 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
                     <DollarSign className="w-5 h-5 text-emerald-400" />
                   </div>
                   <div>
@@ -87,8 +106,8 @@ export default function ContentSection({
                 </div>
               )}
               {item.revenue > 0 && (
-                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-full border border-white/5 shadow-md group hover:border-purple-500/30 transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
+                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-[2rem] border border-white/5 shadow-md group hover:border-purple-500/30 transition-colors">
+                  <div className="w-12 h-12 shrink-0 rounded-full bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
                     <DollarSign className="w-5 h-5 text-purple-400" />
                   </div>
                   <div>
@@ -100,20 +119,27 @@ export default function ContentSection({
             </>
           ) : (
             <>
+              {/* TV SHOW STATS: Combined Series Info */}
               {(item.number_of_seasons > 0) && (
-                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-full border border-white/5 shadow-md group hover:border-purple-500/30 transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
+                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-[2rem] border border-white/5 shadow-md group hover:border-purple-500/30 transition-colors">
+                  <div className="w-12 h-12 shrink-0 rounded-full bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
                     <Layers className="w-5 h-5 text-purple-400" />
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-0.5">Episodes</p>
-                    <p className="text-white font-bold text-lg">{item.number_of_seasons} S • {item.number_of_episodes} Ep</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-0.5">Series Info</p>
+                    <p className="text-white font-bold text-sm sm:text-base xl:text-lg leading-snug">
+                      {item.number_of_seasons} Seasons • {item.number_of_episodes} Eps
+                      {runtime > 0 && ` • ${formatRuntime(runtime, true)}/ep`}
+                      {totalTVRuntime > 0 && ` • Total: ${formatRuntime(totalTVRuntime, false)}`}
+                    </p>
                   </div>
                 </div>
               )}
+
+              {/* TV SHOW STATS: Network */}
               {item.networks?.[0] && (
-                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-full border border-white/5 shadow-md group hover:border-sky-500/30 transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center border border-sky-500/20 group-hover:scale-110 transition-transform">
+                <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-white/[0.05] to-transparent rounded-[2rem] border border-white/5 shadow-md group hover:border-sky-500/30 transition-colors">
+                  <div className="w-12 h-12 shrink-0 rounded-full bg-sky-500/10 flex items-center justify-center border border-sky-500/20 group-hover:scale-110 transition-transform">
                     <Tv className="w-5 h-5 text-sky-400" />
                   </div>
                   <div>

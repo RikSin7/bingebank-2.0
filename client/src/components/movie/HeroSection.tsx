@@ -17,24 +17,13 @@ interface HeroSectionProps {
   type: "movie" | "tv";
 }
 
+// Simplified since HeroSection only formats movie runtimes now
 function formatRuntime(minutes: number): string {
   if (!minutes) return "";
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
-  return `${h}h ${m}m`;
-}
-
-function formatCurrency(amount: number): string {
-  if (!amount || amount === 0) return "N/A";
-  // Formats to millions (e.g., "$150M") to save space in the capsule
-  if (amount >= 1000000) {
-    return `$${(amount / 1000000).toFixed(0)}M`;
-  }
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(amount);
+  if (h === 0) return `${m}m`;
+  return m === 0 ? `${h}h` : `${h}h ${m}m`;
 }
 
 const staggerContainer: Variants = {
@@ -164,6 +153,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
             
             {/* Metadata Capsules */}
             <motion.div variants={fadeUpItem} className="flex flex-wrap items-center justify-start gap-2 md:gap-3 text-[11px] md:text-sm text-gray-200">
+              
               {/* Rating */}
               {item.vote_average !== undefined && (
                 <span className="flex items-center gap-1.5 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors backdrop-blur-md border border-white/10 shadow-inner">
@@ -180,13 +170,11 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
                 </span>
               )}
 
-              {/* Runtime / Episodes */}
-              {runtime > 0 && (
+              {/* Movie Runtime (Hidden for TV Shows) */}
+              {isMovie && runtime > 0 && (
                 <span className="flex items-center gap-1.5 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors backdrop-blur-md border border-white/10">
                   <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-purple-400" />
-                  <span className="font-medium text-white">
-                    {isMovie ? formatRuntime(runtime) : `${item.number_of_seasons} Seasons • ${item.number_of_episodes} Eps`}
-                  </span>
+                  <span className="font-medium text-white">{formatRuntime(runtime)}</span>
                 </span>
               )}
 
@@ -210,7 +198,6 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
             </motion.div>
 
             {/* Crew Info */}
-       {/* Crew Info */}
             {(isMovie ? (director || writers.length > 0) : (creators && creators.length > 0)) && (
               <motion.div variants={fadeUpItem} className="flex flex-wrap justify-start items-center gap-x-4 md:gap-x-6 gap-y-2 text-[11px] md:text-sm mt-1 px-4 md:px-6 py-3 md:py-4 rounded-2xl md:rounded-full bg-white/5 backdrop-blur-xl border border-white/5 shadow-lg w-fit max-w-full">
                 {isMovie ? (
