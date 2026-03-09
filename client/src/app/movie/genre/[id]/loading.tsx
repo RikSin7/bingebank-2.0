@@ -1,9 +1,9 @@
 export default function GenreLoading() {
   return (
-    <div className="min-h-screen bg-purple-900/5 pb-12 pt-8">
+    <div className="min-h-screen bg-purple-900/5 pb-12 pt-24">
       <div className="mx-auto px-4 md:px-12">
         {/* Genre header placeholder */}
-        <div className="mb-8 flex flex-col gap-2">
+        <div className="mb-8 flex flex-col gap-2 ml-4">
           <div className="h-10 w-48 bg-zinc-800/50 animate-pulse rounded-md" />
           <div className="h-5 w-32 bg-zinc-800/30 animate-pulse rounded-md" />
         </div>

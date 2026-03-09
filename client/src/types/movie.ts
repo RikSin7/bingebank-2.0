@@ -210,3 +210,36 @@ export interface TVShowDetailResponse extends TVShowDetail {
   similar: { results: TVShow[] };
   recommendations: { results: TVShow[] };
 }
+
+
+// ── Person Types ──
+
+export interface PersonDetail {
+  id: number;
+  name: string;
+  biography: string;
+  birthday: string | null;
+  deathday: string | null;
+  place_of_birth: string | null;
+  profile_path: string | null;
+  known_for_department: string;
+}
+
+export interface PersonCredit {
+  id: number;
+  title?: string;
+  name?: string;
+  poster_path: string | null;
+  media_type: "movie" | "tv";
+  release_date?: string;
+  first_air_date?: string;
+  vote_average: number;
+  character?: string;
+  job?: string;
+  popularity: number;
+}
+
+export interface PersonCombinedCreditsResponse {
+  cast: PersonCredit[];
+  crew: PersonCredit[];
+}

@@ -210,6 +210,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
             </motion.div>
 
             {/* Crew Info */}
+       {/* Crew Info */}
             {(isMovie ? (director || writers.length > 0) : (creators && creators.length > 0)) && (
               <motion.div variants={fadeUpItem} className="flex flex-wrap justify-start items-center gap-x-4 md:gap-x-6 gap-y-2 text-[11px] md:text-sm mt-1 px-4 md:px-6 py-3 md:py-4 rounded-2xl md:rounded-full bg-white/5 backdrop-blur-xl border border-white/5 shadow-lg w-fit max-w-full">
                 {isMovie ? (
@@ -217,7 +218,9 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
                     {director && (
                       <div className="flex items-center gap-2">
                         <span className="text-purple-400 font-semibold">Director</span>
-                        <span className="text-white font-medium tracking-wide">{director.name}</span>
+                        <Link href={`/person/${director.id}`} className="text-white font-medium tracking-wide hover:text-purple-400 transition-colors">
+                          {director.name}
+                        </Link>
                       </div>
                     )}
                     {director && writers.length > 0 && (
@@ -226,7 +229,14 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
                     {writers.length > 0 && (
                       <div className="flex items-center gap-2">
                         <span className="text-purple-400 font-semibold">Writers</span>
-                        <span className="text-white font-medium tracking-wide line-clamp-1">{writers.map((w: any) => w.name).join(", ")}</span>
+                        <span className="text-white font-medium tracking-wide line-clamp-1">
+                          {writers.map((w: any, index: number) => (
+                            <span key={w.id}>
+                              <Link href={`/person/${w.id}`} className="hover:text-purple-400 transition-colors">{w.name}</Link>
+                              {index < writers.length - 1 && ", "}
+                            </span>
+                          ))}
+                        </span>
                       </div>
                     )}
                   </>
@@ -235,7 +245,14 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
                     {creators && creators.length > 0 && (
                       <div className="flex items-center gap-2">
                         <span className="text-purple-400 font-semibold">Created by</span>
-                        <span className="text-white font-medium tracking-wide">{creators.map((c: any) => c.name).join(", ")}</span>
+                        <span className="text-white font-medium tracking-wide">
+                          {creators.map((c: any, index: number) => (
+                            <span key={c.id}>
+                              <Link href={`/person/${c.id}`} className="hover:text-purple-400 transition-colors">{c.name}</Link>
+                              {index < creators.length - 1 && ", "}
+                            </span>
+                          ))}
+                        </span>
                       </div>
                     )}
                   </>

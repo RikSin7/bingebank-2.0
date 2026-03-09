@@ -9,9 +9,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { searchMulti } from "@/services/searchService";
 import { tmdbImage } from "@/services/tmdb";
-import { Star, Loader2 } from "lucide-react";
+import { Star, Loader2, User, ChevronDown } from "lucide-react";
 
 interface SearchGridProps {
   initialData: any;
@@ -21,7 +22,6 @@ interface SearchGridProps {
 function filterValidItems(results: any[]): any[] {
   if (!Array.isArray(results)) return [];
   return results.filter((item) => {
-    if (item.media_type === "person") return false;
     if (!item.title && !item.name) return false;
     return true;
   });
@@ -59,7 +59,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
   if (!query) {
     return (
       <div className="w-full flex justify-center items-center h-64">
-        <p className="text-gray-400 text-lg">Type something to search for movies and TV shows.</p>
+        <p className="text-gray-400 text-lg">Type something to search for movies, TV shows, and people.</p>
       </div>
     );
   }
@@ -68,74 +68,106 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
     <div className="w-full pt-12">
       <div className="flex items-center gap-4 mb-10 px-4 md:px-8">
         <div className="h-8 md:h-10 w-1.5 bg-purple-400 rounded-full" />
-        <h1 className="text-xl md:text-4xl text-white tracking-tight">
+        <h1 className="text-xl md:text-4xl font-bold text-white tracking-tight">
           Search Results for "{query}"
         </h1>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+      {/* Increased gap-y to account for text outside image */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-10">
         {items.map((item, index) => {
-          const inferredType = item.media_type || "movie"; // searchMulti always returns media_type, this is just fallback
-          const isMovie = inferredType === "movie";
-          const href = isMovie ? `/movie/${item.id}` : `/tv/${item.id}`;
+          const isPerson = item.media_type === "person";
+          const isMovie = item.media_type === "movie";
+          
+          const href = isPerson ? `/person/${item.id}` : isMovie ? `/movie/${item.id}` : `/tv/${item.id}`;
           const displayTitle = item.title || item.name;
+          
+          const imagePath = isPerson ? item.profile_path : item.poster_path;
           const date = item.release_date || item.first_air_date;
 
           if (!displayTitle) return null;
 
           return (
             <Link
-              key={`search-${inferredType}-${item.id}-${index}`}
+              key={`search-${item.media_type}-${item.id}-${index}`}
               href={href}
-              className="flex flex-col gap-2 group cursor-pointer"
+              className="flex flex-col gap-2 group/card cursor-pointer"
             >
-              <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-purple-900/10 shadow-lg">
-                {item.poster_path ? (
+              {/* ─── Animated Card Container ─── */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: (index % 20) * 0.05, duration: 0.4 }} // Modulo prevents massive delays on load more
+                className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[#110b1c] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
+              >
+                {/* Dynamic Glowing Shadow (Purple) */}
+                <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(168,85,247,0.3)]" />
+
+                {/* Image */}
+                {imagePath ? (
                   <Image
-                    src={tmdbImage(item.poster_path, "w500")}
+                    src={tmdbImage(imagePath, "w500")}
                     alt={displayTitle}
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                    className="object-cover group-hover:scale-110 group-hover:opacity-80 transition-all duration-300"
+                    className="object-cover transition-transform duration-700 group-hover/card:scale-110"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col justify-center items-center p-4  text-gray-400">
-                    <span className="text-sm font-semibold">No Image</span>
+                  <div className="w-full h-full flex flex-col justify-center items-center p-4 text-gray-400 bg-[#0a0514]">
+                    {isPerson ? <User className="w-12 h-12 mb-2 opacity-50" /> : null}
+                    <span className="text-sm font-semibold text-center">No Image</span>
                   </div>
                 )}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-950 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p className="text-white font-bold text-sm line-clamp-2">{displayTitle}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="flex items-center text-yellow-400 text-xs font-bold">
-                      <Star className="w-3 h-3 fill-yellow-400 mr-1" />
+                
+                {/* Glassy Overlay on Hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+              </motion.div>
+
+              {/* ─── Meta Info (Slides Right on Hover) ─── */}
+              <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
+                <p className="text-sm md:text-base font-bold text-white truncate drop-shadow-sm group-hover/card:text-gray-200">
+                  {displayTitle}
+                </p>
+                
+                {isPerson ? (
+                  <span className="text-purple-400 text-[11px] font-bold uppercase tracking-wider mt-1 block">Person</span>
+                ) : (
+                  <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-gray-400">
+                    <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
+                      <Star className="w-3 h-3 fill-yellow-500" />
                       {item.vote_average?.toFixed(1) || "NR"}
                     </span>
-                    <span className="text-gray-300 text-[10px]">{date?.substring(0, 4)}</span>
+                    {date && (
+                      <>
+                        <span className="w-1 h-1 rounded-full bg-gray-600" />
+                        <span>{date.substring(0, 4)}</span>
+                      </>
+                    )}
                   </div>
-                </div>
+                )}
               </div>
             </Link>
           );
         })}
       </div>
 
+      {/* Loading & Load More Buttons*/}
       {loading && (
-        <div className="flex justify-center mt-8 mb-4">
-          <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+        <div className="flex justify-center mt-12 mb-4">
+          <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
         </div>
       )}
-
       {hasMore && items.length > 0 && !loading && (
         <div className="flex justify-center mt-12 mb-8">
-          <button
-            onClick={loadMore}
-            className="flex cursor-pointer items-center gap-2 px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-lg transition-colors shadow-lg"
+          <button 
+            onClick={loadMore} 
+            className="group cursor-pointer flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-purple-500/20 border border-white/10 hover:border-purple-500/50 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md shadow-lg active:scale-95"
           >
             Load More
+            <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
           </button>
         </div>
       )}
-
       {!hasMore && items.length > 0 && !loading && (
         <p className="text-center text-gray-500 mt-12 mb-8">You've reached the end.</p>
       )}
