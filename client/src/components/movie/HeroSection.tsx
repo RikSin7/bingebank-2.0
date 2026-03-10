@@ -73,14 +73,15 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
       )}
 
       {/* ─── Dynamic Gradient Overlays ─── */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-0" />
-      <div className="absolute inset-0 bg-gradient-to-r md:from-black/95  md:via-transparent md:to-transparent hidden md:block z-0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent z-0 md:hidden block" />
+       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-0 hidden md:block" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-transparent to-transparent hidden md:block z-0" />
 
       <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
       {/* ─── Hero Content Wrapper ─── */}
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 pb-8 md:pb-16 pt-[15vh] md:pt-[35vh]"> 
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 pb-8 md:pb-16 pt-[15vh] md:pt-[35vh]">
         
         {/* ─── Responsive Grid Layout ─── */}
         <motion.div 
