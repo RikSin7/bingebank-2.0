@@ -73,11 +73,14 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
       )}
 
       {/* ─── Dynamic Gradient Overlays ─── */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#06020a] via-[#06020a]/90 to-transparent z-0" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-r md:from-[#030303]/95 md:via-transparent md:to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-0" />
+      <div className="absolute inset-0 bg-gradient-to-r md:from-black/95  md:via-transparent md:to-transparent hidden md:block z-0" />
+
+      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
       {/* ─── Hero Content Wrapper ─── */}
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 pb-8 md:pb-16 pt-[15vh] md:pt-[35vh]">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 pb-8 md:pb-16 pt-[15vh] md:pt-[35vh]"> 
         
         {/* ─── Responsive Grid Layout ─── */}
         <motion.div 
@@ -122,7 +125,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
                   <Link
                     key={genre.id}
                     href={`/${type}/genre/${genre.id}?name=${encodeURIComponent(genre.name)}`}
-                    className="px-3 py-1 md:px-4 md:py-1.5 text-[9px] md:text-xs font-bold uppercase tracking-wider rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-gray-200 hover:bg-black hover:text-white hover:border-purple-500/40 transition-all duration-300 shadow-lg"
+                    className="px-3 py-1 md:px-4 md:py-1.5 text-[9px] md:text-xs font-bold uppercase tracking-wider rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-gray-300 hover:bg-[var(--bg-elevated)] hover:text-white hover:border-purple-500/40 transition-all duration-300 shadow-lg"
                   >
                     {genre.name}
                   </Link>
@@ -131,10 +134,10 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
             )}
 
             {/* Title */}
-            <motion.h1 variants={fadeUpItem} className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight drop-shadow-2xl">
+            <motion.h1 variants={fadeUpItem} className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight text-white drop-shadow-2xl">
               {title}
               {year && (
-                <span className="text-white/40 font-light text-lg sm:text-2xl md:text-4xl lg:text-5xl ml-2 md:ml-4 inline-block align-baseline">
+                <span className="text-gray-400 font-light text-lg sm:text-2xl md:text-4xl lg:text-5xl ml-2 md:ml-4 inline-block align-baseline">
                   ({year})
                 </span>
               )}
@@ -152,7 +155,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
           <div className={`col-span-2 md:col-span-1 ${item.poster_path ? "md:col-start-2" : "col-start-1"} md:row-start-2 flex flex-col gap-4 w-full`}>
             
             {/* Metadata Capsules */}
-            <motion.div variants={fadeUpItem} className="flex flex-wrap items-center justify-start gap-2 md:gap-3 text-[11px] md:text-sm text-gray-200">
+            <motion.div variants={fadeUpItem} className="flex flex-wrap items-center justify-start gap-2 md:gap-3 text-[11px] md:text-sm text-gray-300">
               
               {/* Rating */}
               {item.vote_average !== undefined && (

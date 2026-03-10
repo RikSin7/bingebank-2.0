@@ -96,28 +96,30 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
   if (!query) {
     return (
       <div className="w-full flex justify-center items-center h-64">
-        <p className="text-gray-400 text-lg">Type something to search for movies, TV shows, and people.</p>
+        <p className="text-[var(--text-muted)] text-lg">Type something to search for movies, TV shows, and people.</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full pt-12">
+    <div className="w-full relative pt-12">
       <div className="flex items-center gap-4 mb-8 px-4 md:px-8">
         <div className="h-8 md:h-10 w-1.5 bg-purple-400 rounded-full" />
-        <h1 className="text-xl md:text-4xl font-bold text-white tracking-tight">
+        <h1 className="text-xl md:text-4xl font-bold text-[var(--text-primary)] tracking-tight">
           Search Results for "{query}"
         </h1>
       </div>
+      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
       {/* ─── Premium Filter & Sort Bar ─── */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 px-4 md:px-8 mb-10">
         
         {/* Type Filters */}
         <div className="flex items-center gap-2 overflow-x-auto w-full lg:w-auto pb-2 lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full mr-2">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--bg-glass)] border border-[var(--border-medium)] rounded-full mr-2">
             <Filter className="w-4 h-4 text-purple-400" />
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Filter</span>
+            <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Filter</span>
           </div>
           
           {(["all", "movie", "tv", "person"] as FilterType[]).map((type) => {
@@ -136,8 +138,8 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
                 onClick={() => setFilter(type)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap border ${
                   isActive 
-                    ? "bg-purple-500/20 text-purple-300 border-purple-500/50 shadow-[0_0_15px_rgba(168,85,247,0.2)]" 
-                    : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/20"
+                    ? "bg-purple-200 dark:bg-purple-500/20 text-purple-900 dark:text-purple-300 border-purple-400 dark:border-purple-500/50 shadow-[0_0_15px_rgba(168,85,247,0.2)]" 
+                    : "bg-[var(--bg-glass)] text-[var(--text-secondary)] border-[var(--border-medium)] hover:bg-[var(--bg-glass-hover)] hover:border-[var(--border-medium)]"
                 }`}
               >
                 {icons[type]} {labels[type]}
@@ -148,9 +150,9 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
 
         {/* Sort Options */}
         <div className="flex items-center gap-2 overflow-x-auto w-full lg:w-auto pb-2 lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full mr-2">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--bg-glass)] border border-[var(--border-medium)] rounded-full mr-2">
             <ArrowDownUp className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Sort</span>
+            <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Sort</span>
           </div>
 
           {(["relevance", "popularity", "newest", "oldest"] as SortType[]).map((sortType) => {
@@ -163,8 +165,8 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
                 onClick={() => setSort(sortType)}
                 className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap border ${
                   isActive 
-                    ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
-                    : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/20"
+                    ? "bg-emerald-200 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-300 border-emerald-400 dark:border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
+                    : "bg-[var(--bg-glass)] text-[var(--text-secondary)] border-[var(--border-medium)] hover:bg-[var(--bg-glass-hover)] hover:border-[var(--border-medium)]"
                 }`}
               >
                 {labels[sortType]}
@@ -200,7 +202,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
               >
                 <Link href={href} className="flex flex-col gap-2 group/card cursor-pointer">
                   {/* Animated Card Container */}
-                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[#110b1c] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2">
+                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-[var(--border-subtle)] transition-all duration-500 group-hover/card:-translate-y-2">
                     {/* Dynamic Glowing Shadow (Purple) */}
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(168,85,247,0.3)]" />
 
@@ -214,7 +216,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
                         className="object-cover transition-transform duration-700 group-hover/card:scale-110"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-gray-400 bg-[#0a0514]">
+                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-[var(--text-muted)] bg-[var(--bg-elevated)]">
                         {isPerson ? <User className="w-12 h-12 mb-2 opacity-50" /> : null}
                         <span className="text-sm font-semibold text-center">No Image</span>
                       </div>
@@ -226,14 +228,14 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
 
                   {/* Meta Info */}
                   <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                    <p className="text-sm md:text-base font-bold text-white truncate drop-shadow-sm group-hover/card:text-gray-200">
+                    <p className="text-sm md:text-base font-bold text-[var(--text-primary)] truncate drop-shadow-sm group-hover/card:text-[var(--text-secondary)]">
                       {displayTitle}
                     </p>
                     
                     {isPerson ? (
                       <span className="text-purple-400 text-[11px] font-bold uppercase tracking-wider mt-1 block">Person</span>
                     ) : (
-                      <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-gray-400">
+                      <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-[var(--text-muted)]">
                         <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
                           <Star className="w-3 h-3 fill-yellow-500" />
                           {item.vote_average?.toFixed(1) || "NR"}
@@ -256,7 +258,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
 
       {/* State Feedback */}
       {processedItems.length === 0 && !loading && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center h-48 text-gray-400">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center h-48 text-[var(--text-muted)]">
           <Filter className="w-12 h-12 mb-4 opacity-20" />
           <p className="text-lg">No results match your current filters.</p>
         </motion.div>
@@ -272,7 +274,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
         <div className="flex justify-center mt-12 mb-8">
           <button 
             onClick={loadMore} 
-            className="group cursor-pointer flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-purple-500/20 border border-white/10 hover:border-purple-500/50 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md shadow-lg active:scale-95"
+            className="group cursor-pointer flex items-center gap-3 px-8 py-4 bg-[var(--bg-glass)] hover:bg-purple-500/10 border border-[var(--border-medium)] hover:border-purple-500/50 text-[var(--text-primary)] font-bold rounded-2xl transition-all duration-300 backdrop-blur-md shadow-lg active:scale-95"
           >
             Load More
             <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />

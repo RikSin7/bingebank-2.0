@@ -26,7 +26,7 @@ export default function TrailerSection({ videos }: TrailerSectionProps) {
 
   return (
     <section className="w-full mx-auto">
-      <h2 className="text-xl justify-center md:text-2xl font-bold text-white mb-6 flex items-center gap-2">
+      <h2 className="text-xl justify-center md:text-2xl font-bold text-[var(--text-primary)] mb-6 flex items-center gap-2">
         <Youtube className="w-6 h-6 text-red-500" /> Videos & Trailers
       </h2>
 
@@ -68,7 +68,7 @@ export default function TrailerSection({ videos }: TrailerSectionProps) {
                    <Play className="w-5 h-5 text-white fill-white" />
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#06020a] to-transparent pt-8 pb-3 px-3">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[var(--gradient-base)] via-transparent pt-8 pb-3 px-3">
                 <span className="text-xs text-white font-bold line-clamp-2 leading-snug drop-shadow-md">
                   {video.name}
                 </span>

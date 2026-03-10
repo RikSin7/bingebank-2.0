@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { getTVShowsByGenre } from "@/services/tvService";
 import GenreGrid from "@/components/genre/GenreGrid";
+import BackButton from "@/components/common/BackButton";
 
 interface TVGenrePageProps {
   params: Promise<{ id: string }>;
@@ -35,8 +36,11 @@ export default async function TVShowGenrePage({ params, searchParams }: TVGenreP
   }
 
   return (
-    <div className="min-h-screen bg-black pb-12 pt-8">
-      <div className="mx-auto px-4 md:px-12">
+    <div className="min-h-screen bg-[var(--bg-primary)] pb-12 pt-8">
+      <div className="absolute md:block hidden top-6 md:left-24 z-50">
+        <BackButton />
+      </div>
+      <div className="mx-auto">
         <GenreGrid
           key={id} 
           initialData={initialData}

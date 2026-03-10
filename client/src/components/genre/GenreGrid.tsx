@@ -10,7 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { tmdbImage } from "@/services/tmdb";
-import { Star, Loader2 } from "lucide-react";
+import { Star, Loader2, ArrowDown } from "lucide-react";
 
 interface GenreGridProps {
   initialData: any;
@@ -85,13 +85,17 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
   };
 
   return (
-    <div className="w-full bg-purple-900/0 pt-12">
+    <div className="w-full bg-transparent relative pt-12">
       <div className="flex items-center gap-4 mb-10 px-4 md:px-8">
         <div className="h-10 w-1.5 bg-purple-400 rounded-full" />
-        <h1 className="text-4xl md:text-5xl text-white tracking-tight">
+        <h1 className="text-4xl md:text-5xl text-[var(--text-primary)] tracking-tight">
           {genreName} {type === "movie" ? "Movies" : "TV Shows"}
         </h1>
       </div>
+
+            <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+      
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
         {items.map((item, index) => {
               const itemType = type;
@@ -107,7 +111,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
                   href={href}
                   className="flex flex-col gap-2 group cursor-pointer"
                 >
-                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-purple-900/10 shadow-lg">
+                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-[var(--bg-surface)] shadow-lg">
                     {item.poster_path ? (
                       <Image
                         src={tmdbImage(item.poster_path, "w500")}
@@ -117,18 +121,18 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
                         className="object-cover group-hover:scale-110 group-hover:opacity-80 transition-all duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-gray-400">
+                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-[var(--text-muted)]">
                         <span className="text-sm font-semibold">No Image</span>
                       </div>
                     )}
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-950 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <p className="text-white font-bold text-sm line-clamp-2">{displayTitle}</p>
+                      <p className="text-[var(--text-primary)] font-bold text-sm line-clamp-2">{displayTitle}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <span className="flex items-center text-yellow-400 text-xs font-bold">
                           <Star className="w-3 h-3 fill-yellow-400 mr-1" />
                           {item.vote_average?.toFixed(1) || "NR"}
                         </span>
-                        <span className="text-gray-300 text-[10px]">{date?.substring(0, 4)}</span>
+                        <span className="text-[var(--text-secondary)] text-[10px]">{date?.substring(0, 4)}</span>
                       </div>
                     </div>
                   </div>
@@ -145,11 +149,12 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
 
       {hasMore && items.length > 0 && !loading && (
         <div className="flex justify-center mt-12 mb-8">
-          <button
+        <button
             onClick={loadMore}
-            className="cursor-pointer flex items-center gap-2 px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-lg transition-colors shadow-lg"
+            className="group cursor-pointer flex items-center gap-3 px-8 py-4 bg-[var(--bg-glass)] hover:bg-emerald-500/10 border border-[var(--border-medium)] hover:border-emerald-500/50 text-[var(--text-primary)] font-bold rounded-2xl transition-all duration-300 backdrop-blur-md"
           >
             Load More
+            <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
           </button>
         </div>
       )}
@@ -159,7 +164,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
       )}
 
       {!loading && items.length === 0 && (
-        <div className="flex justify-center items-center h-64 text-gray-400 text-lg">No results found for this genre.</div>
+        <div className="flex justify-center items-center h-64 text-[var(--text-muted)] text-lg">No results found for this genre.</div>
       )}
     </div>
   );

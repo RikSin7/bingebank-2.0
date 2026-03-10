@@ -73,11 +73,11 @@ export default function ContentSection({
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="h-8 w-1.5 rounded-full bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
-            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide">Storyline</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] tracking-wide">Storyline</h2>
           </div>
-          <div className="bg-white/[0.03] backdrop-blur-2xl p-8 md:p-10 rounded-[2.5rem] border border-white/5 shadow-2xl relative overflow-hidden group">
+          <div className="bg-[var(--bg-glass)] backdrop-blur-2xl p-8 md:p-10 rounded-[2.5rem] border border-[var(--border-subtle)] shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            <p className="relative z-10 text-gray-300 leading-relaxed text-lg font-medium">
+            <p className="relative z-10 text-[var(--text-secondary)] leading-relaxed text-lg font-medium">
               {item.overview || "No overview available."}
             </p>
           </div>
@@ -100,8 +100,8 @@ export default function ContentSection({
                     <DollarSign className="w-5 h-5 text-emerald-400" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-0.5">Budget</p>
-                    <p className="text-white font-bold text-lg">{formatCurrency(item.budget)}</p>
+                    <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest font-semibold mb-0.5">Budget</p>
+                    <p className="text-[var(--text-primary)] font-bold text-lg">{formatCurrency(item.budget)}</p>
                   </div>
                 </div>
               )}
@@ -111,8 +111,8 @@ export default function ContentSection({
                     <DollarSign className="w-5 h-5 text-purple-400" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-0.5">Revenue</p>
-                    <p className="text-white font-bold text-lg">{formatCurrency(item.revenue)}</p>
+                    <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest font-semibold mb-0.5">Revenue</p>
+                    <p className="text-[var(--text-primary)] font-bold text-lg">{formatCurrency(item.revenue)}</p>
                   </div>
                 </div>
               )}
@@ -126,8 +126,8 @@ export default function ContentSection({
                     <Layers className="w-5 h-5 text-purple-400" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-0.5">Series Info</p>
-                    <p className="text-white font-bold text-sm sm:text-base xl:text-lg leading-snug">
+                    <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest font-semibold mb-0.5">Series Info</p>
+                    <p className="text-[var(--text-primary)] font-bold text-sm sm:text-base xl:text-lg leading-snug">
                       {item.number_of_seasons} Seasons • {item.number_of_episodes} Eps
                       {runtime > 0 && ` • ${formatRuntime(runtime, true)}/ep`}
                       {totalTVRuntime > 0 && ` • Total: ${formatRuntime(totalTVRuntime, false)}`}
@@ -143,8 +143,8 @@ export default function ContentSection({
                     <Tv className="w-5 h-5 text-sky-400" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-0.5">Network</p>
-                    <p className="text-white font-bold text-lg">{item.networks[0].name}</p>
+                    <p className="text-xs text-[var(--text-muted)] uppercase tracking-widest font-semibold mb-0.5">Network</p>
+                    <p className="text-[var(--text-primary)] font-bold text-lg">{item.networks[0].name}</p>
                   </div>
                 </div>
               )}
@@ -160,7 +160,7 @@ export default function ContentSection({
         <TrailerSection videos={videos} />
         <ReviewsSection reviews={reviews} />
 
-        <div className="pt-10 border-t border-white/5 space-y-12">
+        <div className="pt-10 border-t border-[var(--border-subtle)] space-y-12">
           {recommendations.length > 0 && (
             isMovie ? (
               <MovieRow title="Recommended" movies={recommendations} exploreLink={`/explore?category=recommended-movie-${item.id}`} />

@@ -38,8 +38,8 @@ export default function PersonContentSection({ credits }: { credits: PersonCredi
     <div className="max-w-[1600px] mx-auto px-4 md:px-12 py-12">
       <div className="flex items-center gap-3 mb-8">
         <div className="h-8 w-1.5 rounded-full bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
-        <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide">
-          Known For <span className="text-zinc-500 text-lg ml-2">({uniqueCredits.length})</span>
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] tracking-wide">
+          Known For <span className="text-[var(--text-muted)] text-lg ml-2">({uniqueCredits.length})</span>
         </h2>
       </div>
 
@@ -60,7 +60,7 @@ export default function PersonContentSection({ credits }: { credits: PersonCredi
                 animate={{ opacity: 1, scale: 1 }}
                 // Using modulo prevents massive delays when clicking "Load More"
                 transition={{ delay: (index % ITEMS_PER_PAGE) * 0.05, duration: 0.4 }}
-                className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[#110b1c] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
+                className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
               >
                 {/* Dynamic Glowing Shadow (Purple) */}
                 <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(168,85,247,0.3)]" />
@@ -75,7 +75,7 @@ export default function PersonContentSection({ credits }: { credits: PersonCredi
                     className="object-cover transition-transform duration-700 group-hover/card:scale-110"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col justify-center items-center text-zinc-600 bg-[#0a0514]">
+                  <div className="w-full h-full flex flex-col justify-center items-center text-zinc-600 bg-[var(--bg-elevated)]">
                     <Film className="w-8 h-8 mb-2 opacity-50" />
                   </div>
                 )}
@@ -86,7 +86,7 @@ export default function PersonContentSection({ credits }: { credits: PersonCredi
 
               {/* ─── Meta Info (Slides Right on Hover) ─── */}
               <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                <p className="text-sm md:text-base font-bold text-white truncate drop-shadow-sm group-hover/card:text-gray-200">
+                <p className="text-sm md:text-base font-bold text-[var(--text-primary)] truncate drop-shadow-sm group-hover/card:text-[var(--text-secondary)]">
                   {title}
                 </p>
                 
@@ -121,7 +121,7 @@ export default function PersonContentSection({ credits }: { credits: PersonCredi
         <div className="flex justify-center mt-12 mb-4">
           <button
             onClick={handleLoadMore}
-            className="group flex cursor-pointer items-center gap-3 px-8 py-4 bg-white/5 hover:bg-purple-500/20 border border-white/10 hover:border-purple-500/50 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md shadow-lg active:scale-95"
+            className="group flex cursor-pointer items-center gap-3 px-8 py-4 bg-[var(--bg-glass)] hover:bg-purple-500/10 border border-[var(--border-medium)] hover:border-purple-500/50 text-[var(--text-primary)] font-bold rounded-2xl transition-all duration-300 backdrop-blur-md shadow-lg active:scale-95"
           >
             Load More
             <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />

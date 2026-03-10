@@ -38,7 +38,7 @@ function ProgressiveBackground({
   const lowQualitySrc = tmdbImage(isMobile ? item.poster_path || item.backdrop_path : item.backdrop_path || item.poster_path, "w92");
 
   return (
-    <div className="absolute inset-0 w-full h-full bg-[#030303]">
+    <div className="absolute inset-0 w-full h-full bg-[var(--bg-primary)]">
       {/* Low Quality Placeholder (img => Loads instantly) */}
       <img
         src={lowQualitySrc}
@@ -142,9 +142,11 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
       </AnimatePresence>
 
       {/* ─── 2. THE EDITORIAL GRADIENT MESH ─── */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030303] via-[#030303]/90 md:via-transparent to-transparent" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-r md:from-[#030303]/95 md:via-[#030303]/40 to-transparent" />
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(3,3,3,0.4)_100%)]" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/80 md:via-transparent to-transparent" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r md:from-black md:via-black/50 to-transparent" />
+      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.5)_100%)]" />
+      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
       {/* ─── 3. THE CASCADING CONTENT ─── */}
       <div className="absolute inset-0 z-20 flex flex-col justify-end md:justify-center px-4 md:px-12 pb-28 md:pb-0">
@@ -189,7 +191,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
                 className="group relative cursor-pointer overflow-hidden flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.15)]"
               >
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-                <Play className="w-4 h-4 fill-black" /> Watch Now
+                <Play className="w-4 h-4 fill-[var(--bg-primary)]" /> Watch Now
               </Link>
               {/* <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white/5 text-white font-semibold rounded-full backdrop-blur-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95">
                 <Plus className="w-4 h-4" /> Watchlist
@@ -223,7 +225,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
           <span className="text-white font-bold">
             {String(currentIndex + 1).padStart(2, "0")}
           </span>
-          <span className="text-gray-600">/</span>
+          <span className="text-gray-500">/</span>
           <span className="text-gray-400">
             {String(items.length).padStart(2, "0")}
           </span>

@@ -112,14 +112,17 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
   };
 
   return (
-    <div className="w-full bg-purple-900/0 relative pt-12">
+    <div className="w-full bg-transparent relative pt-12">
       {/* ─── HEADER SECTION ─── */}
       <div className="flex items-center gap-4 mb-10 px-4 md:px-8">
         <div className="h-10 w-1.5 bg-purple-400 rounded-full" />
-        <h1 className="text-4xl md:text-5xl text-white tracking-tight">
+        <h1 className="text-4xl md:text-5xl text-[var(--text-primary)] tracking-tight">
           {getTitle()}
         </h1>
       </div>
+
+      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
       {/* ─── GRID SECTION ─── */}
       <motion.div 
@@ -137,7 +140,7 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
 
             return (
               <motion.div key={`${item.id}-${index}`} variants={itemVariants} className="group">
-                <Link href={href} className="block w-full aspect-[2/3] relative rounded-2xl overflow-hidden bg-purple-900/10 border border-white/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
+                <Link href={href} className="block w-full aspect-[2/3] relative rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-[var(--border-subtle)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
                   {item.poster_path ? (
                     <Image
                       src={tmdbImage(item.poster_path, "w500")}
@@ -147,20 +150,20 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col justify-center items-center p-4 text-gray-400">
+                    <div className="w-full h-full flex flex-col justify-center items-center p-4 text-[var(--text-muted)]">
                       <span className="text-sm font-semibold">No Image</span>
                     </div>
                   )}
                   
                   {/* Glass Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-5 flex flex-col justify-end">
-                    <p className="text-white font-bold text-lg leading-snug">{displayTitle}</p>
+                    <p className="text-[var(--text-primary)] font-bold text-lg leading-snug">{displayTitle}</p>
                     <div className="flex items-center gap-3 mt-2 text-xs">
                       <span className="flex items-center text-yellow-500 font-bold bg-yellow-500/10 px-2 py-1 rounded-md border border-yellow-500/20">
                         <Star className="w-3 h-3 fill-yellow-500 mr-1" />
                         {item.vote_average?.toFixed(1) || "NR"}
                       </span>
-                      {date && <span className="text-gray-400 font-medium">{date.substring(0, 4)}</span>}
+                      {date && <span className="text-[var(--text-muted)] font-medium">{date.substring(0, 4)}</span>}
                     </div>
                   </div>
                 </Link>
@@ -181,7 +184,7 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
         <div className="flex justify-center mt-16">
           <button
             onClick={loadMore}
-            className="group cursor-pointer flex items-center gap-3 px-8 py-4 bg-white/5 hover:bg-emerald-500/10 border border-white/10 hover:border-emerald-500/50 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md"
+            className="group cursor-pointer flex items-center gap-3 px-8 py-4 bg-[var(--bg-glass)] hover:bg-emerald-500/10 border border-[var(--border-medium)] hover:border-emerald-500/50 text-[var(--text-primary)] font-bold rounded-2xl transition-all duration-300 backdrop-blur-md"
           >
             Load More
             <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />

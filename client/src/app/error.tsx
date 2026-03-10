@@ -19,7 +19,7 @@ export default function Error({
   }, [error]);
 
   return (
-      <div className="flex min-h-[80vh] w-full flex-col items-center justify-center bg-[#030303] px-4 font-sans selection:bg-white/20">
+      <div className="flex min-h-[80vh] w-full flex-col items-center justify-center bg-[var(--bg-primary)] px-4 font-sans selection:bg-white/20">
       <div className="flex max-w-md flex-col items-center text-center animate-in fade-in zoom-in-95 duration-500">
         
         {/* Subtle Frosted Icon Container */}
@@ -27,11 +27,11 @@ export default function Error({
           <AlertCircle className="h-6 w-6 text-zinc-400" strokeWidth={1.5} />
         </div>
         
-        <h1 className="mb-3 text-2xl font-semibold tracking-tight text-zinc-100">
+        <h1 className="mb-3 text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
           Something went wrong
         </h1>
         
-        <p className="mb-8 text-sm md:text-base leading-relaxed text-zinc-500 font-light">
+        <p className="mb-8 text-sm md:text-base leading-relaxed text-[var(--text-muted)] font-light">
            An unexpected error occurred while loading this page.
         </p>
 
@@ -52,7 +52,7 @@ export default function Error({
           
           <Link 
             href="/"
-            className="group cursor-pointer flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-white/10 bg-transparent px-8 py-3 text-sm font-medium text-zinc-300 transition-all hover:bg-white/5 hover:text-white active:scale-95"
+            className="group cursor-pointer flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-[var(--border-medium)] bg-transparent px-8 py-3 text-sm font-medium text-[var(--text-secondary)] transition-all hover:bg-[var(--bg-glass)] hover:text-[var(--text-primary)] active:scale-95"
           >
             <Home className="h-4 w-4" strokeWidth={1.5} />
              Home

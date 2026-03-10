@@ -110,8 +110,8 @@ export default function ExpandableSearch() {
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         ref={containerRef as any}
         onSubmit={handleSubmit}
-        className={`fixed hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] bg-black/40 top-6 right-4 md:right-6 z-[60] flex items-center backdrop-blur-xl border border-white/10 rounded-full shadow-2xl ${
-          isExpanded ? "w-[240px] bg-black/40 md:w-[320px] px-2 py-1 duration-300" : "w-12 h-12 justify-center cursor-pointer duration-300"
+        className={`fixed hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] bg-[var(--bg-primary)]/40 top-6 right-4 md:right-6 z-[60] flex items-center backdrop-blur-xl border border-[var(--border-medium)] rounded-full shadow-2xl ${
+          isExpanded ? "w-[240px] bg-[var(--bg-primary)]/40 md:w-[320px] px-2 py-1 duration-300" : "w-12 h-12 justify-center cursor-pointer duration-300"
         } [transition-property:width,height,background-color,border-color,box-shadow,padding] ${!showFloatingBtn ? "pointer-events-none" : ""}`}
         onClick={() => {
           if (!isExpanded) toggleExpand();
@@ -123,7 +123,7 @@ export default function ExpandableSearch() {
             e.stopPropagation();
             toggleExpand();
           }}
-          className={`p-2 rounded-full cursor-pointer text-zinc-400 outline-none transition-colors duration-300 hover:text-zinc-100 ${
+          className={`p-2 rounded-full cursor-pointer text-zinc-600 outline-none transition-colors duration-300 hover:text-[var(--text-primary)] ${
             isExpanded ? "mr-1" : ""
           }`}
           aria-label="Search"
@@ -142,7 +142,7 @@ export default function ExpandableSearch() {
                 setQuery(e.target.value);
               }}
               placeholder="Search movies, tv..."
-              className="flex-1 bg-transparent border-none outline-none text-white text-[16px] placeholder:text-gray-400 min-w-0"
+              className="flex-1 bg-transparent border-none outline-none text-[var(--text-primary)] text-[16px] placeholder:text-gray-400 min-w-0"
             />
             {query && (
               <button

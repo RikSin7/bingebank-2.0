@@ -53,7 +53,7 @@ export default function WhereToWatch({ providersData }: WhereToWatchProps) {
   return (
     <>
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+        <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
           <Play className="w-5 h-5 text-purple-400 fill-purple-400/20" /> Where to Watch
         </h2>
         {selectedCountryData.link && (
@@ -86,7 +86,7 @@ export default function WhereToWatch({ providersData }: WhereToWatchProps) {
                 />
               </div>
             )}
-            <span className="text-sm font-semibold text-gray-200 group-hover:text-white transition-colors">{provider.provider_name}</span>
+            <span className="text-sm font-semibold text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors">{provider.provider_name}</span>
           </div>
         ))}
       </div>

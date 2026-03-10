@@ -21,7 +21,7 @@ export default function ReviewsSection({ reviews }: ReviewsSectionProps) {
       
       {/* Header & Toggle Button */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+        <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
           <MessageSquareQuote className="w-5 h-5 text-purple-400" /> 
             Reviews 
           <span className="text-zinc-500 text-lg font-medium ml-1">({reviews.length})</span>
@@ -29,7 +29,7 @@ export default function ReviewsSection({ reviews }: ReviewsSectionProps) {
         
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-purple-500/30 text-white text-sm font-semibold transition-all duration-300 shadow-lg active:scale-95"
+          className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-purple-500/30 text-[var(--text-primary)] text-sm font-semibold transition-all duration-300 shadow-lg active:scale-95"
         >
           <span className="md:block hidden">
             {isExpanded ? "Hide Reviews" : "Read Reviews"}
@@ -72,7 +72,7 @@ export default function ReviewsSection({ reviews }: ReviewsSectionProps) {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
                       
                       {/* Circular Avatar */}
-                      <div className="relative w-14 h-14 rounded-full overflow-hidden bg-purple-900/30 shrink-0 border-2 border-white/10 group-hover:border-purple-500/50 transition-colors">
+                      <div className="relative w-14 h-14 rounded-full overflow-hidden bg-[var(--bg-surface)] shrink-0 border-2 border-white/10 group-hover:border-purple-500/50 transition-colors">
                         {avatarUrl ? (
                           <Image src={avatarUrl} alt={author.name || author.username} fill sizes="56px" className="object-cover" />
                         ) : (
@@ -85,24 +85,24 @@ export default function ReviewsSection({ reviews }: ReviewsSectionProps) {
                       {/* Author Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center flex-wrap gap-3">
-                          <h3 className="text-white font-bold text-lg truncate">
+                          <h3 className="text-[var(--text-primary)] font-bold text-lg truncate">
                             {author.name || author.username}
                           </h3>
                           {author.rating && (
-                            <span className="flex items-center gap-1.5 bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 rounded-full text-xs font-bold text-white">
+                            <span className="flex items-center gap-1.5 bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 rounded-full text-xs font-bold text-[var(--text-primary)]">
                               <Star className="w-3.5 h-3.5 fill-yellow-500 text-yellow-500" />
                               {author.rating.toFixed(1)}
                             </span>
                           )}
                         </div>
-                        <div className="text-sm text-gray-400 mt-1 font-medium">
+                        <div className="text-sm text-[var(--text-muted)] mt-1 font-medium">
                           {new Date(review.created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
                         </div>
                       </div>
                     </div>
 
                     {/* Review Content */}
-                    <div className="text-gray-300 text-sm md:text-base leading-relaxed font-medium">
+                    <div className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed font-medium">
                       <p className="whitespace-pre-wrap break-words">{review.content}</p>
                     </div>
                   </div>

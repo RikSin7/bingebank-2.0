@@ -1,6 +1,6 @@
 export default function ExploreLoading() {
   return (
-    <div className="min-h-screen bg-purple-900/5 pb-12 pt-24">
+    <div className="min-h-screen bg-[var(--bg-tinted)] pb-12 pt-24">
       <div className="mx-auto px-4 md:px-12">
         {/* Title Placeholder */}
             <div className="flex items-center gap-3 md:gap-4 mb-8 ml-4">

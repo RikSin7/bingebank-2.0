@@ -16,7 +16,7 @@ export default function GlobalError({
 
   return (
     <html>
-      <body className="flex min-h-screen items-center justify-center bg-[#030303] text-white">
+      <body className="flex min-h-screen items-center justify-center bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <div className="text-center max-w-md">
 
           <AlertTriangle className="mx-auto mb-6 h-12 w-12 text-red-400" />
@@ -25,7 +25,7 @@ export default function GlobalError({
             Critical Error
           </h1>
 
-          <p className="text-zinc-400 mb-8">
+          <p className="text-[var(--text-muted)] mb-8">
             Something went wrong at the application level.
           </p>
 

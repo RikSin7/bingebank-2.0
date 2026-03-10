@@ -47,8 +47,8 @@ export default function PersonCreditsGrid({ credits }: PersonCreditsGridProps) {
                 </div>
               )}
               
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <p className="text-white font-bold text-xs md:text-sm line-clamp-2">{title}</p>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--bg-elevated)] via-[var(--bg-elevated)]/80 dark:from-black dark:via-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-[var(--text-primary)] font-bold text-xs md:text-sm line-clamp-2">{title}</p>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="flex items-center text-yellow-500 text-[10px] md:text-xs font-bold">
                     <Star className="w-3 h-3 fill-yellow-500 mr-1" />

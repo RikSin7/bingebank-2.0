@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-50 flex h-[100dvh] w-full flex-col items-center justify-center bg-[#030303]">
+    <div className="fixed inset-0 z-50 flex h-[100dvh] w-full flex-col items-center justify-center bg-[var(--bg-primary)]">
       <div className="flex flex-col items-center gap-6">
         
         {/* ─── ELASTIC ORBIT SPINNER (PURE CSS) ─── */}

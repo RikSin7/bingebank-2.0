@@ -49,13 +49,13 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
 
   return (
     <section className="relative group/shots">
-      <h2 className="text-xl md:text-2xl font-bold text-white mb-6 flex items-center gap-2">
+      <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-6 flex items-center gap-2">
         <ImageIcon className="w-5 h-5 text-purple-400" /> Screenshots
       </h2>
 
       <div className="relative w-full">
-        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[#06020a] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#06020a] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
         <button onClick={() => scroll("left")} className="absolute cursor-pointer left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/shots:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-purple-500/20 shadow-lg hidden md:block">
           <ChevronLeft className="w-6 h-6" />
@@ -66,9 +66,9 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
 
         <div ref={scrollRef} className="flex gap-4 md:gap-6 overflow-x-auto px-4 md:px-8 pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
           {images.map((backdrop, index) => (
-            <button key={backdrop.file_path} onClick={() => setSelectedIndex(index)} className="flex-shrink-0 relative w-[280px] md:w-[400px] lg:w-[480px] aspect-video rounded-3xl overflow-hidden bg-[#0a0514] group cursor-pointer shadow-lg border border-white/5 snap-start">
+            <button key={backdrop.file_path} onClick={() => setSelectedIndex(index)} className="flex-shrink-0 relative w-[280px] md:w-[400px] lg:w-[480px] aspect-video rounded-3xl overflow-hidden bg-[var(--bg-elevated)] group cursor-pointer shadow-lg border border-white/5 snap-start">
               <Image src={tmdbImage(backdrop.file_path, "w780")} alt={`Screenshot ${index + 1}`} fill sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, 480px" className="object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-purple-900/0 group-hover:bg-black/30 transition-colors duration-500 flex items-center justify-center">
+              <div className="absolute inset-0 bg-transparent group-hover:bg-black/30 transition-colors duration-500 flex items-center justify-center">
                 <div className="bg-black/50 p-4 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100">
                   <ZoomIn className="w-8 h-8 text-white" />
                 </div>
@@ -85,7 +85,7 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[9999] bg-[#06020a]/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4"
+              className="fixed inset-0 z-[9999] bg-[var(--bg-overlay)]/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4"
               onClick={() => setSelectedIndex(null)}
             >
               <button className="absolute cursor-pointer top-6 right-6 z-[110] p-3 rounded-full bg-white/10 hover:bg-white/20 hover:scale-110 transition border border-white/10" onClick={() => setSelectedIndex(null)}>

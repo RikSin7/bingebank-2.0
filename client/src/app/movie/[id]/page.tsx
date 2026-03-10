@@ -16,7 +16,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
   if (!movie) notFound();
 
   return (
-    <div className="min-h-screen bg-purple-900/5 text-white">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <div className="absolute md:block hidden top-6 md:left-24 z-50">
         <BackButton />
       </div>

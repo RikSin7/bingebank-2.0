@@ -35,12 +35,9 @@ export default function MovieRow({ title, movies, exploreLink }: MovieRowProps) 
 
   return (
     <section className="relative group/row overflow-hidden">
-      {/* ─── AMBIENT GLOW ─── */}
-      <div className="absolute top-0 left-10 w-96 h-96 bg-purple-600/5 rounded-full blur-[120px] pointer-events-none" />
-
       {/* ─── HEADER ─── */}
       <div className="flex items-center justify-between mb-4 px-4 md:px-8 relative z-20">
-        <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight drop-shadow-md">
+        <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)] tracking-tight drop-shadow-md">
           {title}
         </h2>
         {exploreLink && (
@@ -59,19 +56,19 @@ export default function MovieRow({ title, movies, exploreLink }: MovieRowProps) 
       {/* ─── SCROLLABLE CAROUSEL ─── */}
       <div className="relative w-full">
         {/* Edge Gradients */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[#06020a] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#06020a] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
         {/* Premium Scroll Buttons */}
         <button
           onClick={() => scroll("left")}
-          className="absolute cursor-pointer left-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
+          className="absolute cursor-pointer left-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[var(--bg-elevated)]/60 backdrop-blur-xl border border-[var(--border-medium)] text-[var(--text-primary)] opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-[var(--bg-glass-hover)] shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={() => scroll("right")}
-          className="absolute cursor-pointer right-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
+          className="absolute cursor-pointer right-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[var(--bg-elevated)]/60 backdrop-blur-xl border border-[var(--border-medium)] text-[var(--text-primary)] opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-[var(--bg-glass-hover)] shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
@@ -98,7 +95,7 @@ export default function MovieRow({ title, movies, exploreLink }: MovieRowProps) 
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05, duration: 0.4 }}
-                    className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[#110b1c] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
+                    className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-[var(--border-subtle)] transition-all duration-500 group-hover/card:-translate-y-2"
                   >
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(168,85,247,0.3)]" />
                     <Image
@@ -112,10 +109,10 @@ export default function MovieRow({ title, movies, exploreLink }: MovieRowProps) 
                   </motion.div>
 
                   <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                    <p className="text-sm md:text-base font-bold text-white truncate drop-shadow-sm group-hover/card:text-gray-200">
+                    <p className="text-sm md:text-base font-bold text-[var(--text-primary)] truncate drop-shadow-sm group-hover/card:text-[var(--text-secondary)]">
                       {movie.title}
                     </p>
-                    <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-gray-400">
+                    <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-[var(--text-muted)]">
                       <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
                         <Star className="w-3 h-3 fill-yellow-500" />
                         {movie.vote_average?.toFixed(1) ?? "NR"}

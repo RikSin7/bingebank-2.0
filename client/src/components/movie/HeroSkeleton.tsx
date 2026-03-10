@@ -1,12 +1,12 @@
 export default function HeroSkeleton() {
   return (
-    <div className="relative w-full h-[100dvh] min-h-[600px] bg-[#030303] overflow-hidden">
+    <div className="relative w-full h-[100dvh] min-h-[600px] bg-[var(--bg-primary)] overflow-hidden">
       {/* Background Pulse */}
       <div className="absolute inset-0 w-full h-full bg-zinc-900/50 animate-pulse" />
       
       {/* Gradients to match the real hero */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#030303] via-[#030303]/40 md:via-transparent to-transparent" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#030303]/95 via-[#030303]/70 md:via-[#030303]/40 to-transparent" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-[var(--gradient-base)] via-[var(--gradient-base)]/40 md:via-transparent to-transparent" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-[var(--gradient-base)]/95 via-[var(--gradient-base)]/70 md:via-[var(--gradient-base)]/40 to-transparent" />
 
       {/* Content Skeleton */}
       <div className="absolute inset-0 z-20 flex flex-col justify-end md:justify-center px-4 md:px-12 pb-24 md:pb-0">

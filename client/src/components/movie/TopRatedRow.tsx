@@ -83,7 +83,7 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
 
       <div className="flex items-center justify-between mb-4 px-4 md:px-8 relative z-20">
         <div className="flex items-center gap-3 relative" ref={dropdownRef}>
-          <h2 className="text-xl md:text-3xl font-black text-white tracking-tight drop-shadow-md">
+          <h2 className="text-xl md:text-3xl font-black text-[var(--text-primary)] tracking-tight drop-shadow-md">
             Top Rated
           </h2>
           
@@ -104,7 +104,7 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="absolute top-full left-0 mt-3 w-44 bg-[#0a0514]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden z-30"
+                className="absolute top-full left-0 mt-3 w-44 bg-[var(--bg-elevated)]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden z-30"
               >
                 {(["movie", "tv"] as MediaType[]).map((type) => (
                   <button
@@ -113,7 +113,7 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
                     className={`w-full cursor-pointer text-left px-5 py-3 text-sm font-medium transition-colors ${
                       selectedType === type 
                         ? `${THEME[type].bgLight} ${THEME[type].primary} border-l-2 ${THEME[type].border}` 
-                        : "text-gray-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent"
+                        : "text-[var(--text-muted)] hover:bg-white/5 hover:text-[var(--text-primary)] border-l-2 border-transparent"
                     }`}
                   >
                     {THEME[type].label}
@@ -136,18 +136,18 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
       </div>
 
       <div className="relative w-full">
-        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
         <button
           onClick={() => scroll("left")}
-          className="absolute cursor-pointer left-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
+          className="absolute cursor-pointer left-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[var(--bg-elevated)]/60 backdrop-blur-xl border border-white/10 text-[var(--text-primary)] opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={() => scroll("right")}
-          className="absolute cursor-pointer right-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[#0a0514]/60 backdrop-blur-xl border border-white/10 text-white opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
+          className="absolute cursor-pointer right-4 md:top-[151px] lg:top-[166px] -translate-y-1/2 z-20 p-3 rounded-full bg-[var(--bg-elevated)]/60 backdrop-blur-xl border border-white/10 text-[var(--text-primary)] opacity-0 group-hover/row:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] hidden md:flex"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
@@ -181,7 +181,7 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: index * 0.05, duration: 0.4 }}
-                      className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[#110b1c] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
+                      className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
                     >
                       <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 ${activeTheme.glow}`} />
                       <Image
@@ -195,10 +195,10 @@ export default function TopRatedRow({ topRatedMovies, topRatedTV }: TopRatedRowP
                     </motion.div>
 
                     <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                      <p className="text-sm md:text-base font-bold text-white truncate drop-shadow-sm group-hover/card:text-gray-200">
+                      <p className="text-sm md:text-base font-bold text-[var(--text-primary)] truncate drop-shadow-sm group-hover/card:text-[var(--text-secondary)]">
                         {title}
                       </p>
-                      <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-gray-400">
+                      <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-[var(--text-muted)]">
                         <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
                           <Star className="w-3 h-3 fill-yellow-500" />
                           {item.vote_average?.toFixed(1) ?? "NR"}

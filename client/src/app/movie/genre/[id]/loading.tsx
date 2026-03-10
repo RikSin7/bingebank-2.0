@@ -1,6 +1,6 @@
 export default function GenreLoading() {
   return (
-    <div className="min-h-screen bg-purple-900/5 pb-12 pt-24">
+    <div className="min-h-screen bg-[var(--bg-tinted)] pb-12 pt-24">
       <div className="mx-auto px-4 md:px-12">
         {/* Genre header placeholder */}
         <div className="mb-8 flex flex-col gap-2 ml-4">

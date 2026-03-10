@@ -13,11 +13,11 @@ import HeroSkeleton from "@/components/movie/HeroSkeleton";
 export default async function Home() {
 
   return (
-    <main className="min-h-screen bg-purple-900/5 relative">
+    <main className="min-h-screen bg-[var(--bg-primary)] relative">
       <Suspense fallback={<HeroSkeleton />}>
         <HeroCarouselWrapper />
       </Suspense>
-      <div className="mx-auto px-4 md:px-12 relative z-10">
+      <div className="mx-auto relative z-10">
         {/* Trending row */}
         <Suspense fallback={<RowSkeleton />}>
           <TrendingRowWrapper />

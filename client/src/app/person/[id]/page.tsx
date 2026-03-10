@@ -12,7 +12,10 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
   if (!person) notFound();
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white">
+    <div className="min-h-screen relative bg-[var(--bg-primary)] text-[var(--text-primary)]">
+
+         <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
       <div className="absolute md:block hidden top-6 md:left-24 z-50">
         <BackButton />
       </div>

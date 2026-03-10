@@ -15,7 +15,7 @@ import { User } from "lucide-react";
 
 export default function PersonHeroSection({ person }: { person: PersonDetail }) {
   return (
-    <section className="w-full bg-gradient-to-b from-zinc-900/50 to-[#030303] pt-24 md:pt-32 pb-12 px-4 md:px-12 border-b border-white/5">
+    <section className="w-full bg-[var(--bg-primary)] dark:bg-gradient-to-b dark:from-zinc-900/50 dark:to-[#111111] pt-24 md:pt-32 pb-12 px-4 md:px-12 border-b border-[var(--border-medium)]">
       <div className="mx-auto flex flex-col md:flex-row items-center md:items-end gap-8 md:gap-12">
         
         {/* Profile Image */}
@@ -44,16 +44,16 @@ export default function PersonHeroSection({ person }: { person: PersonDetail }) 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           className="flex flex-col gap-4 text-center md:text-left w-full max-w-4xl"
         >
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight drop-shadow-lg">
+          <h1 className="text-4xl md:text-6xl font-black text-[var(--text-primary)] dark:text-white tracking-tight drop-shadow-lg">
             {person.name}
           </h1>
           
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-            <span className="px-3 py-1 bg-white/10 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full border border-white/5">
+            <span className="px-3 py-1 bg-purple-500/10 dark:bg-white/10 text-[var(--text-primary)] dark:text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full border border-purple-500/30 dark:border-white/5">
               {person.known_for_department}
             </span>
             {person.birthday && (
-              <span className="text-zinc-400 text-xs md:text-sm">
+              <span className="text-zinc-400 text-xs md:text-sm ">
                 Born: {new Date(person.birthday).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
               </span>
             )}
@@ -66,7 +66,7 @@ export default function PersonHeroSection({ person }: { person: PersonDetail }) 
 
           {person.biography && (
             <div className="mt-2">
-              <p className="text-gray-300 text-sm md:text-base leading-relaxed line-clamp-[10] md:line-clamp-none font-medium">
+              <p className="text-[var(--text-secondary)] dark:text-gray-300 text-sm md:text-base leading-relaxed line-clamp-[10] md:line-clamp-none font-medium">
                 {person.biography}
               </p>
             </div>

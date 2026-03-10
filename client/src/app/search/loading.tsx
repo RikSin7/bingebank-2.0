@@ -1,6 +1,6 @@
 export default function SearchLoading() {
   return (
-    <div className="min-h-screen bg-black pb-12 pt-24">
+    <div className="min-h-screen bg-[var(--bg-primary)] pb-12 pt-24">
       <div className="mx-auto px-4 md:px-12">
         
         {/* Header placeholder */}
@@ -8,7 +8,7 @@ export default function SearchLoading() {
           <div className="h-8 w-44 bg-zinc-800/50 animate-pulse rounded-full" />
         </div>
 
-        {/* Filter & Sort Bar Placeholder (Added ml-4 to match header) */}
+        {/* Filter & Sort Bar Placeholder*/}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-10 ml-4 overflow-hidden">
           
           {/* Left: Type Filters Skeleton */}
@@ -20,8 +20,8 @@ export default function SearchLoading() {
             <div className="h-10 w-28 bg-zinc-800/50 animate-pulse rounded-full" />
           </div>
 
-          {/* Right: Sort Options Skeleton (Hidden on small screens to mimic scroll) */}
-          <div className="flex items-center gap-2 hidden sm:flex">
+          {/* Right: Sort Options Skeleton */}
+          <div className="items-center gap-2 hidden sm:flex">
             <div className="h-9 w-20 bg-zinc-800/50 animate-pulse rounded-full" />
             <div className="h-10 w-32 bg-emerald-500/20 animate-pulse rounded-full border border-emerald-500/30" />
             <div className="h-10 w-28 bg-zinc-800/50 animate-pulse rounded-full" />
@@ -29,7 +29,7 @@ export default function SearchLoading() {
           </div>
         </div>
 
-        {/* Grid placeholder (Updated gaps and card layout to match SearchGrid) */}
+        {/* Grid placeholder */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-10">
           {Array.from({ length: 20 }).map((_, i) => (
             <div key={i} className="flex flex-col gap-2">
