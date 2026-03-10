@@ -7,14 +7,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { fetchExploreData } from "@/actions/explore";
-import { tmdbImage } from "@/services/tmdb";
-import { Star, Loader2, ArrowDown } from "lucide-react";
+import { fetchExploreData, fetchCustomExploreData } from "@/actions/explore";
+import {  Loader2, ArrowDown, Filter, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence, type Variants } from "motion/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { toggleGenre, setSortBy, setCategory, clearFilters } from "@/store/slices/exploreSlice";
+import { MOVIE_GENRES, TV_GENRES } from "@/lib/genres";
+import MediaCard from "../common/MediaCard";
 
 interface ExploreGridProps {
   initialData: any;
@@ -49,18 +49,71 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
   const [page, setPage] = useState(initialData?.page || 1);
   const [totalPages, setTotalPages] = useState(initialData?.total_pages || 1);
   const [loading, setLoading] = useState(false);
+  const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const fetchIdRef = useRef(0);
+  const sortDropdownRef = useRef<HTMLDivElement>(null);
 
-  const isSidebarOpen = useSelector((state: RootState) => state.state.isSidebarOpen);
+  // Close sort dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(e.target as Node)) {
+        setSortDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const { category: reduxCat, sortBy, selectedGenres } = useSelector((state: RootState) => state.explore);
+  const dispatch = useDispatch();
+  // Sync prop category to Redux on mount or when prop changes
+  useEffect(() => {
+    if (category && category !== reduxCat) {
+      dispatch(setCategory(category as any));
+    }
+  }, [category, dispatch]);
+
+  // Update URL search parameters when Redux state changes (for discover mode)
+  useEffect(() => {
+    if (reduxCat === "movies" || reduxCat === "tv") {
+      const params = new URLSearchParams();
+      params.set("category", reduxCat);
+      if (sortBy !== "popularity.desc") params.set("sort", sortBy);
+      if (selectedGenres.length > 0) params.set("genres", selectedGenres.join(","));
+      
+      const newUrl = `/explore?${params.toString()}`;
+      // Use replace to avoid polluting depth history with every filter click,
+      if (window.location.search !== `?${params.toString()}`) {
+         window.history.replaceState(null, "", newUrl);
+      }
+    } else if (reduxCat.includes("trending") || reduxCat.includes("popular") || reduxCat.includes("top-rated") || reduxCat.includes("upcoming")) {
+       // For fixed categories, just update the main category param if needed
+       if (window.location.href.includes("/explore") && !window.location.search.includes(`category=${reduxCat}`)) {
+          window.history.replaceState(null, "", `/explore?category=${reduxCat}`);
+       }
+    }
+  }, [reduxCat, sortBy, selectedGenres]);
 
   const hasMore = page < totalPages;
+
+  const isCustomFetch = selectedGenres.length > 0 || sortBy !== "popularity.desc" || reduxCat === "movies" || reduxCat === "tv";
+
+  const fetchItems = async (targetPage: number) => {
+    if (isCustomFetch) {
+       const mediaType = reduxCat.includes("tv") ? "tv" : "movie";
+       return await fetchCustomExploreData(mediaType, targetPage, sortBy, selectedGenres);
+    } else {
+       // use the route param category as fallback if not custom
+       return await fetchExploreData(category, targetPage);
+    }
+  };
 
   useEffect(() => {
     const currentFetchId = ++fetchIdRef.current;
     const fetchFresh = async () => {
       setLoading(true);
       try {
-        const res = await fetchExploreData(category, 1);
+        const res = await fetchItems(1);
         if (currentFetchId !== fetchIdRef.current) return;
         setItems(filterValidItems(res.results));
         setPage(res.page || 1);
@@ -72,7 +125,7 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
       }
     };
     fetchFresh();
-  }, [category]);
+  }, [category, reduxCat, sortBy, selectedGenres]);
 
   const getTitle = () => {
     if (category.startsWith("similar-movie-")) return "Similar Movies";
@@ -100,11 +153,10 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
     const currentFetchId = fetchIdRef.current;
     try {
       const nextPage = page + 1;
-      const res = await fetchExploreData(category, nextPage);
+      const res = await fetchItems(nextPage);
       if (currentFetchId !== fetchIdRef.current) return;
       setItems((prev) => [...prev, ...filterValidItems(res.results)]);
-      setPage(nextPage);
-    } catch (e) {
+      setPage(nextPage);    } catch (e) {
       console.error(e);
     } finally {
       if (currentFetchId === fetchIdRef.current) setLoading(false);
@@ -124,6 +176,136 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
       <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 
+      {/* ─── REDUX FILTER CONTROLS ─── */}
+      <div className="flex flex-col gap-6 px-4 md:px-8 mb-10 relative z-20">
+        
+        {/* Top bar: Category & Sort */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          
+          {/* Main Categories */}
+          <div className="flex bg-[var(--bg-glass)] rounded-full p-1 border border-[var(--border-medium)] shadow-inner w-full md:w-auto overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <button
+              onClick={() => dispatch(setCategory(category.includes("tv") || reduxCat === "tv" ? "trending-tv" : "trending-movies"))}
+              className={`flex-1 md:flex-none px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 whitespace-nowrap ${
+                reduxCat.includes("trending")
+                  ? "bg-[var(--accent-primary)] text-[var(--text-primary)] shadow-lg"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
+            >
+              Trending {category.includes("tv") || reduxCat === "tv" ? "TV" : "Movies"}
+            </button>
+            <button
+              onClick={() => dispatch(setCategory(category.includes("tv") || reduxCat === "tv" ? "tv" : "movies"))}
+              className={`flex-1 md:flex-none px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 whitespace-nowrap ${
+                !reduxCat.includes("trending")
+                  ? "bg-[var(--accent-primary)] text-[var(--text-primary)] shadow-lg"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
+            >
+              Discover {category.includes("tv") || reduxCat === "tv" ? "TV Shows" : "Movies"}
+            </button>
+          </div>
+
+          {/* Sort Dropdown & Clear Filters */}
+          <div className="flex items-center gap-3 w-full md:w-auto relative">
+            {(!reduxCat.includes("trending") && (selectedGenres.length > 0 || sortBy !== "popularity.desc")) && (
+              <button
+                onClick={() => dispatch(clearFilters())}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors border border-red-500/20"
+                title="Clear Filters"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+            
+            {!reduxCat.includes("trending") && (
+              <div className="relative" ref={sortDropdownRef}>
+                {/* Trigger button */}
+                <button
+                  onClick={() => setSortDropdownOpen((o) => !o)}
+                  className="flex cursor-pointer items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold bg-[var(--bg-glass)] border border-[var(--border-medium)] text-[var(--text-primary)] hover:bg-[var(--bg-glass-hover)] transition-all duration-300 shadow-sm whitespace-nowrap"
+                >
+                  {{
+                    "popularity.desc": "Most Popular",
+                    "vote_average.desc": "Highest Rated",
+                    "primary_release_date.desc": "Newest Releases",
+                    "revenue.desc": "Top Revenue",
+                  }[sortBy] ?? "Sort By"}
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${sortDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                {/* Dropdown panel */}
+                <AnimatePresence>
+                  {sortDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute right-0 top-full mt-3 w-52 bg-[var(--bg-elevated)]/95 backdrop-blur-xl border border-[var(--border-medium)] rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.3)] overflow-hidden z-50"
+                    >
+                      {([
+                        { value: "popularity.desc", label: "Most Popular" },
+                        { value: "vote_average.desc", label: "Highest Rated" },
+                        { value: "primary_release_date.desc", label: "Newest Releases" },
+                        { value: "revenue.desc", label: "Top Revenue" },
+                      ] as const).map((opt) => (
+                        <button
+                          key={opt.value}
+                          onClick={() => { dispatch(setSortBy(opt.value)); setSortDropdownOpen(false); }}
+                          className={`w-full cursor-pointer text-left px-5 py-3 text-sm font-medium transition-colors border-l-2 ${
+                            sortBy === opt.value
+                              ? "bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border-[var(--accent-primary)]"
+                              : "text-[var(--text-secondary)] hover:bg-[var(--bg-glass-hover)] hover:text-[var(--text-primary)] border-transparent"
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Genres (Only shown in Discover mode) */}
+        <AnimatePresence>
+          {!reduxCat.includes("trending") && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden"
+            >
+              <div className="flex flex-wrap gap-2 pt-2">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--bg-glass)] border border-[var(--border-medium)] rounded-full mr-2 shrink-0">
+                  <Filter className="w-4 h-4 text-[var(--accent-primary)]" />
+                  <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Genres</span>
+                </div>
+                {(category.includes("tv") || reduxCat === "tv" ? TV_GENRES : MOVIE_GENRES).map((genre) => {
+                  const isSelected = selectedGenres.includes(genre.id);
+                  return (
+                    <button
+                      key={genre.id}
+                      onClick={() => dispatch(toggleGenre(genre.id))}
+                      className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-300 border ${
+                        isSelected 
+                          ? "bg-[var(--accent-primary)]/20 border-[var(--accent-primary)] text-[var(--accent-primary)] shadow-[0_0_10px_var(--accent-primary-transparent)]" 
+                          : "bg-[var(--bg-glass)] border-[var(--border-subtle)] text-[var(--text-secondary)] hover:bg-[var(--bg-glass-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-medium)]"
+                      }`}
+                    >
+                      {genre.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* ─── GRID SECTION ─── */}
       <motion.div 
         variants={containerVariants}
@@ -134,39 +316,10 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
         <AnimatePresence mode="popLayout">
           {items.map((item, index) => {
             const inferredType = item.media_type || (category.includes("tv") ? "tv" : "movie");
-            const href = inferredType === "movie" ? `/movie/${item.id}` : `/tv/${item.id}`;
-            const displayTitle = item.title || item.name;
-            const date = item.release_date || item.first_air_date;
 
             return (
               <motion.div key={`${item.id}-${index}`} variants={itemVariants} className="group">
-                <Link href={href} className="block w-full aspect-[2/3] relative rounded-2xl overflow-hidden bg-zinc-900/80 border border-[var(--border-subtle)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
-                  {item.poster_path ? (
-                    <Image
-                      src={tmdbImage(item.poster_path, "w500")}
-                      alt={displayTitle}
-                      fill
-                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col justify-center items-center p-4 text-[var(--text-muted)]">
-                      <span className="text-sm font-semibold">No Image</span>
-                    </div>
-                  )}
-                  
-                  {/* Glass Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-5 flex flex-col justify-end">
-                    <p className="text-[var(--text-primary)] font-bold text-lg leading-snug">{displayTitle}</p>
-                    <div className="flex items-center gap-3 mt-2 text-xs">
-                      <span className="flex items-center text-yellow-500 font-bold bg-yellow-500/10 px-2 py-1 rounded-md border border-yellow-500/20">
-                        <Star className="w-3 h-3 fill-yellow-500 mr-1" />
-                        {item.vote_average?.toFixed(1) || "NR"}
-                      </span>
-                      {date && <span className="text-[var(--text-muted)] font-medium">{date.substring(0, 4)}</span>}
-                    </div>
-                  </div>
-                </Link>
+                <MediaCard item={item as any} fallbackMediaType={inferredType} />
               </motion.div>
             );
           })}

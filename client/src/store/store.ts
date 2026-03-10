@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import movieReducer from "./slices/movieSlice";
 import stateReducer from "./slices/stateSlice";
+import favoritesReducer from "./slices/favoritesSlice";
+import exploreReducer from "./slices/exploreSlice";
+import searchReducer from "./slices/searchSlice";
 
 export const store = configureStore({
   reducer: {
-    movies: movieReducer,
     state: stateReducer,
+    favorites: favoritesReducer,
+    explore: exploreReducer,
+    search: searchReducer,
   },
 });
 

@@ -11,6 +11,7 @@ export default function Footer() {
     { name: "Home", href: "/", icon: Home },
     { name: "Movies", href: "/explore?category=trending-movies", icon: Film },
     { name: "TV Shows", href: "/explore?category=trending-tv", icon: Tv },
+    { name: "Favorites", href: "/favorites", icon: Heart },
   ];
 
   const socialLinks = [

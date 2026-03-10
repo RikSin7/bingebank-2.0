@@ -11,6 +11,7 @@ import Link from "next/link";
 import { motion, type Variants } from "motion/react";
 import { tmdbImage } from "@/services/tmdb";
 import { Star, Clock, Calendar, Globe, Eye } from "lucide-react";
+import FavoriteButton from "../common/FavoriteButton";
 
 interface HeroSectionProps {
   item: any;
@@ -135,14 +136,28 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
             )}
 
             {/* Title */}
-            <motion.h1 variants={fadeUpItem} className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight text-white drop-shadow-2xl">
-              {title}
-              {year && (
-                <span className="text-gray-400 font-light text-lg sm:text-2xl md:text-4xl lg:text-5xl ml-2 md:ml-4 inline-block align-baseline">
-                  ({year})
-                </span>
-              )}
-            </motion.h1>
+            <div className="flex items-center gap-4">
+              <motion.h1 variants={fadeUpItem} className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight text-white drop-shadow-2xl">
+                {title}
+                {year && (
+                  <span className="text-gray-400 font-light text-lg sm:text-2xl md:text-4xl lg:text-5xl ml-2 md:ml-4 inline-block align-baseline">
+                    ({year})
+                  </span>
+                )}
+              </motion.h1>
+              <FavoriteButton 
+                item={{
+                  id: item.id,
+                  title: title,
+                  poster_path: item.poster_path,
+                  media_type: type,
+                  vote_average: item.vote_average,
+                  release_date: item.release_date || item.first_air_date
+                }}
+                className="p-3 bg-[var(--bg-glass)] hover:bg-[var(--bg-glass-hover)] rounded-full backdrop-blur-md border border-[var(--border-medium)] hover:scale-110 shrink-0 mb-1"
+                iconClassName="w-6 h-6 md:w-8 md:h-8"
+              />
+            </div>
 
             {/* Tagline */}
             {item.tagline && (

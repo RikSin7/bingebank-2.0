@@ -1,26 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useMemo } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { searchMulti } from "@/services/searchService";
-import { tmdbImage } from "@/services/tmdb";
-import { Star, Loader2, User, ChevronDown, Filter, ArrowDownUp, Tv, Film, Sparkles, Clock } from "lucide-react";
+import { Loader2, User, ChevronDown, Filter, ArrowDownUp, Tv, Film, Sparkles } from "lucide-react";
+import MediaCard from "../common/MediaCard";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { setSearchFilter, setSearchSort, SearchFilterType, SearchSortType } from "@/store/slices/searchSlice";
 
 interface SearchGridProps {
   initialData: any;
   query: string;
 }
-
-type FilterType = "all" | "movie" | "tv" | "person";
-type SortType = "relevance" | "popularity" | "newest" | "oldest";
 
 function filterValidItems(results: any[]): any[] {
   if (!Array.isArray(results)) return [];
@@ -31,14 +23,13 @@ function filterValidItems(results: any[]): any[] {
 }
 
 export default function SearchGrid({ initialData, query }: SearchGridProps) {
+  const dispatch = useDispatch();
+  const { filter, sort } = useSelector((state: RootState) => state.search);
+  
   const [items, setItems] = useState<any[]>(filterValidItems(initialData?.results));
   const [page, setPage] = useState(initialData?.page || 1);
   const [totalPages, setTotalPages] = useState(initialData?.total_pages || 1);
   const [loading, setLoading] = useState(false);
-
-  // ─── Filter & Sort State ───
-  const [filter, setFilter] = useState<FilterType>("all");
-  const [sort, setSort] = useState<SortType>("relevance");
 
   const safeTotalPages = Math.min(totalPages, 1000);
   const hasMore = page < safeTotalPages;
@@ -49,6 +40,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
     try {
       const nextPage = page + 1;
       const res = await searchMulti(query, nextPage);
+      if (!res) return;
       setItems((prev) => {
         const existingIds = new Set(prev.map((i) => i.id));
         const newItems = filterValidItems(res.results).filter((i: any) => !existingIds.has(i.id));
@@ -122,8 +114,8 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
             <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Filter</span>
           </div>
           
-          {(["all", "movie", "tv", "person"] as FilterType[]).map((type) => {
-            const labels: Record<FilterType, string> = { all: "All", movie: "Movies", tv: "TV Shows", person: "People" };
+          {(["all", "movie", "tv", "person"] as SearchFilterType[]).map((type) => {
+            const labels: Record<SearchFilterType, string> = { all: "All", movie: "Movies", tv: "TV Shows", person: "People" };
             const icons = { 
               all: <Sparkles className="w-4 h-4" />, 
               movie: <Film className="w-4 h-4" />, 
@@ -135,7 +127,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
             return (
               <button
                 key={type}
-                onClick={() => setFilter(type)}
+                onClick={() => dispatch(setSearchFilter(type))}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap border ${
                   isActive 
                     ? "bg-purple-200 dark:bg-purple-500/20 text-purple-900 dark:text-purple-300 border-purple-400 dark:border-purple-500/50 shadow-[0_0_15px_rgba(168,85,247,0.2)]" 
@@ -155,14 +147,14 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
             <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Sort</span>
           </div>
 
-          {(["relevance", "popularity", "newest", "oldest"] as SortType[]).map((sortType) => {
-            const labels: Record<SortType, string> = { relevance: "Relevance", popularity: "Popularity", newest: "Newest", oldest: "Oldest" };
+          {(["relevance", "popularity", "newest", "oldest"] as SearchSortType[]).map((sortType) => {
+            const labels: Record<SearchSortType, string> = { relevance: "Relevance", popularity: "Popularity", newest: "Newest", oldest: "Oldest" };
             const isActive = sort === sortType;
 
             return (
               <button
                 key={sortType}
-                onClick={() => setSort(sortType)}
+                onClick={() => dispatch(setSearchSort(sortType))}
                 className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap border ${
                   isActive 
                     ? "bg-emerald-200 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-300 border-emerald-400 dark:border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]" 
@@ -180,16 +172,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
       <AnimatePresence mode="popLayout">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-10">
           {processedItems.map((item, index) => {
-            const isPerson = item.media_type === "person";
-            const isMovie = item.media_type === "movie";
-            
-            const href = isPerson ? `/person/${item.id}` : isMovie ? `/movie/${item.id}` : `/tv/${item.id}`;
-            const displayTitle = item.title || item.name;
-            
-            const imagePath = isPerson ? item.profile_path : item.poster_path;
-            const date = item.release_date || item.first_air_date;
-
-            if (!displayTitle) return null;
+            if (!item.title && !item.name) return null;
 
             return (
               <motion.div
@@ -200,56 +183,19 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
               >
-                <Link href={href} className="flex flex-col gap-2 group/card cursor-pointer">
-                  {/* Animated Card Container */}
-                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-900/80 border border-[var(--border-subtle)] transition-all duration-500 group-hover/card:-translate-y-2">
-                    {/* Dynamic Glowing Shadow (Purple) */}
-                    <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(168,85,247,0.3)]" />
-
-                    {/* Image */}
-                    {imagePath ? (
-                      <Image
-                        src={tmdbImage(imagePath, "w500")}
-                        alt={displayTitle}
-                        fill
-                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                        className="object-cover transition-transform duration-700 group-hover/card:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-[var(--text-muted)] bg-zinc-900">
-                        {isPerson ? <User className="w-12 h-12 mb-2 opacity-50" /> : null}
-                        <span className="text-sm font-semibold text-center">No Image</span>
-                      </div>
-                    )}
-                    
-                    {/* Glassy Overlay on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-                  </div>
-
-                  {/* Meta Info */}
-                  <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                    <p className="text-sm md:text-base font-bold text-[var(--text-primary)] truncate drop-shadow-sm group-hover/card:text-[var(--text-secondary)]">
-                      {displayTitle}
-                    </p>
-                    
-                    {isPerson ? (
-                      <span className="text-purple-400 text-[11px] font-bold uppercase tracking-wider mt-1 block">Person</span>
-                    ) : (
-                      <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-[var(--text-muted)]">
-                        <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
-                          <Star className="w-3 h-3 fill-yellow-500" />
-                          {item.vote_average?.toFixed(1) || "NR"}
-                        </span>
-                        {date && (
-                          <>
-                            <span className="w-1 h-1 rounded-full bg-gray-600" />
-                            <span>{date.substring(0, 4)}</span>
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </Link>
+                <MediaCard 
+                  item={{
+                    id: item.id,
+                    title: item.title,
+                    name: item.name,
+                    poster_path: item.poster_path,
+                    profile_path: item.profile_path,
+                    media_type: item.media_type,
+                    vote_average: item.vote_average,
+                    release_date: item.release_date,
+                    first_air_date: item.first_air_date
+                  }} 
+                />
               </motion.div>
             );
           })}

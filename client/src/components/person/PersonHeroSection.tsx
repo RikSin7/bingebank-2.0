@@ -12,6 +12,7 @@ import { motion } from "motion/react";
 import { tmdbImage } from "@/services/tmdb";
 import { PersonDetail } from "@/types/movie";
 import { User } from "lucide-react";
+import FavoriteButton from "../common/FavoriteButton";
 
 export default function PersonHeroSection({ person }: { person: PersonDetail }) {
   return (
@@ -44,9 +45,21 @@ export default function PersonHeroSection({ person }: { person: PersonDetail }) 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           className="flex flex-col gap-4 text-center md:text-left w-full max-w-4xl"
         >
-          <h1 className="text-4xl md:text-6xl font-black text-[var(--text-primary)] dark:text-white tracking-tight drop-shadow-lg">
-            {person.name}
-          </h1>
+          <div className="flex items-center justify-center md:justify-start gap-4">
+            <h1 className="text-4xl md:text-6xl font-black text-[var(--text-primary)] dark:text-white tracking-tight drop-shadow-lg">
+              {person.name}
+            </h1>
+            <FavoriteButton 
+              item={{
+                id: person.id,
+                title: person.name,
+                poster_path: person.profile_path,
+                media_type: "person"
+              }}
+              className="p-2 md:p-3 bg-[var(--bg-glass)] hover:bg-[var(--bg-glass-hover)] rounded-full backdrop-blur-md border border-[var(--border-medium)] hover:scale-110"
+              iconClassName="w-6 h-6 md:w-8 md:h-8"
+            />
+          </div>
           
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
             <span className="px-3 py-1 bg-purple-500/10 dark:bg-white/10 text-[var(--text-primary)] dark:text-white text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-full border border-purple-500/30 dark:border-white/5">

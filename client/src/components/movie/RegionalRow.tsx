@@ -7,11 +7,10 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { tmdbImage } from "@/services/tmdb";
-import { ChevronLeft, ChevronRight, Star, ArrowRight, ChevronDown } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import MediaCard from "../common/MediaCard";
 
 interface RegionalRowProps {
   bollywood: any[];
@@ -77,7 +76,7 @@ export default function RegionalRow({ bollywood, hollywood }: RegionalRowProps) 
     : "/explore?category=hollywood-movies";
 
   return (
-    <section className="relative group/row py-6 overflow-hidden">
+    <section className="relative group/row py-6">
       {/* ─── AMBIENT BACKGROUND GLOW ─── */}
       <div className="absolute top-0 right-10 w-96 h-96 bg-rose-600/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -166,46 +165,15 @@ export default function RegionalRow({ bollywood, hollywood }: RegionalRowProps) 
             {currentItems
               .filter((movie) => movie.poster_path)
               .map((movie, index) => (
-                <Link
-                  key={`${selectedType}-${movie.id}`}
-                  href={`/movie/${movie.id}`}
-                  className="flex-shrink-0 w-[140px] md:w-[180px] lg:w-[200px] snap-start group/card block"
-                >
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.05, duration: 0.4 }}
-                    className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-900/80 border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
-                  >
-                    <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 ${activeTheme.glow}`} />
-                    <Image
-                      src={tmdbImage(movie.poster_path, "w342")}
-                      alt={movie.title}
-                      fill
-                      sizes="(max-width: 768px) 140px, (max-width: 1024px) 180px, 200px"
-                      className="object-cover transition-transform duration-700 group-hover/card:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-                  </motion.div>
-
-                  <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                    <p className="text-sm md:text-base font-bold text-[var(--text-primary)] truncate drop-shadow-sm group-hover/card:text-[var(--text-secondary)]">
-                      {movie.title}
-                    </p>
-                    <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-[var(--text-muted)]">
-                      <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
-                        <Star className="w-3 h-3 fill-yellow-500" />
-                        {movie.vote_average?.toFixed(1) ?? "NR"}
-                      </span>
-                      {movie.release_date && (
-                        <>
-                          <span className="w-1 h-1 rounded-full bg-gray-600" />
-                          <span>{movie.release_date.substring(0, 4)}</span>
-                        </>
-                      )}
-                    </div>
+                  <div key={`${selectedType}-${movie.id}`} className="flex-shrink-0 w-[140px] md:w-[180px] lg:w-[200px] snap-start">
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.05, duration: 0.4 }}
+                    >
+                      <MediaCard item={movie as any} fallbackMediaType="movie" />
+                    </motion.div>
                   </div>
-                </Link>
               ))}
           </motion.div>
         </AnimatePresence>

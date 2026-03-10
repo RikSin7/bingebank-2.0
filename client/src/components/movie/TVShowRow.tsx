@@ -7,11 +7,10 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { tmdbImage } from "@/services/tmdb";
-import { ChevronLeft, ChevronRight, Star, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import MediaCard from "../common/MediaCard";
 
 interface TVShowRowProps {
   title: string;
@@ -34,7 +33,7 @@ export default function TVShowRow({ title, shows, exploreLink }: TVShowRowProps)
   if (!shows || shows.length === 0) return null;
 
   return (
-    <section className="relative group/row overflow-hidden">
+    <section className="relative group/row">
       {/* ─── HEADER ─── */}
       <div className="flex items-center justify-between mb-4 px-4 md:px-8 relative z-20">
         <h2 className="text-xl md:text-3xl font-black text-[var(--text-primary)] tracking-tight drop-shadow-md">
@@ -86,47 +85,15 @@ export default function TVShowRow({ title, shows, exploreLink }: TVShowRowProps)
             {shows
               .filter((show) => show.poster_path)
               .map((show, index) => (
-                <Link
-                  key={show.id}
-                  href={`/tv/${show.id}`}
-                  className="flex-shrink-0 w-[140px] md:w-[180px] lg:w-[200px] snap-start group/card block"
-                >
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.05, duration: 0.4 }}
-                    className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-900/80 border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
-                  >
-                    {/* Fuchsia tinted shadow for TV shows */}
-                    <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(217,70,239,0.3)]" />
-                    <Image
-                      src={tmdbImage(show.poster_path, "w342")}
-                      alt={show.name}
-                      fill
-                      sizes="(max-width: 768px) 140px, (max-width: 1024px) 180px, 200px"
-                      className="object-cover transition-transform duration-700 group-hover/card:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-                  </motion.div>
-
-                  <div className="mt-3 px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                    <p className="text-sm md:text-base font-bold text-[var(--text-primary)] truncate drop-shadow-sm group-hover/card:text-[var(--text-secondary)]">
-                      {show.name}
-                    </p>
-                    <div className="flex items-center gap-1.5 mt-1 text-xs font-medium text-[var(--text-muted)]">
-                      <span className="flex items-center gap-1 text-yellow-500 bg-yellow-500/10 px-1.5 py-0.5 rounded-md border border-yellow-500/20">
-                        <Star className="w-3 h-3 fill-yellow-500" />
-                        {show.vote_average?.toFixed(1) ?? "NR"}
-                      </span>
-                      {show.first_air_date && (
-                        <>
-                          <span className="w-1 h-1 rounded-full bg-gray-600" />
-                          <span>{show.first_air_date.substring(0, 4)}</span>
-                        </>
-                      )}
-                    </div>
+                  <div key={show.id} className="flex-shrink-0 w-[140px] md:w-[180px] lg:w-[200px] snap-start">
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.05, duration: 0.4 }}
+                    >
+                      <MediaCard item={show as any} fallbackMediaType="tv" />
+                    </motion.div>
                   </div>
-                </Link>
               ))}
           </motion.div>
         </AnimatePresence>

@@ -14,6 +14,7 @@ import Image from "next/image";
 import { Film, Tv, Star, Play, Plus, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence, type Variants } from "motion/react";
 import useMediaQuery from "@/hooks/useMediaQuery";
+import FavoriteButton from "../common/FavoriteButton";
 
 interface HeroCarouselProps {
   items: TrendingItem[];
@@ -188,16 +189,24 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
 
             {/* Premium Buttons */}
             <motion.div variants={childVariants} className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link
-                href={detailUrl}
-                className="group relative cursor-pointer overflow-hidden flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.15)]"
-              >
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-                <Play className="w-4 h-4 fill-[var(--bg-primary)]" /> Watch Now
-              </Link>
-              {/* <button className="flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white/5 text-white font-semibold rounded-full backdrop-blur-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95">
-                <Plus className="w-4 h-4" /> Watchlist
-              </button> */}
+              <div className="flex items-center gap-3 w-full">
+                <Link href={detailUrl} className="group relative cursor-pointer overflow-hidden flex justify-center items-center gap-2 w-full sm:w-auto px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.15)]">
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                  <Play className="w-4 h-4 fill-[var(--bg-primary)]" /> Watch Now
+                </Link>
+                <FavoriteButton 
+                  item={{
+                    id: currentItem.id,
+                    title: title,
+                    poster_path: currentItem.poster_path || null,
+                    media_type: isMovie ? "movie" : "tv",
+                    vote_average: currentItem.vote_average,
+                    release_date: currentItem.release_date || currentItem.first_air_date
+                  }}
+                  className="flex-shrink-0 cursor-pointer flex items-center justify-center w-[58px] h-[58px] bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg relative group overflow-hidden"
+                  iconClassName="w-6 h-6"
+                />
+              </div>
             </motion.div>
           </motion.div>
         </AnimatePresence>

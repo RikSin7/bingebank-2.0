@@ -11,7 +11,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Film, Home, Search, Tv, Menu, X, 
-  ChevronDown, LayoutGrid, Bookmark
+  ChevronDown, LayoutGrid, Heart
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -82,7 +82,7 @@ export default function Sidebar() {
     { name: "Home", href: "/", icon: Home },
     { name: "Movies", href: "/explore?category=trending-movies", icon: Film },
     { name: "TV Shows", href: "/explore?category=trending-tv", icon: Tv },
-    // { name: "Watchlist", href: "/watchlist", icon: Bookmark },
+    { name: "Favorites", href: "/favorites", icon: Heart },
   ];
 
   return (

@@ -1,16 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { tmdbImage } from "@/services/tmdb";
-import { Star, Loader2, ArrowDown } from "lucide-react";
+import { Loader2, ArrowDown } from "lucide-react";
+import MediaCard from "../common/MediaCard";
 
 interface GenreGridProps {
   initialData: any;
@@ -47,6 +39,10 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
       try {
         const res = await fetchAction(genreId, 1);
         if (currentFetchId !== fetchIdRef.current) return;
+        if (!res) {
+          setItems([]);
+          return;
+        }
         setItems(filterValidItems(res.results));
         setPage(res.page || 1);
         setTotalPages(res.total_pages || 1);
@@ -70,6 +66,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
       const nextPage = page + 1;
       const res = await fetchAction(genreId, nextPage);
       if (currentFetchId !== fetchIdRef.current) return;
+      if (!res) return;
       setItems((prev) => {
         const existingIds = new Set(prev.map((i) => i.id));
         const newItems = filterValidItems(res.results).filter((i: any) => !existingIds.has(i.id));
@@ -98,45 +95,16 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
         {items.map((item, index) => {
-              const itemType = type;
-              const href = itemType === "movie" ? `/movie/${item.id}` : `/tv/${item.id}`;
-              const displayTitle = item.title || item.name;
-              const date = item.release_date || item.first_air_date;
-
-              if (!displayTitle) return null;
+              if (!item.title && !item.name) return null;
 
               return (
-                <Link
-                  key={`${itemType}-${item.id}-${index}`}
-                  href={href}
-                  className="flex flex-col gap-2 group cursor-pointer"
-                >
-                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-zinc-900/80 shadow-lg">
-                    {item.poster_path ? (
-                      <Image
-                        src={tmdbImage(item.poster_path, "w500")}
-                        alt={displayTitle}
-                        fill
-                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                        className="object-cover group-hover:scale-110 group-hover:opacity-80 transition-all duration-300"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-[var(--text-muted)]">
-                        <span className="text-sm font-semibold">No Image</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-950 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <p className="text-[var(--text-primary)] font-bold text-sm line-clamp-2">{displayTitle}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="flex items-center text-yellow-400 text-xs font-bold">
-                          <Star className="w-3 h-3 fill-yellow-400 mr-1" />
-                          {item.vote_average?.toFixed(1) || "NR"}
-                        </span>
-                        <span className="text-[var(--text-secondary)] text-[10px]">{date?.substring(0, 4)}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                <MediaCard 
+                  key={`${type}-${item.id}-${index}`}
+                  item={{
+                    ...item,
+                    media_type: type
+                  }} 
+                />
               );
             })}
       </div>
