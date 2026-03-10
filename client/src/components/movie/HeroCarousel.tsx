@@ -38,7 +38,7 @@ function ProgressiveBackground({
   const lowQualitySrc = tmdbImage(isMobile ? item.poster_path || item.backdrop_path : item.backdrop_path || item.poster_path, "w92");
 
   return (
-    <div className="absolute inset-0 w-full h-full bg-[var(--bg-primary)]">
+    <div className="absolute inset-0 w-full h-full bg-[#000000]">
       {/* Low Quality Placeholder (img => Loads instantly) */}
       <img
         src={lowQualitySrc}
@@ -112,7 +112,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
   };
 
   return (
-    <section className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden bg-transparent select-none font-sans">
+    <section className="relative bg-[#303030] w-full h-[100dvh] min-h-[600px] overflow-hidden select-none font-sans">
       
       {/* ─── 0. SILENT PREFETCHER FOR THE NEXT SLIDE ─── */}
       {/* This invisible image forces the browser to download the next high-res backdrop in the background */}
@@ -143,8 +143,10 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
 
       {/* ─── 2. THE EDITORIAL GRADIENT MESH ─── */}
       <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/80 md:via-transparent to-transparent" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-r md:from-black md:via-black/50 to-transparent" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r md:from-black/80 md:via-black/40 to-transparent" />
+      
       <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.5)_100%)]" />
+      
       <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[var(--gradient-base)] via-transparent to-transparent z-10 pointer-events-none" />
 

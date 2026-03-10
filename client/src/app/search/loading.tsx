@@ -1,6 +1,6 @@
 export default function SearchLoading() {
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] pb-12 pt-24">
+    <div className="min-h-screen bg-[#030303] pb-12 pt-24">
       <div className="mx-auto px-4 md:px-12">
         
         {/* Header placeholder */}

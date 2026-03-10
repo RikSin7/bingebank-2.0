@@ -111,7 +111,7 @@ export default function GenreGrid({ initialData, genreId, genreName, type, fetch
                   href={href}
                   className="flex flex-col gap-2 group cursor-pointer"
                 >
-                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-[var(--bg-surface)] shadow-lg">
+                  <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden bg-zinc-900/80 shadow-lg">
                     {item.poster_path ? (
                       <Image
                         src={tmdbImage(item.poster_path, "w500")}

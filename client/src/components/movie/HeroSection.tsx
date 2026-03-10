@@ -51,7 +51,7 @@ export default function HeroSection({ item, type }: HeroSectionProps) {
   const creators = item.created_by || [];
 
   return (
-    <section className="relative mt-24 md:mt-0 w-full min-h-[70vh] lg:min-h-[90vh] flex flex-col items-center justify-end overflow-hidden">
+    <section className="relative bg-[#303030] mt-24 md:mt-0 w-full min-h-[70vh] lg:min-h-[90vh] flex flex-col items-center justify-end overflow-hidden">
       {/* ─── Backdrop Image ─── */}
       {item.backdrop_path && (
         <motion.div 

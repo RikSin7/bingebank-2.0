@@ -60,7 +60,7 @@ export default function PersonContentSection({ credits }: { credits: PersonCredi
                 animate={{ opacity: 1, scale: 1 }}
                 // Using modulo prevents massive delays when clicking "Load More"
                 transition={{ delay: (index % ITEMS_PER_PAGE) * 0.05, duration: 0.4 }}
-                className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
+                className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-900/80 border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
               >
                 {/* Dynamic Glowing Shadow (Purple) */}
                 <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(168,85,247,0.3)]" />
@@ -75,7 +75,7 @@ export default function PersonContentSection({ credits }: { credits: PersonCredi
                     className="object-cover transition-transform duration-700 group-hover/card:scale-110"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col justify-center items-center text-zinc-600 bg-[var(--bg-elevated)]">
+                  <div className="w-full h-full flex flex-col justify-center items-center text-zinc-600 bg-zinc-900">
                     <Film className="w-8 h-8 mb-2 opacity-50" />
                   </div>
                 )}

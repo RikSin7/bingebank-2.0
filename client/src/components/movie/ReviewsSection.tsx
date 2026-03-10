@@ -72,7 +72,7 @@ export default function ReviewsSection({ reviews }: ReviewsSectionProps) {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
                       
                       {/* Circular Avatar */}
-                      <div className="relative w-14 h-14 rounded-full overflow-hidden bg-[var(--bg-surface)] shrink-0 border-2 border-white/10 group-hover:border-purple-500/50 transition-colors">
+                      <div className="relative w-14 h-14 rounded-full overflow-hidden bg-zinc-900/80 shrink-0 border-2 border-white/10 group-hover:border-purple-500/50 transition-colors">
                         {avatarUrl ? (
                           <Image src={avatarUrl} alt={author.name || author.username} fill sizes="56px" className="object-cover" />
                         ) : (

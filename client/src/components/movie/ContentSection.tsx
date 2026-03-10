@@ -58,7 +58,7 @@ export default function ContentSection({
   }
 
   return (
-    <div className="mx-auto px-4 md:px-12 relative z-20 space-y-16 pb-20 pt-8 md:pt-16">
+    <div className="mx-auto px-4 md:px-12 relative z-20 space-y-16 pt-8 md:pt-16">
       
       {/* Overview & Stats Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">

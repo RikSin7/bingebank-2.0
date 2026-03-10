@@ -1,6 +1,6 @@
 export default function ContentSkeleton() {
   return (
-    <div className="px-4 md:px-12 py-12 flex flex-col gap-12 bg-[var(--bg-primary)]">
+    <div className="px-4 md:px-12 py-12 flex flex-col gap-12 bg-transparent">
       <div>
         <div className="h-8 w-48 bg-zinc-800/50 rounded-md mb-6 animate-pulse" />
         <div className="flex gap-4 overflow-hidden">

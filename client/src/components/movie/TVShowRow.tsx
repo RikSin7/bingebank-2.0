@@ -95,7 +95,7 @@ export default function TVShowRow({ title, shows, exploreLink }: TVShowRowProps)
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05, duration: 0.4 }}
-                    className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
+                    className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-900/80 border border-white/5 transition-all duration-500 group-hover/card:-translate-y-2"
                   >
                     {/* Fuchsia tinted shadow for TV shows */}
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(217,70,239,0.3)]" />

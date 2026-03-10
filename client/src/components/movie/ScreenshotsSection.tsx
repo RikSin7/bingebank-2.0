@@ -66,7 +66,7 @@ export default function ScreenshotsSection({ backdrops }: ScreenshotsSectionProp
 
         <div ref={scrollRef} className="flex gap-4 md:gap-6 overflow-x-auto px-4 md:px-8 pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
           {images.map((backdrop, index) => (
-            <button key={backdrop.file_path} onClick={() => setSelectedIndex(index)} className="flex-shrink-0 relative w-[280px] md:w-[400px] lg:w-[480px] aspect-video rounded-3xl overflow-hidden bg-[var(--bg-elevated)] group cursor-pointer shadow-lg border border-white/5 snap-start">
+            <button key={backdrop.file_path} onClick={() => setSelectedIndex(index)} className="flex-shrink-0 relative w-[280px] md:w-[400px] lg:w-[480px] aspect-video rounded-3xl overflow-hidden bg-zinc-900/80 group cursor-pointer shadow-lg border border-white/5 snap-start">
               <Image src={tmdbImage(backdrop.file_path, "w780")} alt={`Screenshot ${index + 1}`} fill sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, 480px" className="object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-transparent group-hover:bg-black/30 transition-colors duration-500 flex items-center justify-center">
                 <div className="bg-black/50 p-4 rounded-full backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100">

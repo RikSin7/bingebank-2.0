@@ -55,7 +55,7 @@ export default function CastCarousel({ cast }: CastCarouselProps) {
               key={`${member.id}-${index}`} 
               className="flex-shrink-0 w-[100px] md:w-[130px] group/card flex flex-col items-center text-center cursor-pointer snap-start"
             >
-              <div className="relative w-[100px] h-[100px] md:w-[130px] md:h-[130px] rounded-full overflow-hidden bg-[var(--bg-elevated)] mb-4 shadow-lg border-2 border-white/5 group-hover/card:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-500">
+              <div className="relative w-[100px] h-[100px] md:w-[130px] md:h-[130px] rounded-full overflow-hidden bg-zinc-900/80 mb-4 shadow-lg border-2 border-[var(--border-subtle)] group-hover/card:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-500">
                 {member.profile_path ? (
                   <Image src={tmdbImage(member.profile_path, "w185")} alt={member.name} fill sizes="130px" className="object-cover group-hover/card:scale-110 transition-transform duration-700" />
                 ) : (

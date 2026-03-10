@@ -15,7 +15,7 @@ import { User } from "lucide-react";
 
 export default function PersonHeroSection({ person }: { person: PersonDetail }) {
   return (
-    <section className="w-full bg-[var(--bg-primary)] dark:bg-gradient-to-b dark:from-zinc-900/50 dark:to-[#111111] pt-24 md:pt-32 pb-12 px-4 md:px-12 border-b border-[var(--border-medium)]">
+    <section className="w-full bg-[var(--bg-primary)] dark:bg-gradient-to-b dark:from-zinc-900/90 dark:to-[#111111] pt-24 md:pt-32 pb-12 px-4 md:px-12 border-b border-[var(--border-medium)]">
       <div className="mx-auto flex flex-col md:flex-row items-center md:items-end gap-8 md:gap-12">
         
         {/* Profile Image */}

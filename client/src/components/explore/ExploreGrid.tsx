@@ -140,7 +140,7 @@ export default function ExploreGrid({ initialData, category }: ExploreGridProps)
 
             return (
               <motion.div key={`${item.id}-${index}`} variants={itemVariants} className="group">
-                <Link href={href} className="block w-full aspect-[2/3] relative rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-[var(--border-subtle)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
+                <Link href={href} className="block w-full aspect-[2/3] relative rounded-2xl overflow-hidden bg-zinc-900/80 border border-[var(--border-subtle)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
                   {item.poster_path ? (
                     <Image
                       src={tmdbImage(item.poster_path, "w500")}

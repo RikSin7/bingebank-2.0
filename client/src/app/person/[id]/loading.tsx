@@ -1,9 +1,9 @@
 export default function PersonLoading() {
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans overflow-hidden">
+    <div className="min-h-screen bg-[#030303] text-white font-sans overflow-hidden">
       
       {/* ─── Hero Section Skeleton ─── */}
-      <div className="w-full bg-gradient-to-b from-zinc-900/50 to-[var(--bg-primary)] pt-24 md:pt-32 pb-12 px-4 md:px-12 border-b border-[var(--border-subtle)]">
+      <div className="w-full bg-gradient-to-b from-zinc-900/50 to-[#030303] pt-24 md:pt-32 pb-12 px-4 md:px-12 border-b border-white/5">
         <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center md:items-end gap-8 md:gap-12">
           
           {/* Profile Image Skeleton */}

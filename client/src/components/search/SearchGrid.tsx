@@ -202,7 +202,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
               >
                 <Link href={href} className="flex flex-col gap-2 group/card cursor-pointer">
                   {/* Animated Card Container */}
-                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-[var(--bg-surface)] border border-[var(--border-subtle)] transition-all duration-500 group-hover/card:-translate-y-2">
+                  <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-900/80 border border-[var(--border-subtle)] transition-all duration-500 group-hover/card:-translate-y-2">
                     {/* Dynamic Glowing Shadow (Purple) */}
                     <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:shadow-[0_0_30px_rgba(168,85,247,0.3)]" />
 
@@ -216,7 +216,7 @@ export default function SearchGrid({ initialData, query }: SearchGridProps) {
                         className="object-cover transition-transform duration-700 group-hover/card:scale-110"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-[var(--text-muted)] bg-[var(--bg-elevated)]">
+                      <div className="w-full h-full flex flex-col justify-center items-center p-4 text-[var(--text-muted)] bg-zinc-900">
                         {isPerson ? <User className="w-12 h-12 mb-2 opacity-50" /> : null}
                         <span className="text-sm font-semibold text-center">No Image</span>
                       </div>
