@@ -19,6 +19,7 @@ images: {
         pathname: '/**',
       },
     ],
+    unoptimized: true,
   },
 };
 
