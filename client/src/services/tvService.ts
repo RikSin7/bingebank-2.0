@@ -26,13 +26,12 @@ export async function getOnTheAirTVShows(page: number = 1) {
 
 export async function getTVShowDetails(id: string) {
   return tmdbFetch<TVShowDetailResponse>(
-    `/tv/${id}?append_to_response=videos,credits,similar,recommendations`,
-    true
+    `/tv/${id}?append_to_response=videos,credits,similar,recommendations`
   );
 }
 
 export async function getTVShowImages(id: string) {
-  return tmdbFetch<ImageResponse>(`/tv/${id}/images`, true);
+  return tmdbFetch<ImageResponse>(`/tv/${id}/images`);
 }
 
 export async function getSimilarTVShows(id: string, page: number = 1) {

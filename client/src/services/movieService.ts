@@ -42,13 +42,12 @@ export async function getHollywoodMovies(page: number = 1) {
 
 export async function getMovieDetails(id: string) {
   return tmdbFetch<MovieDetailResponse>(
-    `/movie/${id}?append_to_response=videos,credits,similar,recommendations`,
-    true
+    `/movie/${id}?append_to_response=videos,credits,similar,recommendations`
   );
 }
 
 export async function getMovieImages(id: string) {
-  return tmdbFetch<ImageResponse>(`/movie/${id}/images`, true);
+  return tmdbFetch<ImageResponse>(`/movie/${id}/images`);
 }
 
 export async function getSimilarMovies(id: string, page: number = 1) {

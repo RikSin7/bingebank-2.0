@@ -2,7 +2,7 @@ import { PersonCombinedCreditsResponse, PersonDetail } from "@/types/movie";
 import { tmdbFetch } from "./tmdb";
 
 export async function getPersonDetails(id: string) {
-  return tmdbFetch<PersonDetail>(`/person/${id}?append_to_response=images`, true);
+  return tmdbFetch<PersonDetail>(`/person/${id}?append_to_response=images`);
 }
 
 export async function getPersonCombinedCredits(id: string) {
